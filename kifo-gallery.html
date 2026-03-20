@@ -692,5 +692,56 @@ document.addEventListener('keydown', e => {
   if (e.key === 'Escape') closeSearchOverlay();
 });
 </script>
+
+<!-- MOBILE DRAWER -->
+<div class="mobile-drawer-overlay" id="mobile-overlay" onclick="closeMobileNav()"></div>
+<div class="mobile-drawer" id="mobile-drawer">
+  <div class="drawer-header">
+    <a href="index.html" class="drawer-logo">Ki<span>f</span>o</a>
+    <button class="drawer-close" onclick="closeMobileNav()">✕</button>
+  </div>
+  <nav class="drawer-nav">
+    <div class="drawer-section">Memorials</div>
+    <a href="index.html" class="drawer-link"><span class="drawer-link-icon">🏠</span>Home</a>
+    <a href="kifo-gallery.html" class="drawer-link"><span class="drawer-link-icon">🔍</span>Browse memorials</a>
+    <a href="kifo-memorial.html" class="drawer-link"><span class="drawer-link-icon">🕯</span>Example memorial</a>
+    <a href="kifo-wizard.html" class="drawer-link"><span class="drawer-link-icon">✦</span>Create a memorial</a>
+    <div class="drawer-section">AI Tools</div>
+    <a href="kifo-ai-tribute.html" class="drawer-link"><span class="drawer-link-icon">✍️</span>AI Tribute Writer</a>
+    <a href="kifo-lifestory.html" class="drawer-link"><span class="drawer-link-icon">📖</span>AI Life Story</a>
+    <div class="drawer-section">Account</div>
+    <a href="kifo-dashboard.html" class="drawer-link"><span class="drawer-link-icon">📋</span>Dashboard</a>
+    <a href="kifo-events.html" class="drawer-link"><span class="drawer-link-icon">📅</span>Events</a>
+    <a href="kifo-settings.html" class="drawer-link"><span class="drawer-link-icon">⚙️</span>Settings</a>
+    <a href="kifo-signin.html" class="drawer-link"><span class="drawer-link-icon">🔑</span>Sign in</a>
+  </nav>
+  <div class="drawer-footer">
+    <a href="kifo-wizard.html" class="drawer-cta">+ Create a memorial — free</a>
+  </div>
+</div>
+
+<script>
+function openMobileNav() {
+  document.getElementById('mobile-drawer').classList.add('open');
+  document.getElementById('mobile-overlay').classList.add('open');
+  const ham = document.getElementById('mobile-hamburger');
+  if (ham) ham.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeMobileNav() {
+  document.getElementById('mobile-drawer').classList.remove('open');
+  document.getElementById('mobile-overlay').classList.remove('open');
+  const ham = document.getElementById('mobile-hamburger');
+  if (ham) ham.classList.remove('open');
+  document.body.style.overflow = '';
+}
+document.addEventListener('keydown', function(e) { if (e.key === 'Escape') closeMobileNav(); });
+(function() {
+  var path = window.location.pathname.split('/').pop() || 'index.html';
+  document.querySelectorAll('.drawer-link').forEach(function(a) {
+    if (a.getAttribute('href') === path) a.classList.add('active');
+  });
+})();
+</script>
 </body>
 </html>
