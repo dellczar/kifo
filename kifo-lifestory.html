@@ -1,0 +1,1442 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Life Story Generator — Kifo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet">
+<style>
+:root{--cream:#F7F3EE;--parchment:#EDE5D8;--sand:#D9C9B0;--sienna:#9E6B4A;--terracotta:#C4714F;--rust:#A8432A;--sage:#7A8C6E;--moss:#4E6245;--dusk:#2C2420;--ash:#6B5F58;--gold:#C9994A;--warm-white:#FDFAF6;}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{background:var(--cream);color:var(--dusk);font-family:'DM Sans',sans-serif;font-weight:300;min-height:100vh;}
+
+/* NAV */
+.nav{display:flex;align-items:center;justify-content:space-between;padding:1rem 2.5rem;background:var(--warm-white);border-bottom:1px solid var(--sand);position:sticky;top:0;z-index:50;}
+.nav-logo{font-family:'Cormorant Garamond',serif;font-size:1.6rem;font-weight:500;letter-spacing:0.08em;color:var(--dusk);text-decoration:none;}
+.nav-logo span{color:var(--terracotta);}
+.nav-center{display:flex;align-items:center;gap:0.6rem;font-size:0.72rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--ash);}
+.nav-badge{background:linear-gradient(135deg,var(--moss),var(--sage));color:white;font-size:0.58rem;letter-spacing:0.12em;padding:0.18rem 0.55rem;border-radius:10px;text-transform:uppercase;}
+.nav-right{display:flex;gap:0.75rem;}
+.nav-link{font-size:0.72rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--ash);text-decoration:none;transition:color 0.2s;}
+.nav-link:hover{color:var(--sienna);}
+
+/* HERO */
+.hero{background:var(--dusk);padding:4rem 2.5rem 3.5rem;text-align:center;position:relative;overflow:hidden;}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 25% 50%,rgba(122,140,110,0.2) 0%,transparent 55%),radial-gradient(ellipse at 78% 30%,rgba(196,113,79,0.15) 0%,transparent 50%);}
+.hero-pattern{position:absolute;inset:0;opacity:0.03;background-image:radial-gradient(circle,rgba(255,255,255,0.9) 1px,transparent 1px);background-size:32px 32px;}
+.hero-eyebrow{font-size:0.65rem;letter-spacing:0.25em;text-transform:uppercase;color:var(--gold);margin-bottom:0.75rem;position:relative;z-index:2;display:flex;align-items:center;justify-content:center;gap:0.6rem;}
+.hero-eyebrow::before,.hero-eyebrow::after{content:'';width:1.5rem;height:1px;background:var(--gold);}
+.hero-title{font-family:'Cormorant Garamond',serif;font-size:clamp(2rem,5vw,3.4rem);font-weight:300;color:var(--cream);line-height:1.15;margin-bottom:0.65rem;position:relative;z-index:2;}
+.hero-title em{font-style:italic;color:var(--gold);}
+.hero-sub{font-size:0.9rem;color:rgba(247,243,238,0.5);position:relative;z-index:2;max-width:580px;margin:0 auto;line-height:1.7;}
+
+/* STEPS INDICATOR */
+.steps-bar{background:var(--warm-white);border-bottom:1px solid var(--parchment);padding:1.25rem 2.5rem;display:flex;align-items:center;justify-content:center;gap:0;}
+.step-item{display:flex;align-items:center;gap:0.6rem;font-size:0.72rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--sand);transition:color 0.3s;}
+.step-item.active{color:var(--terracotta);}
+.step-item.done{color:var(--sage);}
+.step-num{width:24px;height:24px;border-radius:50%;border:1.5px solid var(--sand);display:flex;align-items:center;justify-content:center;font-size:0.65rem;font-weight:500;transition:all 0.3s;flex-shrink:0;}
+.step-item.active .step-num{border-color:var(--terracotta);background:var(--terracotta);color:white;}
+.step-item.done .step-num{border-color:var(--sage);background:var(--sage);color:white;}
+.step-connector{width:3rem;height:1px;background:var(--parchment);margin:0 0.75rem;}
+
+/* MAIN LAYOUT */
+.main{display:grid;grid-template-columns:420px 1fr;min-height:calc(100vh - 200px);}
+.panel-left{background:var(--warm-white);border-right:1px solid var(--sand);padding:2.5rem;overflow-y:auto;max-height:calc(100vh - 200px);position:sticky;top:170px;}
+.panel-right{padding:2.5rem 3rem;overflow-y:auto;}
+
+/* PANEL LABELS */
+.panel-label{font-size:0.62rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--sienna);margin-bottom:1.25rem;display:flex;align-items:center;gap:0.5rem;}
+.panel-label::before{content:'';width:1.2rem;height:1px;background:var(--sienna);}
+
+/* MEMORIAL SELECTOR */
+.memorial-selector{background:var(--parchment);border-radius:3px;padding:1rem 1.25rem;margin-bottom:2rem;display:flex;align-items:center;justify-content:space-between;border:1.5px solid var(--sand);cursor:pointer;transition:border-color 0.2s;}
+.memorial-selector:hover{border-color:var(--sienna);}
+.ms-info{display:flex;align-items:center;gap:0.75rem;}
+.ms-avatar{width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#8A9E7E,#4E6245);flex-shrink:0;}
+.ms-name{font-size:0.9rem;font-weight:500;color:var(--dusk);}
+.ms-dates{font-size:0.72rem;color:var(--ash);}
+.ms-change{font-size:0.65rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--sienna);}
+
+/* FORM */
+.form-group{margin-bottom:1.5rem;}
+label{display:block;font-size:0.65rem;letter-spacing:0.16em;text-transform:uppercase;color:var(--ash);margin-bottom:0.45rem;}
+.label-hint{font-size:0.6rem;text-transform:none;letter-spacing:0;color:var(--sand);margin-left:0.4rem;}
+input[type=text],textarea,select{width:100%;padding:0.8rem 1rem;border:1.5px solid var(--sand);border-radius:3px;background:var(--cream);color:var(--dusk);font-family:'DM Sans',sans-serif;font-size:0.88rem;font-weight:300;outline:none;transition:border-color 0.2s,background 0.2s;}
+input:focus,textarea:focus,select:focus{border-color:var(--sienna);background:var(--warm-white);}
+input::placeholder,textarea::placeholder{color:var(--sand);}
+textarea{resize:vertical;line-height:1.65;}
+
+/* LIFE FACTS GRID */
+.facts-grid{display:grid;grid-template-columns:1fr 1fr;gap:0.85rem;margin-bottom:1.5rem;}
+.fact-field{display:flex;flex-direction:column;}
+.fact-field label{margin-bottom:0.35rem;}
+
+/* CHAPTER SELECTOR */
+.chapters-list{display:flex;flex-direction:column;gap:0.5rem;margin-bottom:1.5rem;}
+.chapter-toggle{display:flex;align-items:center;justify-content:space-between;padding:0.7rem 1rem;border:1.5px solid var(--sand);border-radius:3px;cursor:pointer;transition:all 0.2s;background:var(--cream);}
+.chapter-toggle:hover{border-color:var(--sienna);}
+.chapter-toggle.selected{border-color:var(--moss);background:rgba(122,140,110,0.07);}
+.ct-info{display:flex;align-items:center;gap:0.65rem;}
+.ct-icon{font-size:1rem;width:24px;text-align:center;}
+.ct-name{font-size:0.82rem;color:var(--dusk);}
+.ct-check{width:18px;height:18px;border-radius:3px;border:1.5px solid var(--sand);display:flex;align-items:center;justify-content:center;font-size:0.65rem;color:transparent;transition:all 0.2s;flex-shrink:0;}
+.chapter-toggle.selected .ct-check{background:var(--moss);border-color:var(--moss);color:white;}
+
+/* BULLET INPUTS */
+.bullets-section{margin-bottom:1.5rem;}
+.bullet-input-wrap{display:flex;gap:0.5rem;margin-bottom:0.5rem;align-items:flex-start;}
+.bullet-dot{width:8px;height:8px;border-radius:50%;background:var(--sand);flex-shrink:0;margin-top:0.85rem;}
+.bullet-input{flex:1;padding:0.65rem 0.9rem;border:1.5px solid var(--parchment);border-radius:3px;background:var(--cream);font-family:'DM Sans',sans-serif;font-size:0.83rem;font-weight:300;color:var(--dusk);outline:none;transition:border-color 0.2s;}
+.bullet-input:focus{border-color:var(--sienna);}
+.bullet-input::placeholder{color:var(--sand);}
+.bullet-remove{background:none;border:none;cursor:pointer;color:var(--sand);font-size:1rem;padding:0.5rem;transition:color 0.15s;margin-top:0.2rem;flex-shrink:0;}
+.bullet-remove:hover{color:var(--rust);}
+.add-bullet-btn{display:flex;align-items:center;gap:0.4rem;font-size:0.72rem;letter-spacing:0.1em;color:var(--sienna);cursor:pointer;background:none;border:none;font-family:'DM Sans',sans-serif;padding:0.4rem 0;transition:color 0.15s;}
+.add-bullet-btn:hover{color:var(--rust);}
+
+/* STYLE OPTIONS */
+.style-grid{display:grid;grid-template-columns:1fr 1fr;gap:0.5rem;margin-bottom:1.5rem;}
+.style-opt{padding:0.75rem;border:1.5px solid var(--sand);border-radius:3px;cursor:pointer;transition:all 0.2s;text-align:center;}
+.style-opt:hover{border-color:var(--sienna);}
+.style-opt.selected{border-color:var(--dusk);background:var(--dusk);}
+.so-icon{font-size:1.1rem;display:block;margin-bottom:0.25rem;}
+.so-name{font-size:0.72rem;font-weight:500;color:var(--dusk);display:block;}
+.style-opt.selected .so-name{color:var(--cream);}
+.so-desc{font-size:0.62rem;color:var(--ash);}
+.style-opt.selected .so-desc{color:rgba(247,243,238,0.5);}
+
+/* GENERATE BUTTON */
+.generate-btn{width:100%;padding:1rem;background:var(--moss);color:white;border:none;border-radius:3px;font-family:'DM Sans',sans-serif;font-size:0.82rem;letter-spacing:0.14em;text-transform:uppercase;cursor:pointer;transition:all 0.2s;display:flex;align-items:center;justify-content:center;gap:0.6rem;margin-top:1.5rem;}
+.generate-btn:hover:not(:disabled){background:var(--terracotta);transform:translateY(-1px);}
+.generate-btn:disabled{opacity:0.6;cursor:not-allowed;}
+
+/* RIGHT PANEL */
+.output-placeholder{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:5rem 2rem;min-height:500px;}
+.op-icon{font-size:3rem;margin-bottom:1.25rem;opacity:0.35;}
+.op-title{font-family:'Cormorant Garamond',serif;font-size:1.6rem;color:var(--ash);margin-bottom:0.6rem;}
+.op-sub{font-size:0.85rem;color:var(--sand);line-height:1.7;max-width:340px;}
+
+/* LIFE STORY OUTPUT */
+.story-output{display:none;}
+.story-output.visible{display:block;}
+
+.story-header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:2.5rem;padding-bottom:2rem;border-bottom:1px solid var(--parchment);}
+.story-meta{}
+.story-eyebrow{font-size:0.6rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--sage);margin-bottom:0.4rem;display:flex;align-items:center;gap:0.4rem;}
+.story-eyebrow::before{content:'✦';font-size:0.55rem;}
+.story-name{font-family:'Cormorant Garamond',serif;font-size:2rem;font-weight:400;color:var(--dusk);line-height:1.15;margin-bottom:0.3rem;}
+.story-dates{font-size:0.82rem;color:var(--ash);font-style:italic;}
+.story-actions{display:flex;gap:0.5rem;flex-wrap:wrap;align-items:flex-start;}
+.s-btn{font-size:0.65rem;letter-spacing:0.1em;text-transform:uppercase;padding:0.45rem 0.9rem;border-radius:2px;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all 0.2s;border:1px solid var(--sand);background:transparent;color:var(--ash);white-space:nowrap;}
+.s-btn:hover{border-color:var(--sienna);color:var(--sienna);}
+.s-btn.primary{background:var(--terracotta);border-color:var(--terracotta);color:white;}
+.s-btn.primary:hover{background:var(--rust);border-color:var(--rust);}
+
+/* CHAPTER */
+.chapter{margin-bottom:3rem;animation:chapterIn 0.5s ease backwards;}
+@keyframes chapterIn{from{opacity:0;transform:translateY(16px);}to{opacity:1;transform:translateY(0);}}
+.chapter-header{display:flex;align-items:center;gap:0.75rem;margin-bottom:1.25rem;}
+.chapter-icon{font-size:1.1rem;}
+.chapter-num{font-size:0.6rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--sand);}
+.chapter-title{font-family:'Cormorant Garamond',serif;font-size:1.5rem;font-weight:500;color:var(--dusk);}
+.chapter-divider{flex:1;height:1px;background:var(--parchment);}
+.chapter-body{font-family:'Cormorant Garamond',serif;font-size:1.1rem;line-height:2;color:var(--dusk);white-space:pre-wrap;}
+.chapter-body.loading{color:transparent;}
+.chapter-body.loading::after{content:'';display:block;background:linear-gradient(90deg,var(--parchment) 25%,var(--sand) 50%,var(--parchment) 75%);background-size:200% 100%;animation:shimmer 1.5s infinite;border-radius:3px;height:1.1rem;margin-bottom:0.75rem;width:100%;}
+@keyframes shimmer{0%{background-position:200% 0;}100%{background-position:-200% 0;}}
+
+/* STREAMING CURSOR */
+.streaming-cursor::after{content:'▊';animation:blink 0.8s steps(1) infinite;color:var(--terracotta);font-size:0.85em;}
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:0;}}
+
+/* CHAPTER LOADING PLACEHOLDERS */
+.chapter-skeleton{margin-bottom:2.5rem;}
+.skeleton-line{height:1rem;border-radius:3px;background:linear-gradient(90deg,var(--parchment) 25%,var(--sand) 50%,var(--parchment) 75%);background-size:200% 100%;animation:shimmer 1.5s infinite;margin-bottom:0.75rem;}
+
+/* FULL STORY FOOTER */
+.story-footer{border-top:1px solid var(--parchment);padding-top:2rem;margin-top:2rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:gap;}
+.sf-note{font-size:0.75rem;color:var(--sand);font-style:italic;}
+.sf-actions{display:flex;gap:0.5rem;}
+
+/* PROGRESS INDICATOR */
+.progress-bar{background:var(--parchment);height:3px;border-radius:3px;margin-bottom:2rem;overflow:hidden;display:none;}
+.progress-bar.visible{display:block;}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--sage),var(--terracotta));border-radius:3px;transition:width 0.5s ease;width:0%;}
+
+/* COPY TOAST */
+.toast{position:fixed;bottom:2rem;right:2rem;background:var(--moss);color:white;padding:0.75rem 1.2rem;border-radius:3px;font-size:0.8rem;display:flex;align-items:center;gap:0.4rem;box-shadow:0 4px 16px rgba(44,36,32,0.2);transform:translateY(60px);opacity:0;transition:all 0.25s;z-index:100;}
+.toast.show{transform:translateY(0);opacity:1;}
+
+/* WORD COUNT */
+.word-count{font-size:0.7rem;color:var(--sand);text-align:right;margin-top:0.5rem;}
+
+@keyframes spin{from{transform:rotate(0deg);}to{transform:rotate(360deg);}}
+
+@media(max-width:1000px){
+  .main{grid-template-columns:1fr;}
+  .panel-left{position:static;max-height:none;border-right:none;border-bottom:1px solid var(--sand);}
+  .panel-right{padding:2rem 1.5rem;}
+  .facts-grid,.style-grid{grid-template-columns:1fr;}
+}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <a href="index.html" class="nav-logo">Ki<span>f</span>o</a>
+  <div class="nav-center">
+    📖 AI Life Story Generator
+    <span class="nav-badge">Beta</span>
+  </div>
+  <div class="nav-right">
+    <a href="kifo-ai-tribute.html" class="nav-link">Tribute writer</a>
+    <a href="kifo-dashboard.html" class="nav-link">Dashboard</a>
+  </div>
+</nav>
+
+<!-- STEPS -->
+<div class="steps-bar">
+  <div class="step-item done" id="step1">
+    <div class="step-num">✓</div>
+    <span>Life details</span>
+  </div>
+  <div class="step-connector"></div>
+  <div class="step-item active" id="step2">
+    <div class="step-num">2</div>
+    <span>Memories & facts</span>
+  </div>
+  <div class="step-connector"></div>
+  <div class="step-item" id="step3">
+    <div class="step-num">3</div>
+    <span>Generate story</span>
+  </div>
+  <div class="step-connector"></div>
+  <div class="step-item" id="step4">
+    <div class="step-num">4</div>
+    <span>Review & publish</span>
+  </div>
+</div>
+
+<div class="hero">
+  <div class="hero-pattern"></div>
+  <div class="hero-eyebrow">Powered by Claude AI</div>
+  <h1 class="hero-title">Turn memories into a <em>life story</em></h1>
+  <p class="hero-sub">Share what you remember — names, places, stories, moments. Kifo's AI weaves it into a beautiful, chapter-by-chapter biography that honors everything they were.</p>
+</div>
+
+<div class="main">
+
+  <!-- LEFT: INPUT -->
+  <div class="panel-left">
+
+    <!-- Memorial -->
+    <div class="panel-label">Memorial</div>
+    <div class="memorial-selector">
+      <div class="ms-info">
+        <div class="ms-avatar"></div>
+        <div>
+          <div class="ms-name">Margaret Rose Williams</div>
+          <div class="ms-dates">June 3, 1942 – November 12, 2024</div>
+        </div>
+      </div>
+      <div class="ms-change">Change →</div>
+    </div>
+
+    <!-- Basic facts -->
+    <div class="panel-label">Life facts</div>
+    <div class="facts-grid">
+      <div class="fact-field">
+        <label>Birthplace</label>
+        <input type="text" id="birthplace" placeholder="e.g. Columbus, Ohio" value="Columbus, Ohio">
+      </div>
+      <div class="fact-field">
+        <label>Grew up in</label>
+        <input type="text" id="grew-up" placeholder="e.g. Chicago, IL" value="Chicago, IL">
+      </div>
+      <div class="fact-field">
+        <label>Occupation(s)</label>
+        <input type="text" id="occupation" placeholder="e.g. Teacher, nurse" value="Schoolteacher, homemaker">
+      </div>
+      <div class="fact-field">
+        <label>Spouse / partner</label>
+        <input type="text" id="spouse" placeholder="e.g. Robert Williams" value="Robert Williams (m. 1965)">
+      </div>
+      <div class="fact-field">
+        <label>Children</label>
+        <input type="text" id="children" placeholder="e.g. James, Linda" value="James, Linda, Thomas">
+      </div>
+      <div class="fact-field">
+        <label>Religion / faith</label>
+        <input type="text" id="faith" placeholder="e.g. Baptist" value="Baptist">
+      </div>
+    </div>
+
+    <!-- Chapters to generate -->
+    <div class="panel-label">Chapters to include</div>
+    <div class="chapters-list" id="chapters-list">
+      <div class="chapter-toggle selected" data-chapter="early-life">
+        <div class="ct-info"><span class="ct-icon">🌱</span><span class="ct-name">Early life & childhood</span></div>
+        <div class="ct-check">✓</div>
+      </div>
+      <div class="chapter-toggle selected" data-chapter="education">
+        <div class="ct-info"><span class="ct-icon">📚</span><span class="ct-name">Education & coming of age</span></div>
+        <div class="ct-check">✓</div>
+      </div>
+      <div class="chapter-toggle selected" data-chapter="career">
+        <div class="ct-info"><span class="ct-icon">💼</span><span class="ct-name">Career & vocation</span></div>
+        <div class="ct-check">✓</div>
+      </div>
+      <div class="chapter-toggle selected" data-chapter="love">
+        <div class="ct-info"><span class="ct-icon">💛</span><span class="ct-name">Love & marriage</span></div>
+        <div class="ct-check">✓</div>
+      </div>
+      <div class="chapter-toggle selected" data-chapter="family">
+        <div class="ct-info"><span class="ct-icon">🏡</span><span class="ct-name">Family life & parenting</span></div>
+        <div class="ct-check">✓</div>
+      </div>
+      <div class="chapter-toggle selected" data-chapter="passions">
+        <div class="ct-info"><span class="ct-icon">🌻</span><span class="ct-name">Passions & hobbies</span></div>
+        <div class="ct-check">✓</div>
+      </div>
+      <div class="chapter-toggle" data-chapter="faith-life">
+        <div class="ct-info"><span class="ct-icon">🙏</span><span class="ct-name">Faith & community</span></div>
+        <div class="ct-check">✓</div>
+      </div>
+      <div class="chapter-toggle" data-chapter="legacy">
+        <div class="ct-info"><span class="ct-icon">✨</span><span class="ct-name">Legacy & lasting impact</span></div>
+        <div class="ct-check">✓</div>
+      </div>
+    </div>
+
+    <!-- Memory bullets -->
+    <div class="panel-label">Memories & facts to weave in <span class="label-hint">(more = richer story)</span></div>
+    <div class="bullets-section" id="bullets-section">
+      <div class="bullet-input-wrap">
+        <div class="bullet-dot"></div>
+        <input type="text" class="bullet-input" placeholder="e.g. She grew up on a farm with 5 siblings" value="Grew up on a farm in rural Ohio with 5 siblings">
+        <button class="bullet-remove" onclick="removeBullet(this)">×</button>
+      </div>
+      <div class="bullet-input-wrap">
+        <div class="bullet-dot"></div>
+        <input type="text" class="bullet-input" placeholder="e.g. Won a spelling bee at age 12" value="Won the county spelling bee at age 12, loved to read">
+        <button class="bullet-remove" onclick="removeBullet(this)">×</button>
+      </div>
+      <div class="bullet-input-wrap">
+        <div class="bullet-dot"></div>
+        <input type="text" class="bullet-input" placeholder="e.g. Met her husband at a church dance in 1963" value="Met Robert at a church dance in 1963, married in 1965">
+        <button class="bullet-remove" onclick="removeBullet(this)">×</button>
+      </div>
+      <div class="bullet-input-wrap">
+        <div class="bullet-dot"></div>
+        <input type="text" class="bullet-input" placeholder="e.g. Taught 3rd grade for 30 years" value="Taught 3rd grade at Lincoln Elementary for 31 years">
+        <button class="bullet-remove" onclick="removeBullet(this)">×</button>
+      </div>
+      <div class="bullet-input-wrap">
+        <div class="bullet-dot"></div>
+        <input type="text" class="bullet-input" placeholder="e.g. Her garden was her sanctuary" value="Her sunflower garden was famous on the whole block">
+        <button class="bullet-remove" onclick="removeBullet(this)">×</button>
+      </div>
+      <div class="bullet-input-wrap">
+        <div class="bullet-dot"></div>
+        <input type="text" class="bullet-input" placeholder="e.g. Made the best peach cobbler in the county" value="Made peach cobbler every Sunday — recipe she kept in her head">
+        <button class="bullet-remove" onclick="removeBullet(this)">×</button>
+      </div>
+    </div>
+    <button class="add-bullet-btn" onclick="addBullet()">+ Add another memory</button>
+
+    <!-- Writing style -->
+    <div class="panel-label" style="margin-top:1.75rem;">Writing style</div>
+    <div class="style-grid" id="style-grid">
+      <div class="style-opt selected" onclick="selectStyle(this,'warm')">
+        <span class="so-icon">🌿</span>
+        <span class="so-name">Warm & narrative</span>
+        <span class="so-desc">Reads like a memoir</span>
+      </div>
+      <div class="style-opt" onclick="selectStyle(this,'literary')">
+        <span class="so-icon">📜</span>
+        <span class="so-name">Literary & poetic</span>
+        <span class="so-desc">Evocative prose</span>
+      </div>
+      <div class="style-opt" onclick="selectStyle(this,'intimate')">
+        <span class="so-icon">💬</span>
+        <span class="so-name">Intimate & personal</span>
+        <span class="so-desc">Feels like a letter</span>
+      </div>
+      <div class="style-opt" onclick="selectStyle(this,'classic')">
+        <span class="so-icon">🎖</span>
+        <span class="so-name">Classic biography</span>
+        <span class="so-desc">Dignified & formal</span>
+      </div>
+    </div>
+
+    <button class="generate-btn" id="generate-btn" onclick="generateStory()">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" id="generate-icon"><path d="M8 2L9.5 6.5L14 8L9.5 9.5L8 14L6.5 9.5L2 8L6.5 6.5L8 2Z" fill="white" opacity="0.9"/></svg>
+      Generate life story
+    </button>
+
+  </div>
+
+  <!-- RIGHT: OUTPUT -->
+  <div class="panel-right" id="panel-right">
+
+    <!-- Placeholder -->
+    <div class="output-placeholder" id="placeholder">
+      <div class="op-icon">📖</div>
+      <div class="op-title">Your life story will appear here</div>
+      <div class="op-sub">Add memories and facts on the left, select the chapters you want, then click Generate — Claude will write each chapter in sequence.</div>
+      <div style="margin-top:2.5rem;background:var(--warm-white);border-radius:4px;padding:1.75rem;text-align:left;width:100%;max-width:400px;border:1px solid var(--parchment);">
+        <div style="font-size:0.62rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--sand);margin-bottom:1rem;">What the AI will create</div>
+        <div style="font-size:0.82rem;color:var(--ash);line-height:1.75;">
+          ✦ A structured, chapter-by-chapter biography<br>
+          ✦ Each chapter 2–3 rich paragraphs<br>
+          ✦ Woven with the memories you share<br>
+          ✦ Written in beautiful, literary prose<br>
+          ✦ Ready to publish or copy as-is
+        </div>
+      </div>
+    </div>
+
+    <!-- Output -->
+    <div class="story-output" id="story-output">
+
+      <div class="story-header">
+        <div class="story-meta">
+          <div class="story-eyebrow">AI-generated life story</div>
+          <div class="story-name">Margaret Rose Williams</div>
+          <div class="story-dates">June 3, 1942 – November 12, 2024 · Chicago, Illinois</div>
+        </div>
+        <div class="story-actions">
+          <button class="s-btn" onclick="copyFullStory()">📋 Copy all</button>
+          <button class="s-btn" onclick="generateStory()">↻ Regenerate</button>
+          <button class="s-btn primary" onclick="publishStory()">Publish to memorial →</button>
+        </div>
+      </div>
+
+      <div class="progress-bar" id="progress-bar">
+        <div class="progress-fill" id="progress-fill"></div>
+      </div>
+
+      <div id="chapters-output"></div>
+
+      <div class="story-footer" id="story-footer" style="display:none;">
+        <div class="sf-note">Generated by Kifo AI · Review and edit before publishing</div>
+        <div class="sf-actions">
+          <button class="s-btn" onclick="copyFullStory()">📋 Copy full story</button>
+          <button class="s-btn primary" onclick="publishStory()">Publish to memorial →</button>
+        </div>
+      </div>
+
+      <div class="word-count" id="word-count"></div>
+    </div>
+
+  </div>
+</div>
+
+<div class="toast" id="toast">✓ Life story copied to clipboard</div>
+
+<script>
+// ─── STATE ────────────────────────────────────────────────────
+let selectedStyle = 'warm';
+let selectedChapters = new Set(['early-life','education','career','love','family','passions']);
+let isGenerating = false;
+let generatedChapters = {};
+
+// ─── CHAPTER TOGGLE ───────────────────────────────────────────
+document.querySelectorAll('.chapter-toggle').forEach(el => {
+  el.addEventListener('click', () => {
+    const ch = el.dataset.chapter;
+    if (selectedChapters.has(ch)) {
+      selectedChapters.delete(ch);
+      el.classList.remove('selected');
+    } else {
+      selectedChapters.add(ch);
+      el.classList.add('selected');
+    }
+  });
+});
+
+// ─── STYLE SELECT ─────────────────────────────────────────────
+function selectStyle(el, style) {
+  document.querySelectorAll('.style-opt').forEach(o => o.classList.remove('selected'));
+  el.classList.add('selected');
+  selectedStyle = style;
+}
+
+// ─── BULLETS ──────────────────────────────────────────────────
+function addBullet() {
+  const section = document.getElementById('bullets-section');
+  const wrap = document.createElement('div');
+  wrap.className = 'bullet-input-wrap';
+  wrap.innerHTML = `<div class="bullet-dot"></div><input type="text" class="bullet-input" placeholder="Add a memory or detail…"><button class="bullet-remove" onclick="removeBullet(this)">×</button>`;
+  section.appendChild(wrap);
+  wrap.querySelector('.bullet-input').focus();
+}
+function removeBullet(btn) {
+  const wraps = document.querySelectorAll('.bullet-input-wrap');
+  if (wraps.length > 1) btn.closest('.bullet-input-wrap').remove();
+}
+
+// ─── COLLECT INPUTS ───────────────────────────────────────────
+function collectBullets() {
+  return Array.from(document.querySelectorAll('.bullet-input'))
+    .map(i => i.value.trim()).filter(Boolean).join('\n• ');
+}
+
+const chapterMeta = {
+  'early-life': { icon:'🌱', title:'Early Life & Childhood', num:'Chapter One' },
+  'education':  { icon:'📚', title:'Education & Coming of Age', num:'Chapter Two' },
+  'career':     { icon:'💼', title:'Career & Vocation', num:'Chapter Three' },
+  'love':       { icon:'💛', title:'Love & Marriage', num:'Chapter Four' },
+  'family':     { icon:'🏡', title:'Family Life', num:'Chapter Five' },
+  'passions':   { icon:'🌻', title:'Passions & Hobbies', num:'Chapter Six' },
+  'faith-life': { icon:'🙏', title:'Faith & Community', num:'Chapter Seven' },
+  'legacy':     { icon:'✨', title:'Legacy & Lasting Impact', num:'Chapter Eight' }
+};
+
+// ─── BUILD CHAPTER PROMPT ─────────────────────────────────────
+function buildChapterPrompt(chapterKey, allBullets) {
+  const meta = chapterMeta[chapterKey];
+  const name = 'Margaret Rose Williams';
+  const born = 'June 3, 1942';
+  const died = 'November 12, 2024';
+  const birthplace = document.getElementById('birthplace').value || 'Ohio';
+  const grewUp = document.getElementById('grew-up').value || 'Chicago';
+  const occupation = document.getElementById('occupation').value || '';
+  const spouse = document.getElementById('spouse').value || '';
+  const children = document.getElementById('children').value || '';
+  const faith = document.getElementById('faith').value || '';
+
+  const styleInstructions = {
+    warm: 'Write in a warm, narrative memoir style. Let the prose breathe. Use sensory detail. It should feel like reading someone\'s cherished life story.',
+    literary: 'Write in a literary, poetic style with evocative imagery. Use metaphor and vivid language. Each paragraph should be beautiful enough to read aloud.',
+    intimate: 'Write as if you\'re speaking directly about someone you love. Personal, warm, slightly conversational — like a heartfelt letter that tells a story.',
+    classic: 'Write in the style of a classic biography — dignified, well-structured, respectful. Third person, formal but engaging.'
+  };
+
+  const chapterFocus = {
+    'early-life': 'Her childhood, family of origin, early memories, the place she grew up, what shaped her as a young person.',
+    'education': 'Her school years, intellectual awakening, teachers who influenced her, how education shaped her worldview.',
+    'career': `Her professional life as a ${occupation || 'professional'}. The work she did, how she showed up, what she contributed, why it mattered.`,
+    'love': `How she met ${spouse || 'her partner'}, their courtship, their wedding, what their love looked like over a lifetime.`,
+    'family': `Life with her children (${children || 'her family'}). The home she made, the rituals and traditions, the love she gave as a mother.`,
+    'passions': 'Her hobbies, interests, and passions. What she did for joy. The things that lit her up.',
+    'faith-life': `Her ${faith || ''} faith, her relationship with her church or community, how spirituality shaped her life and values.`,
+    'legacy': 'What she leaves behind. How she changed the people around her. The ways she will live on.'
+  };
+
+  return `You are writing a chapter of a life story biography for an online memorial.
+
+Subject: ${name}
+Born: ${born} in ${birthplace}
+Died: ${died}
+Grew up in: ${grewUp}
+
+This is: ${meta.title}
+Focus: ${chapterFocus[chapterKey]}
+
+Style: ${styleInstructions[selectedStyle]}
+
+Known facts and memories to weave in naturally (use the relevant ones for this chapter):
+• ${allBullets || 'A life well lived'}
+
+RULES:
+- Write 2–3 substantial paragraphs (not too short)
+- Third person (she/her)
+- No chapter title or heading — just the body text
+- Do NOT use clichés like "she will be forever missed" or "left a hole in our hearts"
+- Be specific. Invent plausible, resonant details where gaps exist, consistent with the facts given
+- The writing should feel earned, not generic
+- End each chapter with a sentence that transitions toward what came next in her life, or that lands on a quiet, resonant note
+
+Write only the chapter body text now:`;
+}
+
+// ─── GENERATE ─────────────────────────────────────────────────
+async function generateStory() {
+  if (isGenerating) return;
+  const chapters = Array.from(selectedChapters);
+  if (chapters.length === 0) { alert('Please select at least one chapter.'); return; }
+
+  isGenerating = true;
+  generatedChapters = {};
+
+  // Update UI
+  const btn = document.getElementById('generate-btn');
+  btn.disabled = true;
+  btn.innerHTML = `<svg width="16" height="16" viewBox="0 0 16 16" fill="none" style="animation:spin 1s linear infinite"><circle cx="8" cy="8" r="6" stroke="white" stroke-width="1.5" stroke-dasharray="30" stroke-dashoffset="10" stroke-linecap="round"/></svg> Writing your story…`;
+
+  document.getElementById('placeholder').style.display = 'none';
+  document.getElementById('story-output').classList.add('visible');
+  document.getElementById('story-footer').style.display = 'none';
+  document.getElementById('word-count').textContent = '';
+
+  const progressBar = document.getElementById('progress-bar');
+  const progressFill = document.getElementById('progress-fill');
+  progressBar.classList.add('visible');
+  progressFill.style.width = '0%';
+
+  // Update steps
+  document.getElementById('step2').className = 'step-item done';
+  document.getElementById('step2').querySelector('.step-num').textContent = '✓';
+  document.getElementById('step3').className = 'step-item active';
+
+  // Build skeletons
+  const outputEl = document.getElementById('chapters-output');
+  outputEl.innerHTML = '';
+  chapters.forEach((ch, i) => {
+    const meta = chapterMeta[ch];
+    const skeleton = document.createElement('div');
+    skeleton.className = 'chapter-skeleton';
+    skeleton.id = `skeleton-${ch}`;
+    skeleton.innerHTML = `
+      <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:1.25rem;">
+        <span style="font-size:1.1rem;">${meta.icon}</span>
+        <span style="font-size:0.6rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--sand);">${meta.num}</span>
+        <div class="skeleton-line" style="width:200px;height:1.3rem;"></div>
+      </div>
+      <div class="skeleton-line" style="width:95%;"></div>
+      <div class="skeleton-line" style="width:88%;"></div>
+      <div class="skeleton-line" style="width:92%;"></div>
+      <div class="skeleton-line" style="width:75%;"></div>
+    `;
+    outputEl.appendChild(skeleton);
+  });
+
+  const bullets = collectBullets();
+
+  // Generate chapters sequentially for better UX
+  for (let i = 0; i < chapters.length; i++) {
+    const ch = chapters[i];
+    const meta = chapterMeta[ch];
+    const progress = Math.round(((i + 0.5) / chapters.length) * 100);
+    progressFill.style.width = `${progress}%`;
+
+    try {
+      const res = await fetch('https://api.anthropic.com/v1/messages', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          model: 'claude-sonnet-4-20250514',
+          max_tokens: 800,
+          messages: [{ role: 'user', content: buildChapterPrompt(ch, bullets) }]
+        })
+      });
+      const data = await res.json();
+      const text = data.content?.[0]?.text?.trim() || 'Unable to generate this chapter.';
+      generatedChapters[ch] = text;
+
+      // Replace skeleton with real chapter
+      const skeleton = document.getElementById(`skeleton-${ch}`);
+      const chapterEl = document.createElement('div');
+      chapterEl.className = 'chapter';
+      chapterEl.style.animationDelay = `${i * 0.1}s`;
+      chapterEl.innerHTML = `
+        <div class="chapter-header">
+          <span class="chapter-icon">${meta.icon}</span>
+          <div>
+            <div class="chapter-num">${meta.num}</div>
+            <div class="chapter-title">${meta.title}</div>
+          </div>
+          <div class="chapter-divider"></div>
+        </div>
+        <div class="chapter-body streaming-cursor" id="body-${ch}"></div>
+      `;
+      skeleton.replaceWith(chapterEl);
+
+      // Stream the text
+      await streamChapter(`body-${ch}`, text);
+
+    } catch(e) {
+      console.error('Chapter error:', e, ch);
+      const skeleton = document.getElementById(`skeleton-${ch}`);
+      if (skeleton) skeleton.querySelector('.skeleton-line').textContent = '⚠ Could not generate this chapter.';
+    }
+
+    progressFill.style.width = `${Math.round(((i + 1) / chapters.length) * 100)}%`;
+  }
+
+  // Done
+  progressFill.style.width = '100%';
+  setTimeout(() => progressBar.classList.remove('visible'), 1000);
+
+  // Update steps
+  document.getElementById('step3').className = 'step-item done';
+  document.getElementById('step3').querySelector('.step-num').textContent = '✓';
+  document.getElementById('step4').className = 'step-item active';
+
+  document.getElementById('story-footer').style.display = 'flex';
+
+  // Word count
+  const totalWords = Object.values(generatedChapters).join(' ').split(/\s+/).length;
+  document.getElementById('word-count').textContent = `~${totalWords.toLocaleString()} words · ${chapters.length} chapters`;
+
+  isGenerating = false;
+  btn.disabled = false;
+  btn.innerHTML = `<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 2L9.5 6.5L14 8L9.5 9.5L8 14L6.5 9.5L2 8L6.5 6.5L8 2Z" fill="white" opacity="0.9"/></svg> Regenerate story`;
+}
+
+// ─── STREAM CHAPTER ───────────────────────────────────────────
+async function streamChapter(elId, text) {
+  const el = document.getElementById(elId);
+  if (!el) return;
+  el.textContent = '';
+  el.classList.add('streaming-cursor');
+  const speed = Math.max(5, 1800 / text.length);
+  let i = 0;
+  return new Promise(resolve => {
+    const iv = setInterval(() => {
+      if (i >= text.length) {
+        clearInterval(iv);
+        el.classList.remove('streaming-cursor');
+        resolve();
+        return;
+      }
+      el.textContent += text.slice(i, i + 4);
+      i += 4;
+    }, speed);
+  });
+}
+
+// ─── UTILITIES ────────────────────────────────────────────────
+function copyFullStory() {
+  const chapters = Array.from(selectedChapters);
+  const fullText = chapters.map(ch => {
+    const meta = chapterMeta[ch];
+    const body = generatedChapters[ch] || '';
+    return `${meta.title}\n\n${body}`;
+  }).join('\n\n─────────────────\n\n');
+  navigator.clipboard.writeText(fullText).catch(() => {});
+  const toast = document.getElementById('toast');
+  toast.classList.add('show');
+  setTimeout(() => toast.classList.remove('show'), 2500);
+}
+
+function publishStory() {
+  alert('In the full app, this would publish the life story directly to the memorial page as the biography section.');
+}
+!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Life Story Generator — Kifo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet">
+<style>
+:root{--cream:#F7F3EE;--parchment:#EDE5D8;--sand:#D9C9B0;--sienna:#9E6B4A;--terracotta:#C4714F;--rust:#A8432A;--sage:#7A8C6E;--moss:#4E6245;--dusk:#2C2420;--ash:#6B5F58;--gold:#C9994A;--warm-white:#FDFAF6;}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{background:var(--cream);color:var(--dusk);font-family:'DM Sans',sans-serif;font-weight:300;min-height:100vh;}
+
+/* NAV */
+.nav{display:flex;align-items:center;justify-content:space-between;padding:1rem 2.5rem;background:var(--warm-white);border-bottom:1px solid var(--sand);position:sticky;top:0;z-index:50;}
+.nav-logo{font-family:'Cormorant Garamond',serif;font-size:1.6rem;font-weight:500;letter-spacing:0.08em;color:var(--dusk);text-decoration:none;}
+.nav-logo span{color:var(--terracotta);}
+.nav-center{display:flex;align-items:center;gap:0.6rem;font-size:0.72rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--ash);}
+.nav-badge{background:linear-gradient(135deg,var(--moss),var(--sage));color:white;font-size:0.58rem;letter-spacing:0.12em;padding:0.18rem 0.55rem;border-radius:10px;text-transform:uppercase;}
+.nav-right{display:flex;gap:0.75rem;}
+.nav-link{font-size:0.72rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--ash);text-decoration:none;transition:color 0.2s;}
+.nav-link:hover{color:var(--sienna);}
+
+/* HERO */
+.hero{background:var(--dusk);padding:4rem 2.5rem 3.5rem;text-align:center;position:relative;overflow:hidden;}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 25% 50%,rgba(122,140,110,0.2) 0%,transparent 55%),radial-gradient(ellipse at 78% 30%,rgba(196,113,79,0.15) 0%,transparent 50%);}
+.hero-pattern{position:absolute;inset:0;opacity:0.03;background-image:radial-gradient(circle,rgba(255,255,255,0.9) 1px,transparent 1px);background-size:32px 32px;}
+.hero-eyebrow{font-size:0.65rem;letter-spacing:0.25em;text-transform:uppercase;color:var(--gold);margin-bottom:0.75rem;position:relative;z-index:2;display:flex;align-items:center;justify-content:center;gap:0.6rem;}
+.hero-eyebrow::before,.hero-eyebrow::after{content:'';width:1.5rem;height:1px;background:var(--gold);}
+.hero-title{font-family:'Cormorant Garamond',serif;font-size:clamp(2rem,5vw,3.4rem);font-weight:300;color:var(--cream);line-height:1.15;margin-bottom:0.65rem;position:relative;z-index:2;}
+.hero-title em{font-style:italic;color:var(--gold);}
+.hero-sub{font-size:0.9rem;color:rgba(247,243,238,0.5);position:relative;z-index:2;max-width:580px;margin:0 auto;line-height:1.7;}
+
+/* STEPS INDICATOR */
+.steps-bar{background:var(--warm-white);border-bottom:1px solid var(--parchment);padding:1.25rem 2.5rem;display:flex;align-items:center;justify-content:center;gap:0;}
+.step-item{display:flex;align-items:center;gap:0.6rem;font-size:0.72rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--sand);transition:color 0.3s;}
+.step-item.active{color:var(--terracotta);}
+.step-item.done{color:var(--sage);}
+.step-num{width:24px;height:24px;border-radius:50%;border:1.5px solid var(--sand);display:flex;align-items:center;justify-content:center;font-size:0.65rem;font-weight:500;transition:all 0.3s;flex-shrink:0;}
+.step-item.active .step-num{border-color:var(--terracotta);background:var(--terracotta);color:white;}
+.step-item.done .step-num{border-color:var(--sage);background:var(--sage);color:white;}
+.step-connector{width:3rem;height:1px;background:var(--parchment);margin:0 0.75rem;}
+
+/* MAIN LAYOUT */
+.main{display:grid;grid-template-columns:420px 1fr;min-height:calc(100vh - 200px);}
+.panel-left{background:var(--warm-white);border-right:1px solid var(--sand);padding:2.5rem;overflow-y:auto;max-height:calc(100vh - 200px);position:sticky;top:170px;}
+.panel-right{padding:2.5rem 3rem;overflow-y:auto;}
+
+/* PANEL LABELS */
+.panel-label{font-size:0.62rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--sienna);margin-bottom:1.25rem;display:flex;align-items:center;gap:0.5rem;}
+.panel-label::before{content:'';width:1.2rem;height:1px;background:var(--sienna);}
+
+/* MEMORIAL SELECTOR */
+.memorial-selector{background:var(--parchment);border-radius:3px;padding:1rem 1.25rem;margin-bottom:2rem;display:flex;align-items:center;justify-content:space-between;border:1.5px solid var(--sand);cursor:pointer;transition:border-color 0.2s;}
+.memorial-selector:hover{border-color:var(--sienna);}
+.ms-info{display:flex;align-items:center;gap:0.75rem;}
+.ms-avatar{width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#8A9E7E,#4E6245);flex-shrink:0;}
+.ms-name{font-size:0.9rem;font-weight:500;color:var(--dusk);}
+.ms-dates{font-size:0.72rem;color:var(--ash);}
+.ms-change{font-size:0.65rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--sienna);}
+
+/* FORM */
+.form-group{margin-bottom:1.5rem;}
+label{display:block;font-size:0.65rem;letter-spacing:0.16em;text-transform:uppercase;color:var(--ash);margin-bottom:0.45rem;}
+.label-hint{font-size:0.6rem;text-transform:none;letter-spacing:0;color:var(--sand);margin-left:0.4rem;}
+input[type=text],textarea,select{width:100%;padding:0.8rem 1rem;border:1.5px solid var(--sand);border-radius:3px;background:var(--cream);color:var(--dusk);font-family:'DM Sans',sans-serif;font-size:0.88rem;font-weight:300;outline:none;transition:border-color 0.2s,background 0.2s;}
+input:focus,textarea:focus,select:focus{border-color:var(--sienna);background:var(--warm-white);}
+input::placeholder,textarea::placeholder{color:var(--sand);}
+textarea{resize:vertical;line-height:1.65;}
+
+/* LIFE FACTS GRID */
+.facts-grid{display:grid;grid-template-columns:1fr 1fr;gap:0.85rem;margin-bottom:1.5rem;}
+.fact-field{display:flex;flex-direction:column;}
+.fact-field label{margin-bottom:0.35rem;}
+
+/* CHAPTER SELECTOR */
+.chapters-list{display:flex;flex-direction:column;gap:0.5rem;margin-bottom:1.5rem;}
+.chapter-toggle{display:flex;align-items:center;justify-content:space-between;padding:0.7rem 1rem;border:1.5px solid var(--sand);border-radius:3px;cursor:pointer;transition:all 0.2s;background:var(--cream);}
+.chapter-toggle:hover{border-color:var(--sienna);}
+.chapter-toggle.selected{border-color:var(--moss);background:rgba(122,140,110,0.07);}
+.ct-info{display:flex;align-items:center;gap:0.65rem;}
+.ct-icon{font-size:1rem;width:24px;text-align:center;}
+.ct-name{font-size:0.82rem;color:var(--dusk);}
+.ct-check{width:18px;height:18px;border-radius:3px;border:1.5px solid var(--sand);display:flex;align-items:center;justify-content:center;font-size:0.65rem;color:transparent;transition:all 0.2s;flex-shrink:0;}
+.chapter-toggle.selected .ct-check{background:var(--moss);border-color:var(--moss);color:white;}
+
+/* BULLET INPUTS */
+.bullets-section{margin-bottom:1.5rem;}
+.bullet-input-wrap{display:flex;gap:0.5rem;margin-bottom:0.5rem;align-items:flex-start;}
+.bullet-dot{width:8px;height:8px;border-radius:50%;background:var(--sand);flex-shrink:0;margin-top:0.85rem;}
+.bullet-input{flex:1;padding:0.65rem 0.9rem;border:1.5px solid var(--parchment);border-radius:3px;background:var(--cream);font-family:'DM Sans',sans-serif;font-size:0.83rem;font-weight:300;color:var(--dusk);outline:none;transition:border-color 0.2s;}
+.bullet-input:focus{border-color:var(--sienna);}
+.bullet-input::placeholder{color:var(--sand);}
+.bullet-remove{background:none;border:none;cursor:pointer;color:var(--sand);font-size:1rem;padding:0.5rem;transition:color 0.15s;margin-top:0.2rem;flex-shrink:0;}
+.bullet-remove:hover{color:var(--rust);}
+.add-bullet-btn{display:flex;align-items:center;gap:0.4rem;font-size:0.72rem;letter-spacing:0.1em;color:var(--sienna);cursor:pointer;background:none;border:none;font-family:'DM Sans',sans-serif;padding:0.4rem 0;transition:color 0.15s;}
+.add-bullet-btn:hover{color:var(--rust);}
+
+/* STYLE OPTIONS */
+.style-grid{display:grid;grid-template-columns:1fr 1fr;gap:0.5rem;margin-bottom:1.5rem;}
+.style-opt{padding:0.75rem;border:1.5px solid var(--sand);border-radius:3px;cursor:pointer;transition:all 0.2s;text-align:center;}
+.style-opt:hover{border-color:var(--sienna);}
+.style-opt.selected{border-color:var(--dusk);background:var(--dusk);}
+.so-icon{font-size:1.1rem;display:block;margin-bottom:0.25rem;}
+.so-name{font-size:0.72rem;font-weight:500;color:var(--dusk);display:block;}
+.style-opt.selected .so-name{color:var(--cream);}
+.so-desc{font-size:0.62rem;color:var(--ash);}
+.style-opt.selected .so-desc{color:rgba(247,243,238,0.5);}
+
+/* GENERATE BUTTON */
+.generate-btn{width:100%;padding:1rem;background:var(--moss);color:white;border:none;border-radius:3px;font-family:'DM Sans',sans-serif;font-size:0.82rem;letter-spacing:0.14em;text-transform:uppercase;cursor:pointer;transition:all 0.2s;display:flex;align-items:center;justify-content:center;gap:0.6rem;margin-top:1.5rem;}
+.generate-btn:hover:not(:disabled){background:var(--terracotta);transform:translateY(-1px);}
+.generate-btn:disabled{opacity:0.6;cursor:not-allowed;}
+
+/* RIGHT PANEL */
+.output-placeholder{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:5rem 2rem;min-height:500px;}
+.op-icon{font-size:3rem;margin-bottom:1.25rem;opacity:0.35;}
+.op-title{font-family:'Cormorant Garamond',serif;font-size:1.6rem;color:var(--ash);margin-bottom:0.6rem;}
+.op-sub{font-size:0.85rem;color:var(--sand);line-height:1.7;max-width:340px;}
+
+/* LIFE STORY OUTPUT */
+.story-output{display:none;}
+.story-output.visible{display:block;}
+
+.story-header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:2.5rem;padding-bottom:2rem;border-bottom:1px solid var(--parchment);}
+.story-meta{}
+.story-eyebrow{font-size:0.6rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--sage);margin-bottom:0.4rem;display:flex;align-items:center;gap:0.4rem;}
+.story-eyebrow::before{content:'✦';font-size:0.55rem;}
+.story-name{font-family:'Cormorant Garamond',serif;font-size:2rem;font-weight:400;color:var(--dusk);line-height:1.15;margin-bottom:0.3rem;}
+.story-dates{font-size:0.82rem;color:var(--ash);font-style:italic;}
+.story-actions{display:flex;gap:0.5rem;flex-wrap:wrap;align-items:flex-start;}
+.s-btn{font-size:0.65rem;letter-spacing:0.1em;text-transform:uppercase;padding:0.45rem 0.9rem;border-radius:2px;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all 0.2s;border:1px solid var(--sand);background:transparent;color:var(--ash);white-space:nowrap;}
+.s-btn:hover{border-color:var(--sienna);color:var(--sienna);}
+.s-btn.primary{background:var(--terracotta);border-color:var(--terracotta);color:white;}
+.s-btn.primary:hover{background:var(--rust);border-color:var(--rust);}
+
+/* CHAPTER */
+.chapter{margin-bottom:3rem;animation:chapterIn 0.5s ease backwards;}
+@keyframes chapterIn{from{opacity:0;transform:translateY(16px);}to{opacity:1;transform:translateY(0);}}
+.chapter-header{display:flex;align-items:center;gap:0.75rem;margin-bottom:1.25rem;}
+.chapter-icon{font-size:1.1rem;}
+.chapter-num{font-size:0.6rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--sand);}
+.chapter-title{font-family:'Cormorant Garamond',serif;font-size:1.5rem;font-weight:500;color:var(--dusk);}
+.chapter-divider{flex:1;height:1px;background:var(--parchment);}
+.chapter-body{font-family:'Cormorant Garamond',serif;font-size:1.1rem;line-height:2;color:var(--dusk);white-space:pre-wrap;}
+.chapter-body.loading{color:transparent;}
+.chapter-body.loading::after{content:'';display:block;background:linear-gradient(90deg,var(--parchment) 25%,var(--sand) 50%,var(--parchment) 75%);background-size:200% 100%;animation:shimmer 1.5s infinite;border-radius:3px;height:1.1rem;margin-bottom:0.75rem;width:100%;}
+@keyframes shimmer{0%{background-position:200% 0;}100%{background-position:-200% 0;}}
+
+/* STREAMING CURSOR */
+.streaming-cursor::after{content:'▊';animation:blink 0.8s steps(1) infinite;color:var(--terracotta);font-size:0.85em;}
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:0;}}
+
+/* CHAPTER LOADING PLACEHOLDERS */
+.chapter-skeleton{margin-bottom:2.5rem;}
+.skeleton-line{height:1rem;border-radius:3px;background:linear-gradient(90deg,var(--parchment) 25%,var(--sand) 50%,var(--parchment) 75%);background-size:200% 100%;animation:shimmer 1.5s infinite;margin-bottom:0.75rem;}
+
+/* FULL STORY FOOTER */
+.story-footer{border-top:1px solid var(--parchment);padding-top:2rem;margin-top:2rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:gap;}
+.sf-note{font-size:0.75rem;color:var(--sand);font-style:italic;}
+.sf-actions{display:flex;gap:0.5rem;}
+
+/* PROGRESS INDICATOR */
+.progress-bar{background:var(--parchment);height:3px;border-radius:3px;margin-bottom:2rem;overflow:hidden;display:none;}
+.progress-bar.visible{display:block;}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--sage),var(--terracotta));border-radius:3px;transition:width 0.5s ease;width:0%;}
+
+/* COPY TOAST */
+.toast{position:fixed;bottom:2rem;right:2rem;background:var(--moss);color:white;padding:0.75rem 1.2rem;border-radius:3px;font-size:0.8rem;display:flex;align-items:center;gap:0.4rem;box-shadow:0 4px 16px rgba(44,36,32,0.2);transform:translateY(60px);opacity:0;transition:all 0.25s;z-index:100;}
+.toast.show{transform:translateY(0);opacity:1;}
+
+/* WORD COUNT */
+.word-count{font-size:0.7rem;color:var(--sand);text-align:right;margin-top:0.5rem;}
+
+@keyframes spin{from{transform:rotate(0deg);}to{transform:rotate(360deg);}}
+
+@media(max-width:1000px){
+  .main{grid-template-columns:1fr;}
+  .panel-left{position:static;max-height:none;border-right:none;border-bottom:1px solid var(--sand);}
+  .panel-right{padding:2rem 1.5rem;}
+  .facts-grid,.style-grid{grid-template-columns:1fr;}
+}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <a href="index.html" class="nav-logo">Ki<span>f</span>o</a>
+  <div class="nav-center">
+    📖 AI Life Story Generator
+    <span class="nav-badge">Beta</span>
+  </div>
+  <div class="nav-right">
+    <a href="kifo-ai-tribute.html" class="nav-link">Tribute writer</a>
+    <a href="kifo-dashboard.html" class="nav-link">Dashboard</a>
+  </div>
+</nav>
+
+<!-- STEPS -->
+<div class="steps-bar">
+  <div class="step-item done" id="step1">
+    <div class="step-num">✓</div>
+    <span>Life details</span>
+  </div>
+  <div class="step-connector"></div>
+  <div class="step-item active" id="step2">
+    <div class="step-num">2</div>
+    <span>Memories & facts</span>
+  </div>
+  <div class="step-connector"></div>
+  <div class="step-item" id="step3">
+    <div class="step-num">3</div>
+    <span>Generate story</span>
+  </div>
+  <div class="step-connector"></div>
+  <div class="step-item" id="step4">
+    <div class="step-num">4</div>
+    <span>Review & publish</span>
+  </div>
+</div>
+
+<div class="hero">
+  <div class="hero-pattern"></div>
+  <div class="hero-eyebrow">Powered by Claude AI</div>
+  <h1 class="hero-title">Turn memories into a <em>life story</em></h1>
+  <p class="hero-sub">Share what you remember — names, places, stories, moments. Kifo's AI weaves it into a beautiful, chapter-by-chapter biography that honors everything they were.</p>
+</div>
+
+<div class="main">
+
+  <!-- LEFT: INPUT -->
+  <div class="panel-left">
+
+    <!-- Memorial -->
+    <div class="panel-label">Memorial</div>
+    <div class="memorial-selector">
+      <div class="ms-info">
+        <div class="ms-avatar"></div>
+        <div>
+          <div class="ms-name">Margaret Rose Williams</div>
+          <div class="ms-dates">June 3, 1942 – November 12, 2024</div>
+        </div>
+      </div>
+      <div class="ms-change">Change →</div>
+    </div>
+
+    <!-- Basic facts -->
+    <div class="panel-label">Life facts</div>
+    <div class="facts-grid">
+      <div class="fact-field">
+        <label>Birthplace</label>
+        <input type="text" id="birthplace" placeholder="e.g. Columbus, Ohio" value="Columbus, Ohio">
+      </div>
+      <div class="fact-field">
+        <label>Grew up in</label>
+        <input type="text" id="grew-up" placeholder="e.g. Chicago, IL" value="Chicago, IL">
+      </div>
+      <div class="fact-field">
+        <label>Occupation(s)</label>
+        <input type="text" id="occupation" placeholder="e.g. Teacher, nurse" value="Schoolteacher, homemaker">
+      </div>
+      <div class="fact-field">
+        <label>Spouse / partner</label>
+        <input type="text" id="spouse" placeholder="e.g. Robert Williams" value="Robert Williams (m. 1965)">
+      </div>
+      <div class="fact-field">
+        <label>Children</label>
+        <input type="text" id="children" placeholder="e.g. James, Linda" value="James, Linda, Thomas">
+      </div>
+      <div class="fact-field">
+        <label>Religion / faith</label>
+        <input type="text" id="faith" placeholder="e.g. Baptist" value="Baptist">
+      </div>
+    </div>
+
+    <!-- Chapters to generate -->
+    <div class="panel-label">Chapters to include</div>
+    <div class="chapters-list" id="chapters-list">
+      <div class="chapter-toggle selected" data-chapter="early-life">
+        <div class="ct-info"><span class="ct-icon">🌱</span><span class="ct-name">Early life & childhood</span></div>
+        <div class="ct-check">✓</div>
+      </div>
+      <div class="chapter-toggle selected" data-chapter="education">
+        <div class="ct-info"><span class="ct-icon">📚</span><span class="ct-name">Education & coming of age</span></div>
+        <div class="ct-check">✓</div>
+      </div>
+      <div class="chapter-toggle selected" data-chapter="career">
+        <div class="ct-info"><span class="ct-icon">💼</span><span class="ct-name">Career & vocation</span></div>
+        <div class="ct-check">✓</div>
+      </div>
+      <div class="chapter-toggle selected" data-chapter="love">
+        <div class="ct-info"><span class="ct-icon">💛</span><span class="ct-name">Love & marriage</span></div>
+        <div class="ct-check">✓</div>
+      </div>
+      <div class="chapter-toggle selected" data-chapter="family">
+        <div class="ct-info"><span class="ct-icon">🏡</span><span class="ct-name">Family life & parenting</span></div>
+        <div class="ct-check">✓</div>
+      </div>
+      <div class="chapter-toggle selected" data-chapter="passions">
+        <div class="ct-info"><span class="ct-icon">🌻</span><span class="ct-name">Passions & hobbies</span></div>
+        <div class="ct-check">✓</div>
+      </div>
+      <div class="chapter-toggle" data-chapter="faith-life">
+        <div class="ct-info"><span class="ct-icon">🙏</span><span class="ct-name">Faith & community</span></div>
+        <div class="ct-check">✓</div>
+      </div>
+      <div class="chapter-toggle" data-chapter="legacy">
+        <div class="ct-info"><span class="ct-icon">✨</span><span class="ct-name">Legacy & lasting impact</span></div>
+        <div class="ct-check">✓</div>
+      </div>
+    </div>
+
+    <!-- Memory bullets -->
+    <div class="panel-label">Memories & facts to weave in <span class="label-hint">(more = richer story)</span></div>
+    <div class="bullets-section" id="bullets-section">
+      <div class="bullet-input-wrap">
+        <div class="bullet-dot"></div>
+        <input type="text" class="bullet-input" placeholder="e.g. She grew up on a farm with 5 siblings" value="Grew up on a farm in rural Ohio with 5 siblings">
+        <button class="bullet-remove" onclick="removeBullet(this)">×</button>
+      </div>
+      <div class="bullet-input-wrap">
+        <div class="bullet-dot"></div>
+        <input type="text" class="bullet-input" placeholder="e.g. Won a spelling bee at age 12" value="Won the county spelling bee at age 12, loved to read">
+        <button class="bullet-remove" onclick="removeBullet(this)">×</button>
+      </div>
+      <div class="bullet-input-wrap">
+        <div class="bullet-dot"></div>
+        <input type="text" class="bullet-input" placeholder="e.g. Met her husband at a church dance in 1963" value="Met Robert at a church dance in 1963, married in 1965">
+        <button class="bullet-remove" onclick="removeBullet(this)">×</button>
+      </div>
+      <div class="bullet-input-wrap">
+        <div class="bullet-dot"></div>
+        <input type="text" class="bullet-input" placeholder="e.g. Taught 3rd grade for 30 years" value="Taught 3rd grade at Lincoln Elementary for 31 years">
+        <button class="bullet-remove" onclick="removeBullet(this)">×</button>
+      </div>
+      <div class="bullet-input-wrap">
+        <div class="bullet-dot"></div>
+        <input type="text" class="bullet-input" placeholder="e.g. Her garden was her sanctuary" value="Her sunflower garden was famous on the whole block">
+        <button class="bullet-remove" onclick="removeBullet(this)">×</button>
+      </div>
+      <div class="bullet-input-wrap">
+        <div class="bullet-dot"></div>
+        <input type="text" class="bullet-input" placeholder="e.g. Made the best peach cobbler in the county" value="Made peach cobbler every Sunday — recipe she kept in her head">
+        <button class="bullet-remove" onclick="removeBullet(this)">×</button>
+      </div>
+    </div>
+    <button class="add-bullet-btn" onclick="addBullet()">+ Add another memory</button>
+
+    <!-- Writing style -->
+    <div class="panel-label" style="margin-top:1.75rem;">Writing style</div>
+    <div class="style-grid" id="style-grid">
+      <div class="style-opt selected" onclick="selectStyle(this,'warm')">
+        <span class="so-icon">🌿</span>
+        <span class="so-name">Warm & narrative</span>
+        <span class="so-desc">Reads like a memoir</span>
+      </div>
+      <div class="style-opt" onclick="selectStyle(this,'literary')">
+        <span class="so-icon">📜</span>
+        <span class="so-name">Literary & poetic</span>
+        <span class="so-desc">Evocative prose</span>
+      </div>
+      <div class="style-opt" onclick="selectStyle(this,'intimate')">
+        <span class="so-icon">💬</span>
+        <span class="so-name">Intimate & personal</span>
+        <span class="so-desc">Feels like a letter</span>
+      </div>
+      <div class="style-opt" onclick="selectStyle(this,'classic')">
+        <span class="so-icon">🎖</span>
+        <span class="so-name">Classic biography</span>
+        <span class="so-desc">Dignified & formal</span>
+      </div>
+    </div>
+
+    <button class="generate-btn" id="generate-btn" onclick="generateStory()">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" id="generate-icon"><path d="M8 2L9.5 6.5L14 8L9.5 9.5L8 14L6.5 9.5L2 8L6.5 6.5L8 2Z" fill="white" opacity="0.9"/></svg>
+      Generate life story
+    </button>
+
+  </div>
+
+  <!-- RIGHT: OUTPUT -->
+  <div class="panel-right" id="panel-right">
+
+    <!-- Placeholder -->
+    <div class="output-placeholder" id="placeholder">
+      <div class="op-icon">📖</div>
+      <div class="op-title">Your life story will appear here</div>
+      <div class="op-sub">Add memories and facts on the left, select the chapters you want, then click Generate — Claude will write each chapter in sequence.</div>
+      <div style="margin-top:2.5rem;background:var(--warm-white);border-radius:4px;padding:1.75rem;text-align:left;width:100%;max-width:400px;border:1px solid var(--parchment);">
+        <div style="font-size:0.62rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--sand);margin-bottom:1rem;">What the AI will create</div>
+        <div style="font-size:0.82rem;color:var(--ash);line-height:1.75;">
+          ✦ A structured, chapter-by-chapter biography<br>
+          ✦ Each chapter 2–3 rich paragraphs<br>
+          ✦ Woven with the memories you share<br>
+          ✦ Written in beautiful, literary prose<br>
+          ✦ Ready to publish or copy as-is
+        </div>
+      </div>
+    </div>
+
+    <!-- Output -->
+    <div class="story-output" id="story-output">
+
+      <div class="story-header">
+        <div class="story-meta">
+          <div class="story-eyebrow">AI-generated life story</div>
+          <div class="story-name">Margaret Rose Williams</div>
+          <div class="story-dates">June 3, 1942 – November 12, 2024 · Chicago, Illinois</div>
+        </div>
+        <div class="story-actions">
+          <button class="s-btn" onclick="copyFullStory()">📋 Copy all</button>
+          <button class="s-btn" onclick="generateStory()">↻ Regenerate</button>
+          <button class="s-btn primary" onclick="publishStory()">Publish to memorial →</button>
+        </div>
+      </div>
+
+      <div class="progress-bar" id="progress-bar">
+        <div class="progress-fill" id="progress-fill"></div>
+      </div>
+
+      <div id="chapters-output"></div>
+
+      <div class="story-footer" id="story-footer" style="display:none;">
+        <div class="sf-note">Generated by Kifo AI · Review and edit before publishing</div>
+        <div class="sf-actions">
+          <button class="s-btn" onclick="copyFullStory()">📋 Copy full story</button>
+          <button class="s-btn primary" onclick="publishStory()">Publish to memorial →</button>
+        </div>
+      </div>
+
+      <div class="word-count" id="word-count"></div>
+    </div>
+
+  </div>
+</div>
+
+<div class="toast" id="toast">✓ Life story copied to clipboard</div>
+
+<script>
+// ─── STATE ────────────────────────────────────────────────────
+let selectedStyle = 'warm';
+let selectedChapters = new Set(['early-life','education','career','love','family','passions']);
+let isGenerating = false;
+let generatedChapters = {};
+
+// ─── CHAPTER TOGGLE ───────────────────────────────────────────
+document.querySelectorAll('.chapter-toggle').forEach(el => {
+  el.addEventListener('click', () => {
+    const ch = el.dataset.chapter;
+    if (selectedChapters.has(ch)) {
+      selectedChapters.delete(ch);
+      el.classList.remove('selected');
+    } else {
+      selectedChapters.add(ch);
+      el.classList.add('selected');
+    }
+  });
+});
+
+// ─── STYLE SELECT ─────────────────────────────────────────────
+function selectStyle(el, style) {
+  document.querySelectorAll('.style-opt').forEach(o => o.classList.remove('selected'));
+  el.classList.add('selected');
+  selectedStyle = style;
+}
+
+// ─── BULLETS ──────────────────────────────────────────────────
+function addBullet() {
+  const section = document.getElementById('bullets-section');
+  const wrap = document.createElement('div');
+  wrap.className = 'bullet-input-wrap';
+  wrap.innerHTML = `<div class="bullet-dot"></div><input type="text" class="bullet-input" placeholder="Add a memory or detail…"><button class="bullet-remove" onclick="removeBullet(this)">×</button>`;
+  section.appendChild(wrap);
+  wrap.querySelector('.bullet-input').focus();
+}
+function removeBullet(btn) {
+  const wraps = document.querySelectorAll('.bullet-input-wrap');
+  if (wraps.length > 1) btn.closest('.bullet-input-wrap').remove();
+}
+
+// ─── COLLECT INPUTS ───────────────────────────────────────────
+function collectBullets() {
+  return Array.from(document.querySelectorAll('.bullet-input'))
+    .map(i => i.value.trim()).filter(Boolean).join('\n• ');
+}
+
+const chapterMeta = {
+  'early-life': { icon:'🌱', title:'Early Life & Childhood', num:'Chapter One' },
+  'education':  { icon:'📚', title:'Education & Coming of Age', num:'Chapter Two' },
+  'career':     { icon:'💼', title:'Career & Vocation', num:'Chapter Three' },
+  'love':       { icon:'💛', title:'Love & Marriage', num:'Chapter Four' },
+  'family':     { icon:'🏡', title:'Family Life', num:'Chapter Five' },
+  'passions':   { icon:'🌻', title:'Passions & Hobbies', num:'Chapter Six' },
+  'faith-life': { icon:'🙏', title:'Faith & Community', num:'Chapter Seven' },
+  'legacy':     { icon:'✨', title:'Legacy & Lasting Impact', num:'Chapter Eight' }
+};
+
+// ─── BUILD CHAPTER PROMPT ─────────────────────────────────────
+function buildChapterPrompt(chapterKey, allBullets) {
+  const meta = chapterMeta[chapterKey];
+  const name = 'Margaret Rose Williams';
+  const born = 'June 3, 1942';
+  const died = 'November 12, 2024';
+  const birthplace = document.getElementById('birthplace').value || 'Ohio';
+  const grewUp = document.getElementById('grew-up').value || 'Chicago';
+  const occupation = document.getElementById('occupation').value || '';
+  const spouse = document.getElementById('spouse').value || '';
+  const children = document.getElementById('children').value || '';
+  const faith = document.getElementById('faith').value || '';
+
+  const styleInstructions = {
+    warm: 'Write in a warm, narrative memoir style. Let the prose breathe. Use sensory detail. It should feel like reading someone\'s cherished life story.',
+    literary: 'Write in a literary, poetic style with evocative imagery. Use metaphor and vivid language. Each paragraph should be beautiful enough to read aloud.',
+    intimate: 'Write as if you\'re speaking directly about someone you love. Personal, warm, slightly conversational — like a heartfelt letter that tells a story.',
+    classic: 'Write in the style of a classic biography — dignified, well-structured, respectful. Third person, formal but engaging.'
+  };
+
+  const chapterFocus = {
+    'early-life': 'Her childhood, family of origin, early memories, the place she grew up, what shaped her as a young person.',
+    'education': 'Her school years, intellectual awakening, teachers who influenced her, how education shaped her worldview.',
+    'career': `Her professional life as a ${occupation || 'professional'}. The work she did, how she showed up, what she contributed, why it mattered.`,
+    'love': `How she met ${spouse || 'her partner'}, their courtship, their wedding, what their love looked like over a lifetime.`,
+    'family': `Life with her children (${children || 'her family'}). The home she made, the rituals and traditions, the love she gave as a mother.`,
+    'passions': 'Her hobbies, interests, and passions. What she did for joy. The things that lit her up.',
+    'faith-life': `Her ${faith || ''} faith, her relationship with her church or community, how spirituality shaped her life and values.`,
+    'legacy': 'What she leaves behind. How she changed the people around her. The ways she will live on.'
+  };
+
+  return `You are writing a chapter of a life story biography for an online memorial.
+
+Subject: ${name}
+Born: ${born} in ${birthplace}
+Died: ${died}
+Grew up in: ${grewUp}
+
+This is: ${meta.title}
+Focus: ${chapterFocus[chapterKey]}
+
+Style: ${styleInstructions[selectedStyle]}
+
+Known facts and memories to weave in naturally (use the relevant ones for this chapter):
+• ${allBullets || 'A life well lived'}
+
+RULES:
+- Write 2–3 substantial paragraphs (not too short)
+- Third person (she/her)
+- No chapter title or heading — just the body text
+- Do NOT use clichés like "she will be forever missed" or "left a hole in our hearts"
+- Be specific. Invent plausible, resonant details where gaps exist, consistent with the facts given
+- The writing should feel earned, not generic
+- End each chapter with a sentence that transitions toward what came next in her life, or that lands on a quiet, resonant note
+
+Write only the chapter body text now:`;
+}
+
+// ─── GENERATE ─────────────────────────────────────────────────
+async function generateStory() {
+  if (isGenerating) return;
+  const chapters = Array.from(selectedChapters);
+  if (chapters.length === 0) { alert('Please select at least one chapter.'); return; }
+
+  isGenerating = true;
+  generatedChapters = {};
+
+  // Update UI
+  const btn = document.getElementById('generate-btn');
+  btn.disabled = true;
+  btn.innerHTML = `<svg width="16" height="16" viewBox="0 0 16 16" fill="none" style="animation:spin 1s linear infinite"><circle cx="8" cy="8" r="6" stroke="white" stroke-width="1.5" stroke-dasharray="30" stroke-dashoffset="10" stroke-linecap="round"/></svg> Writing your story…`;
+
+  document.getElementById('placeholder').style.display = 'none';
+  document.getElementById('story-output').classList.add('visible');
+  document.getElementById('story-footer').style.display = 'none';
+  document.getElementById('word-count').textContent = '';
+
+  const progressBar = document.getElementById('progress-bar');
+  const progressFill = document.getElementById('progress-fill');
+  progressBar.classList.add('visible');
+  progressFill.style.width = '0%';
+
+  // Update steps
+  document.getElementById('step2').className = 'step-item done';
+  document.getElementById('step2').querySelector('.step-num').textContent = '✓';
+  document.getElementById('step3').className = 'step-item active';
+
+  // Build skeletons
+  const outputEl = document.getElementById('chapters-output');
+  outputEl.innerHTML = '';
+  chapters.forEach((ch, i) => {
+    const meta = chapterMeta[ch];
+    const skeleton = document.createElement('div');
+    skeleton.className = 'chapter-skeleton';
+    skeleton.id = `skeleton-${ch}`;
+    skeleton.innerHTML = `
+      <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:1.25rem;">
+        <span style="font-size:1.1rem;">${meta.icon}</span>
+        <span style="font-size:0.6rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--sand);">${meta.num}</span>
+        <div class="skeleton-line" style="width:200px;height:1.3rem;"></div>
+      </div>
+      <div class="skeleton-line" style="width:95%;"></div>
+      <div class="skeleton-line" style="width:88%;"></div>
+      <div class="skeleton-line" style="width:92%;"></div>
+      <div class="skeleton-line" style="width:75%;"></div>
+    `;
+    outputEl.appendChild(skeleton);
+  });
+
+  const bullets = collectBullets();
+
+  // Generate chapters sequentially for better UX
+  for (let i = 0; i < chapters.length; i++) {
+    const ch = chapters[i];
+    const meta = chapterMeta[ch];
+    const progress = Math.round(((i + 0.5) / chapters.length) * 100);
+    progressFill.style.width = `${progress}%`;
+
+    try {
+      const res = await fetch('https://api.anthropic.com/v1/messages', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          model: 'claude-sonnet-4-20250514',
+          max_tokens: 800,
+          messages: [{ role: 'user', content: buildChapterPrompt(ch, bullets) }]
+        })
+      });
+      const data = await res.json();
+      const text = data.content?.[0]?.text?.trim() || 'Unable to generate this chapter.';
+      generatedChapters[ch] = text;
+
+      // Replace skeleton with real chapter
+      const skeleton = document.getElementById(`skeleton-${ch}`);
+      const chapterEl = document.createElement('div');
+      chapterEl.className = 'chapter';
+      chapterEl.style.animationDelay = `${i * 0.1}s`;
+      chapterEl.innerHTML = `
+        <div class="chapter-header">
+          <span class="chapter-icon">${meta.icon}</span>
+          <div>
+            <div class="chapter-num">${meta.num}</div>
+            <div class="chapter-title">${meta.title}</div>
+          </div>
+          <div class="chapter-divider"></div>
+        </div>
+        <div class="chapter-body streaming-cursor" id="body-${ch}"></div>
+      `;
+      skeleton.replaceWith(chapterEl);
+
+      // Stream the text
+      await streamChapter(`body-${ch}`, text);
+
+    } catch(e) {
+      console.error('Chapter error:', e, ch);
+      const skeleton = document.getElementById(`skeleton-${ch}`);
+      if (skeleton) skeleton.querySelector('.skeleton-line').textContent = '⚠ Could not generate this chapter.';
+    }
+
+    progressFill.style.width = `${Math.round(((i + 1) / chapters.length) * 100)}%`;
+  }
+
+  // Done
+  progressFill.style.width = '100%';
+  setTimeout(() => progressBar.classList.remove('visible'), 1000);
+
+  // Update steps
+  document.getElementById('step3').className = 'step-item done';
+  document.getElementById('step3').querySelector('.step-num').textContent = '✓';
+  document.getElementById('step4').className = 'step-item active';
+
+  document.getElementById('story-footer').style.display = 'flex';
+
+  // Word count
+  const totalWords = Object.values(generatedChapters).join(' ').split(/\s+/).length;
+  document.getElementById('word-count').textContent = `~${totalWords.toLocaleString()} words · ${chapters.length} chapters`;
+
+  isGenerating = false;
+  btn.disabled = false;
+  btn.innerHTML = `<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 2L9.5 6.5L14 8L9.5 9.5L8 14L6.5 9.5L2 8L6.5 6.5L8 2Z" fill="white" opacity="0.9"/></svg> Regenerate story`;
+}
+
+// ─── STREAM CHAPTER ───────────────────────────────────────────
+async function streamChapter(elId, text) {
+  const el = document.getElementById(elId);
+  if (!el) return;
+  el.textContent = '';
+  el.classList.add('streaming-cursor');
+  const speed = Math.max(5, 1800 / text.length);
+  let i = 0;
+  return new Promise(resolve => {
+    const iv = setInterval(() => {
+      if (i >= text.length) {
+        clearInterval(iv);
+        el.classList.remove('streaming-cursor');
+        resolve();
+        return;
+      }
+      el.textContent += text.slice(i, i + 4);
+      i += 4;
+    }, speed);
+  });
+}
+
+// ─── UTILITIES ────────────────────────────────────────────────
+function copyFullStory() {
+  const chapters = Array.from(selectedChapters);
+  const fullText = chapters.map(ch => {
+    const meta = chapterMeta[ch];
+    const body = generatedChapters[ch] || '';
+    return `${meta.title}\n\n${body}`;
+  }).join('\n\n─────────────────\n\n');
+  navigator.clipboard.writeText(fullText).catch(() => {});
+  const toast = document.getElementById('toast');
+  toast.classList.add('show');
+  setTimeout(() => toast.classList.remove('show'), 2500);
+}
+
+function publishStory() {
+  alert('In the full app, this would publish the life story directly to the memorial page as the biography section.');
+}
+
+</script>
+</body>
+</html>
