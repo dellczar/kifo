@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Margaret Rose Williams — Kifo Memorial</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --cream:#F7F3EE; --parchment:#EDE5D8; --sand:#D9C9B0; --sienna:#9E6B4A;
+  --terracotta:#C4714F; --rust:#A8432A; --sage:#7A8C6E; --moss:#4E6245;
+  --dusk:#2C2420; --ash:#6B5F58; --gold:#C9994A; --warm-white:#FDFAF6;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{background:var(--cream);color:var(--dusk);font-family:'DM Sans',sans-serif;font-weight:300;overflow-x:hidden;}
+
+/* ── TOP NAV ── */
+.top-nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;align-items:center;justify-content:space-between;padding:0.9rem 2.5rem;background:rgba(247,243,238,0.92);backdrop-filter:blur(16px);border-bottom:1px solid rgba(158,107,74,0.1);}
+.nav-logo{font-family:'Cormorant Garamond',serif;font-size:1.5rem;font-weight:500;letter-spacing:0.08em;color:var(--dusk);text-decoration:none;}
+.nav-logo span{color:var(--terracotta);}
+.nav-actions{display:flex;align-items:center;gap:1rem;}
+.nav-btn{font-size:0.75rem;letter-spacing:0.12em;text-transform:uppercase;padding:0.5rem 1.2rem;border-radius:2px;cursor:pointer;border:none;font-family:'DM Sans',sans-serif;transition:all 0.2s;text-decoration:none;display:inline-flex;align-items:center;gap:0.4rem;}
+.nav-btn-ghost{background:transparent;color:var(--ash);border:1px solid var(--sand);}
+.nav-btn-ghost:hover{border-color:var(--sienna);color:var(--sienna);}
+.nav-btn-solid{background:var(--terracotta);color:white;}
+.nav-btn-solid:hover{background:var(--rust);}
+
+/* ── HERO COVER ── */
+.hero-cover{height:480px;position:relative;overflow:hidden;margin-top:56px;}
+.hero-bg{position:absolute;inset:0;background:linear-gradient(160deg,#8A9E7E 0%,#6B8060 30%,#4E6245 60%,#2C2420 100%);}
+.hero-overlay{position:absolute;inset:0;background:linear-gradient(to bottom,rgba(44,36,32,0.2) 0%,rgba(44,36,32,0.55) 100%);}
+.hero-pattern{position:absolute;inset:0;opacity:0.06;background-image:radial-gradient(circle,rgba(255,255,255,0.8) 1px,transparent 1px);background-size:32px 32px;}
+
+.hero-content{position:absolute;bottom:0;left:0;right:0;padding:3rem 3rem 0;display:flex;align-items:flex-end;gap:2rem;z-index:2;}
+.hero-avatar{width:120px;height:120px;border-radius:50%;background:linear-gradient(135deg,#D4C4B2 0%,#B09070 100%);border:4px solid white;box-shadow:0 8px 32px rgba(44,36,32,0.3);flex-shrink:0;display:flex;align-items:center;justify-content:center;margin-bottom:-40px;}
+.hero-avatar svg{opacity:0.4;}
+.hero-info{padding-bottom:1.5rem;flex:1;}
+.hero-name{font-family:'Cormorant Garamond',serif;font-size:2.8rem;font-weight:400;color:white;line-height:1.1;text-shadow:0 2px 12px rgba(44,36,32,0.4);}
+.hero-dates{font-size:0.85rem;color:rgba(255,255,255,0.75);letter-spacing:0.12em;margin-top:0.4rem;}
+.hero-location{font-size:0.8rem;color:rgba(255,255,255,0.6);margin-top:0.25rem;display:flex;align-items:center;gap:0.3rem;}
+.hero-actions{display:flex;gap:0.75rem;padding-bottom:1.8rem;flex-shrink:0;}
+.hero-btn{font-size:0.72rem;letter-spacing:0.12em;text-transform:uppercase;padding:0.55rem 1.2rem;border-radius:2px;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all 0.2s;border:none;display:flex;align-items:center;gap:0.4rem;}
+.hero-btn-light{background:rgba(255,255,255,0.2);color:white;backdrop-filter:blur(8px);}
+.hero-btn-light:hover{background:rgba(255,255,255,0.3);}
+.hero-btn-primary{background:var(--terracotta);color:white;}
+.hero-btn-primary:hover{background:var(--rust);}
+
+/* ── PROFILE BAR ── */
+.profile-bar{background:var(--warm-white);border-bottom:1px solid var(--sand);position:sticky;top:56px;z-index:100;}
+.profile-inner{display:flex;align-items:center;padding:0 3rem;padding-left:calc(3rem + 120px + 2rem + 16px);}
+.profile-tabs{display:flex;}
+.profile-tab{font-size:0.72rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--ash);padding:1.1rem 1.5rem;cursor:pointer;border-bottom:2px solid transparent;transition:color 0.2s,border-color 0.2s;white-space:nowrap;}
+.profile-tab:hover{color:var(--dusk);}
+.profile-tab.active{color:var(--terracotta);border-bottom-color:var(--terracotta);}
+.profile-share{margin-left:auto;display:flex;align-items:center;gap:0.75rem;}
+.share-btn{width:34px;height:34px;border-radius:50%;background:var(--parchment);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background 0.2s;font-size:0.9rem;}
+.share-btn:hover{background:var(--sand);}
+.candle-count{font-size:0.75rem;color:var(--ash);display:flex;align-items:center;gap:0.4rem;}
+
+/* ── MAIN LAYOUT ── */
+.main{display:grid;grid-template-columns:1fr 340px;gap:2rem;max-width:1200px;margin:0 auto;padding:3rem 2rem 6rem;padding-top:calc(3rem + 40px);}
+
+/* ── LEFT CONTENT ── */
+.content-area{}
+
+/* About bio */
+.bio-section{background:var(--warm-white);border-radius:4px;padding:2.5rem;margin-bottom:1.5rem;box-shadow:0 2px 12px rgba(44,36,32,0.05);}
+.bio-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem;}
+.bio-title{font-family:'Cormorant Garamond',serif;font-size:1.5rem;font-weight:500;color:var(--dusk);}
+.bio-edit{font-size:0.72rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--sienna);cursor:pointer;border:1px solid var(--sand);padding:0.3rem 0.8rem;border-radius:2px;background:transparent;font-family:'DM Sans',sans-serif;transition:all 0.2s;}
+.bio-edit:hover{border-color:var(--sienna);background:var(--parchment);}
+.bio-text{font-size:0.95rem;line-height:1.85;color:var(--ash);}
+.bio-text p+p{margin-top:1rem;}
+
+/* Life facts */
+.life-facts{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-top:1.5rem;padding-top:1.5rem;border-top:1px solid var(--parchment);}
+.fact-item{}
+.fact-label{font-size:0.65rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--sand);margin-bottom:0.25rem;}
+.fact-value{font-size:0.88rem;color:var(--dusk);font-weight:400;}
+
+/* Tributes section */
+.tributes-section{margin-bottom:1.5rem;}
+.section-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.25rem;}
+.section-title{font-family:'Cormorant Garamond',serif;font-size:1.4rem;font-weight:500;color:var(--dusk);}
+.section-count{font-size:0.75rem;color:var(--ash);background:var(--parchment);padding:0.2rem 0.6rem;border-radius:10px;}
+
+/* Leave tribute box */
+.tribute-input-card{background:var(--warm-white);border-radius:4px;padding:1.75rem;margin-bottom:1.25rem;box-shadow:0 2px 12px rgba(44,36,32,0.05);border:1.5px dashed var(--sand);transition:border-color 0.2s;}
+.tribute-input-card:hover{border-color:var(--sienna);}
+.tribute-input-header{display:flex;align-items:center;gap:0.75rem;margin-bottom:1rem;}
+.tribute-input-avatar{width:36px;height:36px;border-radius:50%;background:var(--parchment);display:flex;align-items:center;justify-content:center;font-size:0.8rem;color:var(--ash);}
+.tribute-input-placeholder{font-size:0.88rem;color:var(--sand);cursor:text;}
+textarea.tribute-textarea{width:100%;border:none;background:transparent;font-family:'DM Sans',sans-serif;font-size:0.92rem;color:var(--dusk);resize:none;outline:none;min-height:80px;line-height:1.6;}
+textarea.tribute-textarea::placeholder{color:var(--sand);}
+.tribute-input-footer{display:flex;align-items:center;justify-content:space-between;margin-top:0.75rem;padding-top:0.75rem;border-top:1px solid var(--parchment);}
+.tribute-type-btns{display:flex;gap:0.5rem;}
+.tribute-type-btn{font-size:0.7rem;letter-spacing:0.1em;text-transform:uppercase;padding:0.3rem 0.7rem;border-radius:2px;border:1px solid var(--sand);background:transparent;color:var(--ash);cursor:pointer;font-family:'DM Sans',sans-serif;transition:all 0.2s;}
+.tribute-type-btn:hover,.tribute-type-btn.active{background:var(--parchment);border-color:var(--sienna);color:var(--sienna);}
+.tribute-submit{background:var(--terracotta);color:white;border:none;padding:0.45rem 1.2rem;border-radius:2px;font-size:0.75rem;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;font-family:'DM Sans',sans-serif;transition:background 0.2s;}
+.tribute-submit:hover{background:var(--rust);}
+
+/* Tribute cards */
+.tribute-card{background:var(--warm-white);border-radius:4px;padding:1.75rem;margin-bottom:1rem;box-shadow:0 2px 12px rgba(44,36,32,0.05);}
+.tribute-card-header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:1rem;}
+.tribute-author-row{display:flex;align-items:center;gap:0.75rem;}
+.tribute-author-avatar{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-size:1rem;color:white;font-weight:500;flex-shrink:0;}
+.tribute-author-name{font-size:0.88rem;font-weight:500;color:var(--dusk);}
+.tribute-author-rel{font-size:0.72rem;color:var(--ash);}
+.tribute-date{font-size:0.7rem;color:var(--sand);}
+.tribute-body{font-size:0.9rem;line-height:1.8;color:var(--ash);font-style:italic;}
+.tribute-body::before{content:'"';font-family:'Cormorant Garamond',serif;font-size:1.5rem;color:var(--sand);line-height:0;vertical-align:-0.3em;margin-right:0.2rem;}
+.tribute-footer{display:flex;align-items:center;gap:1.5rem;margin-top:1rem;padding-top:0.75rem;border-top:1px solid var(--parchment);}
+.tribute-react{font-size:0.72rem;color:var(--ash);display:flex;align-items:center;gap:0.3rem;cursor:pointer;transition:color 0.2s;}
+.tribute-react:hover{color:var(--terracotta);}
+.tribute-react.liked{color:var(--terracotta);}
+
+/* Gallery preview */
+.gallery-section{margin-bottom:1.5rem;}
+.gallery-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:0.5rem;}
+.gallery-item{aspect-ratio:1;border-radius:3px;overflow:hidden;cursor:pointer;position:relative;}
+.gallery-item-bg{width:100%;height:100%;transition:transform 0.3s;}
+.gallery-item:hover .gallery-item-bg{transform:scale(1.05);}
+.gallery-more{background:var(--dusk);display:flex;align-items:center;justify-content:center;flex-direction:column;gap:0.3rem;}
+.gallery-more-num{font-family:'Cormorant Garamond',serif;font-size:1.8rem;color:white;}
+.gallery-more-label{font-size:0.65rem;letter-spacing:0.15em;text-transform:uppercase;color:rgba(255,255,255,0.6);}
+
+/* ── SIDEBAR ── */
+.sidebar{}
+
+/* Candle widget */
+.candle-widget{background:var(--dusk);border-radius:4px;padding:2rem;margin-bottom:1.5rem;text-align:center;}
+.candle-widget-title{font-family:'Cormorant Garamond',serif;font-size:1.2rem;color:var(--cream);margin-bottom:0.5rem;}
+.candle-widget-sub{font-size:0.78rem;color:rgba(247,243,238,0.5);margin-bottom:1.5rem;line-height:1.5;}
+.candle-row{display:flex;justify-content:center;gap:1rem;margin-bottom:1.5rem;}
+.candle-svg-wrap{display:flex;flex-direction:column;align-items:center;gap:0.3rem;cursor:pointer;transition:transform 0.2s;}
+.candle-svg-wrap:hover{transform:translateY(-2px);}
+.candle-name{font-size:0.65rem;color:rgba(247,243,238,0.4);letter-spacing:0.08em;}
+.light-candle-btn{background:rgba(201,153,74,0.2);color:var(--gold);border:1px solid rgba(201,153,74,0.3);padding:0.6rem 1.5rem;border-radius:2px;font-size:0.75rem;letter-spacing:0.12em;text-transform:uppercase;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all 0.2s;width:100%;}
+.light-candle-btn:hover{background:rgba(201,153,74,0.3);border-color:var(--gold);}
+
+/* Info sidebar card */
+.sidebar-card{background:var(--warm-white);border-radius:4px;padding:1.75rem;margin-bottom:1.25rem;box-shadow:0 2px 12px rgba(44,36,32,0.05);}
+.sidebar-card-title{font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-weight:500;color:var(--dusk);margin-bottom:1.25rem;}
+.info-row{display:flex;align-items:flex-start;gap:0.75rem;padding:0.6rem 0;border-bottom:1px solid var(--parchment);}
+.info-row:last-child{border-bottom:none;}
+.info-icon{font-size:1rem;flex-shrink:0;margin-top:0.1rem;}
+.info-label{font-size:0.7rem;color:var(--sand);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.15rem;}
+.info-val{font-size:0.85rem;color:var(--dusk);}
+
+/* Upcoming event */
+.event-card-sidebar{background:var(--parchment);border-radius:4px;padding:1.5rem;margin-bottom:1.25rem;border-left:3px solid var(--terracotta);}
+.event-tag{font-size:0.65rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--terracotta);margin-bottom:0.5rem;}
+.event-name{font-family:'Cormorant Garamond',serif;font-size:1.15rem;color:var(--dusk);margin-bottom:0.3rem;}
+.event-detail{font-size:0.78rem;color:var(--ash);display:flex;align-items:center;gap:0.4rem;margin-top:0.3rem;}
+.event-rsvp{display:block;margin-top:1rem;font-size:0.72rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--terracotta);border:1px solid var(--terracotta);padding:0.45rem;border-radius:2px;text-align:center;text-decoration:none;transition:all 0.2s;}
+.event-rsvp:hover{background:var(--terracotta);color:white;}
+
+/* Invite card */
+.invite-card{background:var(--warm-white);border-radius:4px;padding:1.75rem;box-shadow:0 2px 12px rgba(44,36,32,0.05);}
+.invite-title{font-family:'Cormorant Garamond',serif;font-size:1.1rem;color:var(--dusk);margin-bottom:0.5rem;}
+.invite-sub{font-size:0.78rem;color:var(--ash);line-height:1.6;margin-bottom:1.25rem;}
+.invite-link-box{background:var(--parchment);border-radius:2px;padding:0.6rem 0.8rem;font-size:0.72rem;color:var(--ash);word-break:break-all;margin-bottom:0.75rem;cursor:pointer;transition:background 0.2s;}
+.invite-link-box:hover{background:var(--sand);}
+.invite-btns{display:grid;grid-template-columns:1fr 1fr;gap:0.5rem;}
+.invite-btn{font-size:0.72rem;letter-spacing:0.1em;text-transform:uppercase;padding:0.5rem;border-radius:2px;border:1px solid var(--sand);background:transparent;color:var(--ash);cursor:pointer;font-family:'DM Sans',sans-serif;transition:all 0.2s;text-align:center;}
+.invite-btn:hover{border-color:var(--sienna);color:var(--sienna);background:var(--parchment);}
+
+/* ── LIGHTBOX ── */
+.lightbox{position:fixed;inset:0;background:rgba(44,36,32,0.92);z-index:500;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity 0.3s;}
+.lightbox.open{opacity:1;pointer-events:all;}
+.lightbox-close{position:absolute;top:1.5rem;right:1.5rem;width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,0.1);border:none;color:white;font-size:1.2rem;cursor:pointer;display:flex;align-items:center;justify-content:center;}
+.lightbox-img{max-width:80vw;max-height:80vh;border-radius:3px;background:var(--parchment);}
+
+/* ── MUSIC PLAYER ── */
+.music-player{position:fixed;bottom:0;left:0;right:0;background:rgba(44,36,32,0.95);backdrop-filter:blur(16px);padding:0.75rem 2rem;display:flex;align-items:center;gap:1.5rem;z-index:300;border-top:1px solid rgba(255,255,255,0.08);transform:translateY(100%);transition:transform 0.4s ease;}
+.music-player.visible{transform:translateY(0);}
+.music-info{flex:1;min-width:0;}
+.music-title{font-size:0.82rem;color:white;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.music-artist{font-size:0.7rem;color:rgba(255,255,255,0.45);}
+.music-controls{display:flex;align-items:center;gap:0.75rem;}
+.music-btn{background:none;border:none;color:rgba(255,255,255,0.6);cursor:pointer;font-size:1rem;transition:color 0.2s;padding:0.3rem;}
+.music-btn:hover{color:white;}
+.music-btn.play{width:36px;height:36px;border-radius:50%;background:var(--terracotta);color:white;display:flex;align-items:center;justify-content:center;font-size:0.9rem;}
+.music-btn.play:hover{background:var(--rust);}
+.music-progress{flex:2;height:3px;background:rgba(255,255,255,0.15);border-radius:2px;cursor:pointer;position:relative;}
+.music-progress-fill{height:100%;background:var(--gold);border-radius:2px;width:35%;transition:width 0.1s;}
+.music-note{font-size:0.7rem;color:rgba(255,255,255,0.35);letter-spacing:0.1em;text-transform:uppercase;white-space:nowrap;}
+.music-close{background:none;border:none;color:rgba(255,255,255,0.3);cursor:pointer;font-size:1rem;padding:0.3rem;}
+.music-close:hover{color:rgba(255,255,255,0.7);}
+
+/* ── ANIMATIONS ── */
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
+@keyframes flicker{0%,100%{opacity:1;}50%{opacity:0.75;}}
+.tribute-card{animation:fadeUp 0.5s ease backwards;}
+.tribute-card:nth-child(1){animation-delay:0.05s;}
+.tribute-card:nth-child(2){animation-delay:0.1s;}
+.tribute-card:nth-child(3){animation-delay:0.15s;}
+.tribute-card:nth-child(4){animation-delay:0.2s;}
+
+@media(max-width:900px){
+  .main{grid-template-columns:1fr;}
+  .sidebar{order:-1;}
+  .hero-content{flex-direction:column;align-items:flex-start;gap:1rem;}
+  .hero-avatar{margin-bottom:0;}
+  .profile-inner{padding:0 1rem;}
+  .top-nav{padding:0.9rem 1.5rem;}
+}
+</style>
+</head>
+<body>
+
+<!-- TOP NAV -->
+<nav class="top-nav">
+  <a href="kifo.html" class="nav-logo">Ki<span>f</span>o</a>
+  <div class="nav-actions">
+    <a href="kifo-dashboard.html" class="nav-btn nav-btn-ghost">Dashboard</a>
+    <a href="kifo-events.html" class="nav-btn nav-btn-ghost">⚙ Manage</a>
+    <a href="#" class="nav-btn nav-btn-solid" onclick="document.querySelector('.tribute-textarea').focus();return false;">+ Leave tribute</a>
+  </div>
+</nav>
+
+<!-- HERO COVER -->
+<div class="hero-cover">
+  <div class="hero-bg"></div>
+  <div class="hero-overlay"></div>
+  <div class="hero-pattern"></div>
+  <div class="hero-content">
+    <div class="hero-avatar">
+      <svg width="44" height="44" viewBox="0 0 44 44" fill="none">
+        <circle cx="22" cy="16" r="8" stroke="white" stroke-width="2"/>
+        <path d="M4 42c0-9.941 8.059-18 18-18s18 8.059 18 18" stroke="white" stroke-width="2" stroke-linecap="round"/>
+      </svg>
+    </div>
+    <div class="hero-info">
+      <div class="hero-name">Margaret Rose Williams</div>
+      <div class="hero-dates">June 3, 1942 — November 12, 2024 · Age 82</div>
+      <div class="hero-location">
+        <svg width="11" height="13" viewBox="0 0 11 13" fill="none"><path d="M5.5 1C3.015 1 1 3.015 1 5.5c0 3.375 4.5 7.5 4.5 7.5s4.5-4.125 4.5-7.5C10 3.015 7.985 1 5.5 1Z" stroke="rgba(255,255,255,0.6)" stroke-width="1.2"/><circle cx="5.5" cy="5.5" r="1.5" stroke="rgba(255,255,255,0.6)" stroke-width="1.2"/></svg>
+        Chicago, Illinois — Laid to rest in Graceland Cemetery
+      </div>
+    </div>
+    <div class="hero-actions">
+      <button class="hero-btn hero-btn-light" onclick="document.getElementById('musicPlayer').classList.toggle('visible')">
+        <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M2 10V3l9-2v7" stroke="white" stroke-width="1.2" stroke-linecap="round"/><circle cx="2" cy="10" r="1.5" stroke="white" stroke-width="1.2"/><circle cx="11" cy="8" r="1.5" stroke="white" stroke-width="1.2"/></svg>
+        Her music
+      </button>
+      <button class="hero-btn hero-btn-primary">
+        <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M6.5 1v11M1 6.5h11" stroke="white" stroke-width="1.3" stroke-linecap="round"/></svg>
+        Add tribute
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- PROFILE TABS BAR -->
+<div class="profile-bar">
+  <div class="profile-inner">
+    <div class="profile-tabs">
+      <div class="profile-tab active" onclick="switchTab(this,'about')">About</div>
+      <div class="profile-tab" onclick="switchTab(this,'tributes')">Tributes <span style="font-size:0.65rem;opacity:0.6;">(47)</span></div>
+      <div class="profile-tab" onclick="switchTab(this,'gallery')">Gallery <span style="font-size:0.65rem;opacity:0.6;">(134)</span></div>
+      <div class="profile-tab" onclick="switchTab(this,'stories')">Stories <span style="font-size:0.65rem;opacity:0.6;">(12)</span></div>
+      <div class="profile-tab" onclick="switchTab(this,'events')">Events</div>
+    </div>
+    <div class="profile-share">
+      <div class="candle-count">🕯 48 candles lit</div>
+      <button class="share-btn" title="Share">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="11" cy="2.5" r="1.5" stroke="var(--ash)" stroke-width="1.2"/><circle cx="2.5" cy="7" r="1.5" stroke="var(--ash)" stroke-width="1.2"/><circle cx="11" cy="11.5" r="1.5" stroke="var(--ash)" stroke-width="1.2"/><path d="M4 6.2l5.5-3M4 7.8l5.5 3" stroke="var(--ash)" stroke-width="1.2"/></svg>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- MAIN CONTENT -->
+<div class="main">
+  <!-- LEFT -->
+  <div class="content-area">
+
+    <!-- BIO -->
+    <div class="bio-section" id="tab-about">
+      <div class="bio-header">
+        <div class="bio-title">Life story</div>
+        <button class="bio-edit">Edit</button>
+      </div>
+      <div class="bio-text">
+        <p>Margaret Rose Williams was born on a warm summer morning in Chicago, Illinois, the second of five children to Thomas and Eleanor Hartley. She grew up in the Logan Square neighborhood, where she developed a lifelong love of gardening, jazz music, and feeding anyone who happened to cross the threshold of her kitchen.</p>
+        <p>She met her husband, James Williams, at a church social in 1963, and they married the following spring in a ceremony her daughters still describe as "the most beautiful thing they've ever witnessed." Together they raised four children — Patricia, James Jr., Daniel, and Susan — in the same house they bought in 1968, a brick bungalow with a garden that neighbors have admired for decades.</p>
+        <p>Margaret worked for over 30 years as a school librarian at Lincoln Elementary, where she is remembered by generations of students for reading to them with full dramatic flair, and for always having a butterscotch candy available in her cardigan pocket.</p>
+        <p>She is survived by her husband of 61 years, her four children, eleven grandchildren, and two great-grandchildren who called her "Gram-Gram." She passed peacefully at home on November 12, 2024, surrounded by her family — her garden still blooming outside the window.</p>
+      </div>
+      <div class="life-facts">
+        <div class="fact-item"><div class="fact-label">Born</div><div class="fact-value">June 3, 1942</div></div>
+        <div class="fact-item"><div class="fact-label">Passed</div><div class="fact-value">November 12, 2024</div></div>
+        <div class="fact-item"><div class="fact-label">Hometown</div><div class="fact-value">Chicago, IL</div></div>
+        <div class="fact-item"><div class="fact-label">Occupation</div><div class="fact-value">School librarian</div></div>
+        <div class="fact-item"><div class="fact-label">Spouse</div><div class="fact-value">James Williams</div></div>
+        <div class="fact-item"><div class="fact-label">Children</div><div class="fact-value">4 children, 11 grandchildren</div></div>
+      </div>
+    </div>
+
+    <!-- TRIBUTES -->
+    <div class="tributes-section" id="tab-tributes" style="display:none;">
+      <div class="section-header">
+        <div class="section-title">Tributes</div>
+        <div class="section-count">47 tributes</div>
+      </div>
+
+      <!-- Input -->
+      <div class="tribute-input-card">
+        <div class="tribute-input-header">
+          <div class="tribute-input-avatar">You</div>
+          <div class="tribute-input-placeholder">Share a memory of Margaret...</div>
+        </div>
+        <textarea class="tribute-textarea" placeholder="Share a memory, a thought, or simply let the family know she is remembered..."></textarea>
+        <div class="tribute-input-footer">
+          <div class="tribute-type-btns">
+            <button class="tribute-type-btn active">Tribute</button>
+            <button class="tribute-type-btn">Story</button>
+            <button class="tribute-type-btn">🕯 Candle</button>
+          </div>
+          <button class="tribute-submit">Post tribute</button>
+        </div>
+      </div>
+
+      <!-- Cards -->
+      <div class="tribute-card">
+        <div class="tribute-card-header">
+          <div class="tribute-author-row">
+            <div class="tribute-author-avatar" style="background:linear-gradient(135deg,#C4A882,#9E6B4A);">S</div>
+            <div>
+              <div class="tribute-author-name">Sarah Mitchell</div>
+              <div class="tribute-author-rel">Friend · 32 years</div>
+            </div>
+          </div>
+          <div class="tribute-date">Nov 15, 2024</div>
+        </div>
+        <div class="tribute-body">Margaret had a laugh that could fill an entire room and then spill out into the hallway. She taught me that kindness isn't something you perform — it's something you simply are. She was simply kind, every single day I knew her. The world is quieter without her in it.</div>
+        <div class="tribute-footer">
+          <div class="tribute-react liked" onclick="this.classList.toggle('liked')">♥ 24 hearts</div>
+          <div class="tribute-react">💬 Reply</div>
+        </div>
+      </div>
+
+      <div class="tribute-card">
+        <div class="tribute-card-header">
+          <div class="tribute-author-row">
+            <div class="tribute-author-avatar" style="background:linear-gradient(135deg,#8A9E7E,#4E6245);">J</div>
+            <div>
+              <div class="tribute-author-name">James & Patricia Williams</div>
+              <div class="tribute-author-rel">Children</div>
+            </div>
+          </div>
+          <div class="tribute-date">Nov 13, 2024</div>
+        </div>
+        <div class="tribute-body">Mom, your garden still blooms every spring. We tend it now, thinking of you with every flower, every stubborn weed you never let win. Dad still has his coffee on the back steps at 6am, looking at what you built. We love you more than words allow.</div>
+        <div class="tribute-footer">
+          <div class="tribute-react liked">♥ 61 hearts</div>
+          <div class="tribute-react">💬 Reply</div>
+        </div>
+      </div>
+
+      <div class="tribute-card">
+        <div class="tribute-card-header">
+          <div class="tribute-author-row">
+            <div class="tribute-author-avatar" style="background:linear-gradient(135deg,#BDC4B2,#7A8C6E);">D</div>
+            <div>
+              <div class="tribute-author-name">Daniel Osei</div>
+              <div class="tribute-author-rel">Former student · Lincoln Elementary 1981</div>
+            </div>
+          </div>
+          <div class="tribute-date">Nov 16, 2024</div>
+        </div>
+        <div class="tribute-body">Mrs. Williams read us Charlotte's Web in third grade. She cried at the end — actually cried — and that was the moment I understood that books were real. I became an English teacher because of her. She changed the direction of my entire life.</div>
+        <div class="tribute-footer">
+          <div class="tribute-react">♥ 18 hearts</div>
+          <div class="tribute-react">💬 Reply</div>
+        </div>
+      </div>
+
+      <div class="tribute-card">
+        <div class="tribute-card-header">
+          <div class="tribute-author-row">
+            <div class="tribute-author-avatar" style="background:linear-gradient(135deg,#C8B8A2,#9E6B4A);">R</div>
+            <div>
+              <div class="tribute-author-name">Rose & Martin Kowalski</div>
+              <div class="tribute-author-rel">Neighbors · 28 years</div>
+            </div>
+          </div>
+          <div class="tribute-date">Nov 17, 2024</div>
+        </div>
+        <div class="tribute-body">She brought us soup every single time either of us was ill. Always homemade, always still warm, always with that smile and a wave goodbye before we could even say thank you. We will miss her every day.</div>
+        <div class="tribute-footer">
+          <div class="tribute-react">♥ 9 hearts</div>
+          <div class="tribute-react">💬 Reply</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- GALLERY -->
+    <div class="gallery-section" id="tab-gallery" style="display:none;">
+      <div class="section-header">
+        <div class="section-title">Photos & memories</div>
+        <div class="section-count">134 photos</div>
+      </div>
+      <div class="gallery-grid">
+        <div class="gallery-item" onclick="openLightbox()"><div class="gallery-item-bg" style="background:linear-gradient(135deg,#D4C4B2,#C4A882);height:100%;"></div></div>
+        <div class="gallery-item" onclick="openLightbox()"><div class="gallery-item-bg" style="background:linear-gradient(135deg,#BDC4B2,#8A9E7E);height:100%;"></div></div>
+        <div class="gallery-item" onclick="openLightbox()"><div class="gallery-item-bg" style="background:linear-gradient(135deg,#C8B8A2,#B09070);height:100%;"></div></div>
+        <div class="gallery-item" onclick="openLightbox()"><div class="gallery-item-bg" style="background:linear-gradient(135deg,#C4B4A0,#9E8060);height:100%;"></div></div>
+        <div class="gallery-item" onclick="openLightbox()"><div class="gallery-item-bg" style="background:linear-gradient(135deg,#8A9E7E,#4E6245);height:100%;"></div></div>
+        <div class="gallery-item gallery-more" onclick="openLightbox()">
+          <div class="gallery-more-num">+129</div>
+          <div class="gallery-more-label">more photos</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- STORIES TAB -->
+    <div id="tab-stories" style="display:none;">
+      <div class="section-header"><div class="section-title">Stories</div><div class="section-count">12 stories</div></div>
+      <div class="tribute-card" style="border-left:3px solid var(--sage);">
+        <div class="tribute-card-header"><div class="tribute-author-row"><div class="tribute-author-avatar" style="background:linear-gradient(135deg,#8A9E7E,#4E6245);">P</div><div><div class="tribute-author-name">Patricia Williams</div><div class="tribute-author-rel">Daughter</div></div></div><div class="tribute-date">Nov 18, 2024</div></div>
+        <div style="font-family:'Cormorant Garamond',serif;font-size:1.1rem;color:var(--dusk);margin-bottom:0.75rem;font-weight:500;">The Garden She Never Let Go</div>
+        <div class="tribute-body" style="font-style:normal;">Every spring, Mom was outside before 6am, kneeling in the garden with coffee in one hand and pruning shears in the other, talking quietly to the roses. The garden was where she thought clearest. We planted a pale pink climber she had been eyeing for years. It bloomed three weeks after she passed.</div>
+        <div class="tribute-footer"><div class="tribute-react liked">&#9829; 38 hearts</div><div class="tribute-react">&#128172; Reply</div></div>
+      </div>
+      <div class="tribute-card" style="border-left:3px solid var(--sage);">
+        <div class="tribute-card-header"><div class="tribute-author-row"><div class="tribute-author-avatar" style="background:linear-gradient(135deg,#C4A882,#9E6B4A);">J</div><div><div class="tribute-author-name">James Williams Jr.</div><div class="tribute-author-rel">Son</div></div></div><div class="tribute-date">Nov 20, 2024</div></div>
+        <div style="font-family:'Cormorant Garamond',serif;font-size:1.1rem;color:var(--dusk);margin-bottom:0.75rem;font-weight:500;">Her Saturday Morning Pancakes</div>
+        <div class="tribute-body" style="font-style:normal;">No one made pancakes the way Mom did. Buttermilk and a splash of vanilla. Yellow apron with strawberries, radio playing, always making too many on purpose. We found her recipe card. It is going on the fridge.</div>
+        <div class="tribute-footer"><div class="tribute-react">&#9829; 29 hearts</div><div class="tribute-react">&#128172; Reply</div></div>
+      </div>
+    </div>
+
+    <!-- EVENTS TAB -->
+    <div id="tab-events" style="display:none;">
+      <div class="section-header"><div class="section-title">Events</div><a href="kifo-events.html" style="font-size:0.72rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--sienna);text-decoration:none;">Manage events &#8594;</a></div>
+      <div style="background:var(--parchment);border-radius:4px;border-left:3px solid var(--terracotta);padding:1.5rem;margin-bottom:1rem;">
+        <div style="font-size:0.65rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--terracotta);margin-bottom:0.5rem;">Upcoming</div>
+        <div style="font-family:'Cormorant Garamond',serif;font-size:1.3rem;color:var(--dusk);margin-bottom:0.5rem;">Celebration of Life Gathering</div>
+        <div style="font-size:0.8rem;color:var(--ash);">&#128197; November 30, 2024 &middot; 2:00 PM &nbsp; &#128205; Logan Square Community Hall, Chicago</div>
+        <a href="kifo-events.html" style="display:inline-block;margin-top:1rem;font-size:0.72rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--terracotta);border:1px solid var(--terracotta);padding:0.45rem 1rem;border-radius:2px;text-decoration:none;">RSVP to this event</a>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- SIDEBAR -->
+  <div class="sidebar">
+
+    <!-- Candle widget -->
+    <div class="candle-widget">
+      <div class="candle-widget-title">Light a candle</div>
+      <div class="candle-widget-sub">48 candles have been lit in Margaret's memory</div>
+      <div class="candle-row">
+        <div class="candle-svg-wrap">
+          <svg width="28" height="48" viewBox="0 0 28 48" fill="none">
+            <ellipse cx="14" cy="6" rx="3" ry="5" fill="#F5C842" style="animation:flicker 1.8s ease-in-out infinite;"/>
+            <line x1="14" y1="11" x2="14" y2="14" stroke="#4E3020" stroke-width="1" stroke-linecap="round"/>
+            <rect x="8" y="14" width="12" height="28" rx="2" fill="#EDE5D8"/>
+            <rect x="8" y="14" width="12" height="4" rx="1" fill="#D9C9B0"/>
+            <rect x="6" y="40" width="16" height="6" rx="2" fill="#D9C9B0"/>
+          </svg>
+          <span class="candle-name">James</span>
+        </div>
+        <div class="candle-svg-wrap">
+          <svg width="28" height="48" viewBox="0 0 28 48" fill="none">
+            <ellipse cx="14" cy="6" rx="3" ry="5" fill="#F5A825" style="animation:flicker 2.1s ease-in-out infinite 0.3s;"/>
+            <line x1="14" y1="11" x2="14" y2="14" stroke="#4E3020" stroke-width="1" stroke-linecap="round"/>
+            <rect x="8" y="14" width="12" height="28" rx="2" fill="#EDE5D8"/>
+            <rect x="8" y="14" width="12" height="4" rx="1" fill="#D9C9B0"/>
+            <rect x="6" y="40" width="16" height="6" rx="2" fill="#D9C9B0"/>
+          </svg>
+          <span class="candle-name">Sarah</span>
+        </div>
+        <div class="candle-svg-wrap">
+          <svg width="28" height="48" viewBox="0 0 28 48" fill="none">
+            <ellipse cx="14" cy="6" rx="3" ry="5" fill="#E8821A" style="animation:flicker 1.6s ease-in-out infinite 0.6s;"/>
+            <line x1="14" y1="11" x2="14" y2="14" stroke="#4E3020" stroke-width="1" stroke-linecap="round"/>
+            <rect x="8" y="14" width="12" height="28" rx="2" fill="#EDE5D8"/>
+            <rect x="8" y="14" width="12" height="4" rx="1" fill="#D9C9B0"/>
+            <rect x="6" y="40" width="16" height="6" rx="2" fill="#D9C9B0"/>
+          </svg>
+          <span class="candle-name">Daniel</span>
+        </div>
+      </div>
+      <button class="light-candle-btn">🕯 Light a candle</button>
+    </div>
+
+    <!-- Upcoming event -->
+    <div class="event-card-sidebar">
+      <div class="event-tag">Upcoming event</div>
+      <div class="event-name">Celebration of Life Gathering</div>
+      <div class="event-detail">📅 November 30, 2024 · 2:00 PM</div>
+      <div class="event-detail">📍 Logan Square Community Hall, Chicago</div>
+      <div class="event-detail" style="margin-top:0.5rem;color:var(--sienna);">23 guests attending</div>
+      <a href="kifo-events.html" class="event-rsvp">RSVP to this event</a>
+    </div>
+
+    <!-- Info card -->
+    <div class="sidebar-card">
+      <div class="sidebar-card-title">Memorial details</div>
+      <div class="info-row">
+        <div class="info-icon">🌿</div>
+        <div><div class="info-label">Designation</div><div class="info-val">Beloved mother & grandmother</div></div>
+      </div>
+      <div class="info-row">
+        <div class="info-icon">🏛</div>
+        <div><div class="info-label">Resting place</div><div class="info-val">Graceland Cemetery, Chicago</div></div>
+      </div>
+      <div class="info-row">
+        <div class="info-icon">📅</div>
+        <div><div class="info-label">Memorial created</div><div class="info-val">November 13, 2024</div></div>
+      </div>
+      <div class="info-row">
+        <div class="info-icon">👁</div>
+        <div><div class="info-label">Visitors</div><div class="info-val">3,241 total visits</div></div>
+      </div>
+    </div>
+
+    <!-- Invite -->
+    <div class="invite-card">
+      <div class="invite-title">Invite to contribute</div>
+      <div class="invite-sub">Share this memorial with family and friends so they can add their own tributes and memories.</div>
+      <div class="invite-link-box">kifo.com/margaret-rose-williams</div>
+      <div class="invite-btns">
+        <button class="invite-btn">Copy link</button>
+        <button class="invite-btn">Email invite</button>
+        <button class="invite-btn">Facebook</button>
+        <button class="invite-btn">WhatsApp</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox" onclick="closeLightbox()">
+  <button class="lightbox-close" onclick="closeLightbox()">✕</button>
+  <div class="lightbox-img" style="width:400px;height:300px;background:linear-gradient(135deg,#D4C4B2,#C4A882);border-radius:3px;"></div>
+</div>
+
+<!-- MUSIC PLAYER -->
+<div class="music-player" id="musicPlayer">
+  <div class="music-info">
+    <div class="music-title">La Vie en Rose</div>
+    <div class="music-artist">Édith Piaf · Margaret's playlist</div>
+  </div>
+  <div class="music-progress"><div class="music-progress-fill"></div></div>
+  <div class="music-controls">
+    <button class="music-btn">⏮</button>
+    <button class="music-btn play" id="playBtn" onclick="togglePlay()">▶</button>
+    <button class="music-btn">⏭</button>
+  </div>
+  <div class="music-note">🎵 5 songs</div>
+  <button class="music-close" onclick="document.getElementById('musicPlayer').classList.remove('visible')">✕</button>
+</div>
+
+<script>
+function switchTab(el, tab) {
+  document.querySelectorAll('.profile-tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  const panels = ['about','tributes','gallery','stories','events'];
+  panels.forEach(p => {
+    const el2 = document.getElementById('tab-' + p);
+    if (el2) el2.style.display = (p === tab) ? 'block' : 'none';
+  });
+}
+function openLightbox() { document.getElementById('lightbox').classList.add('open'); }
+function closeLightbox() { document.getElementById('lightbox').classList.remove('open'); }
+let playing = false;
+function togglePlay() {
+  playing = !playing;
+  document.getElementById('playBtn').textContent = playing ? '⏸' : '▶';
+}
+document.querySelectorAll('.tribute-type-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.tribute-type-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+  });
+});
+document.querySelectorAll('.tribute-react').forEach(r => {
+  r.addEventListener('click', () => r.classList.toggle('liked'));
+});
+</script>
+</body>
+</html>
