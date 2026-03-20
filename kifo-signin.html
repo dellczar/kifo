@@ -273,9 +273,45 @@ input::placeholder{color:var(--sand);}
   .nav-right .nav-btn, .nav-actions > a:not(.mobile-hamburger) { display: none !important; }
 }
 
+
+/* Signin mobile hamburger — fixed top right */
+#mobile-hamburger-fixed {
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  z-index: 200;
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  width: 40px;
+  height: 40px;
+  cursor: pointer;
+  padding: 6px;
+  border-radius: 3px;
+  background: rgba(253,250,246,0.9);
+  backdrop-filter: blur(8px);
+  border: 1px solid var(--sand);
+  box-shadow: 0 2px 8px rgba(44,36,32,0.1);
+}
+#mobile-hamburger-fixed span {
+  display: block; height: 1.5px; background: var(--dusk);
+  border-radius: 2px; transition: transform 0.3s ease, opacity 0.3s ease;
+  transform-origin: center;
+}
+#mobile-hamburger-fixed.open span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+#mobile-hamburger-fixed.open span:nth-child(2) { opacity: 0; }
+#mobile-hamburger-fixed.open span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
+@media (max-width: 768px) {
+  #mobile-hamburger-fixed { display: flex !important; }
+  .left-panel { display: none !important; }
+  .right-panel { width: 100% !important; }
+}
+
 </style>
 </head>
 <body>
+<button id="mobile-hamburger-fixed" class="mobile-hamburger" onclick="openMobileNav()" aria-label="Open menu"><span></span><span></span><span></span></button>
 
 <!-- LEFT PANEL -->
 <div class="left-panel">
