@@ -237,6 +237,167 @@ footer{background:var(--dusk);color:var(--cream);padding:5rem 5rem 3rem;}
   .events-section,.pricing-section,.testimonials-section,.cta-section{padding:5rem 2rem;}
   footer{padding:4rem 2rem 2.5rem;}
 }
+
+/* ── MOBILE NAV ─────────────────────────────────────────────── */
+.mobile-hamburger {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  width: 36px;
+  height: 36px;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 3px;
+  transition: background 0.2s;
+  flex-shrink: 0;
+  border: none;
+  background: transparent;
+}
+.mobile-hamburger:hover { background: var(--parchment, #EDE5D8); }
+.mobile-hamburger span {
+  display: block;
+  height: 1.5px;
+  background: var(--dusk, #2C2420);
+  border-radius: 2px;
+  transition: transform 0.3s ease, opacity 0.3s ease, width 0.3s ease;
+  transform-origin: center;
+}
+.mobile-hamburger.open span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+.mobile-hamburger.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+.mobile-hamburger.open span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
+
+/* DRAWER OVERLAY */
+.mobile-drawer-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(44,36,32,0.45);
+  z-index: 998;
+  backdrop-filter: blur(3px);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+.mobile-drawer-overlay.open { opacity: 1; }
+
+/* DRAWER */
+.mobile-drawer {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 280px;
+  background: var(--warm-white, #FDFAF6);
+  z-index: 999;
+  transform: translateX(100%);
+  transition: transform 0.32s cubic-bezier(0.4,0,0.2,1);
+  box-shadow: -8px 0 32px rgba(44,36,32,0.15);
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+}
+.mobile-drawer.open { transform: translateX(0); }
+
+.drawer-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.25rem 1.5rem;
+  border-bottom: 1px solid var(--parchment, #EDE5D8);
+}
+.drawer-logo {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.5rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  color: var(--dusk, #2C2420);
+  text-decoration: none;
+}
+.drawer-logo span { color: var(--terracotta, #C4714F); }
+.drawer-close {
+  width: 32px;
+  height: 32px;
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-size: 1.2rem;
+  color: var(--ash, #6B5F58);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 3px;
+  transition: background 0.2s;
+}
+.drawer-close:hover { background: var(--parchment, #EDE5D8); }
+
+.drawer-nav {
+  flex: 1;
+  padding: 1.25rem 0;
+}
+.drawer-section {
+  font-size: 0.58rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--sand, #D9C9B0);
+  padding: 0 1.5rem;
+  margin: 1rem 0 0.4rem;
+}
+.drawer-link {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.8rem 1.5rem;
+  font-size: 0.88rem;
+  color: var(--ash, #6B5F58);
+  text-decoration: none;
+  transition: background 0.15s, color 0.15s;
+  border-left: 2px solid transparent;
+}
+.drawer-link:hover {
+  background: var(--parchment, #EDE5D8);
+  color: var(--dusk, #2C2420);
+}
+.drawer-link.active {
+  color: var(--terracotta, #C4714F);
+  border-left-color: var(--terracotta, #C4714F);
+  background: rgba(196,113,79,0.06);
+}
+.drawer-link-icon { font-size: 1rem; width: 20px; text-align: center; flex-shrink: 0; }
+
+.drawer-footer {
+  padding: 1.25rem 1.5rem;
+  border-top: 1px solid var(--parchment, #EDE5D8);
+}
+.drawer-cta {
+  display: block;
+  width: 100%;
+  padding: 0.85rem;
+  background: var(--terracotta, #C4714F);
+  color: white;
+  text-align: center;
+  border-radius: 3px;
+  font-size: 0.78rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  text-decoration: none;
+  font-family: 'DM Sans', sans-serif;
+  transition: background 0.2s;
+}
+.drawer-cta:hover { background: var(--rust, #A8432A); }
+
+@media (max-width: 768px) {
+  .mobile-hamburger { display: flex !important; }
+  .mobile-drawer-overlay { display: block; }
+}
+
+
+@media (max-width: 768px) {
+  .nav-links { display: none !important; }
+  .nav-actions .btn-ghost, .nav-actions .btn-primary,
+  .nav-right .nav-link { display: none !important; }
+  .nav-right .nav-btn, .nav-actions > a:not(.mobile-hamburger) { display: none !important; }
+}
+
 </style>
 </head>
 <body>
@@ -251,7 +412,8 @@ footer{background:var(--dusk);color:var(--cream);padding:5rem 5rem 3rem;}
     <li><a href="kifo-gallery.html" style="color:var(--ash);">Gallery</a></li>
     <li><a href="kifo-signin.html" style="color:var(--ash);">Sign in</a></li>
     <li><a href="kifo-wizard.html" class="btn-nav">Create a Memorial</a></li>
-  </ul>
+  <button class="mobile-hamburger" id="mobile-hamburger" onclick="openMobileNav()" aria-label="Open menu"><span></span><span></span><span></span></button>
+</ul>
 </nav>
 
 <!-- HERO -->
