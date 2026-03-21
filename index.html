@@ -398,19 +398,58 @@ footer{background:var(--dusk);color:var(--cream);padding:5rem 5rem 3rem;}
   .nav-right .nav-btn, .nav-actions > a:not(.mobile-hamburger) { display: none !important; }
 }
 
+
+/* DROPDOWN NAV */
+.nav-links li{position:relative;}
+.nav-links li.has-dropdown > a::after{content:'▾';font-size:0.55rem;margin-left:0.3rem;opacity:0.5;vertical-align:middle;}
+.nav-dropdown{position:absolute;top:calc(100% + 0.75rem);left:50%;transform:translateX(-50%);background:var(--warm-white);border:1px solid var(--parchment);border-radius:4px;box-shadow:0 12px 40px rgba(44,36,32,0.12);padding:1rem 0;min-width:220px;opacity:0;pointer-events:none;transition:opacity 0.2s ease,transform 0.2s ease;transform:translateX(-50%) translateY(-6px);z-index:100;}
+.nav-links li.has-dropdown:hover .nav-dropdown{opacity:1;pointer-events:all;transform:translateX(-50%) translateY(0);}
+.nav-dropdown::before{content:'';position:absolute;top:-6px;left:50%;transform:translateX(-50%);border:6px solid transparent;border-bottom-color:var(--parchment);border-top:none;}
+.nav-dropdown::after{content:'';position:absolute;top:-5px;left:50%;transform:translateX(-50%);border:6px solid transparent;border-bottom-color:var(--warm-white);border-top:none;}
+.dropdown-section{padding:0.25rem 0;}
+.dropdown-section+.dropdown-section{border-top:1px solid var(--parchment);margin-top:0.25rem;padding-top:0.5rem;}
+.dropdown-label{font-size:0.58rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--sand);padding:0.25rem 1.1rem 0.5rem;}
+.nav-dropdown a{display:flex;align-items:center;gap:0.6rem;padding:0.55rem 1.1rem;font-size:0.82rem;color:var(--ash);text-decoration:none;letter-spacing:0.04em;text-transform:none;transition:background 0.15s,color 0.15s;}
+.nav-dropdown a:hover{background:var(--parchment);color:var(--dusk);}
+.nav-dropdown a .dd-icon{font-size:0.95rem;width:18px;text-align:center;flex-shrink:0;}
+.nav-dropdown a .dd-badge{font-size:0.55rem;letter-spacing:0.1em;background:var(--sage);color:white;padding:0.1rem 0.4rem;border-radius:8px;margin-left:auto;text-transform:uppercase;}
+
 </style>
 </head>
 <body>
 
 <nav>
-  <a href="#" class="nav-logo">Ki<span>f</span>o</a>
+  <a href="index.html" class="nav-logo">Ki<span>f</span>o</a>
   <ul class="nav-links">
-    <li><a href="#how">How it works</a></li>
-    <li><a href="#features">Features</a></li>
-    <li><a href="#events">Events</a></li>
-    <li><a href="#pricing">Pricing</a></li>
-    <li><a href="kifo-gallery.html" style="color:var(--ash);">Gallery</a></li>
-    <li><a href="kifo-signin.html" style="color:var(--ash);">Sign in</a></li>
+    <li class="has-dropdown"><a href="kifo-gallery.html">Memorials</a>
+      <div class="nav-dropdown">
+        <div class="dropdown-section">
+          <div class="dropdown-label">Browse & create</div>
+          <a href="kifo-gallery.html"><span class="dd-icon">🔍</span>Browse memorials</a>
+          <a href="kifo-memorial.html"><span class="dd-icon">🕯</span>Example memorial</a>
+          <a href="kifo-wizard.html"><span class="dd-icon">✦</span>Create a memorial</a>
+        </div>
+      </div>
+    </li>
+    <li class="has-dropdown"><a href="kifo-ai-tribute.html">AI Tools</a>
+      <div class="nav-dropdown">
+        <div class="dropdown-section">
+          <div class="dropdown-label">Powered by Claude</div>
+          <a href="kifo-ai-tribute.html"><span class="dd-icon">✍️</span>AI Tribute Writer <span class="dd-badge">New</span></a>
+          <a href="kifo-lifestory.html"><span class="dd-icon">📖</span>AI Life Story <span class="dd-badge">New</span></a>
+        </div>
+      </div>
+    </li>
+    <li><a href="kifo-pricing.html">Pricing</a></li>
+    <li class="has-dropdown"><a href="kifo-about.html">Company</a>
+      <div class="nav-dropdown">
+        <div class="dropdown-section">
+          <a href="kifo-about.html"><span class="dd-icon">💛</span>About Kifo</a>
+          <a href="kifo-about.html#contact"><span class="dd-icon">✉️</span>Contact us</a>
+        </div>
+      </div>
+    </li>
+    <li><a href="kifo-signin.html">Sign in</a></li>
     <li><a href="kifo-wizard.html" class="btn-nav">Create a Memorial</a></li>
   </ul>
   <button class="mobile-hamburger" id="mobile-hamburger" onclick="openMobileNav()" aria-label="Open menu"><span></span><span></span><span></span></button>
@@ -672,7 +711,7 @@ footer{background:var(--dusk);color:var(--cream);padding:5rem 5rem 3rem;}
     </div>
     <div>
       <div class="footer-col-title">Product</div>
-      <ul class="footer-links"><li><a href="kifo-wizard.html">Create a memorial</a></li><li><a href="#features">Features</a></li><li><a href="#events">Event planning</a></li><li><a href="#pricing">Pricing</a></li><li><a href="kifo-memorial.html">Memorial gallery</a></li></ul>
+      <ul class="footer-links"><li><a href="kifo-wizard.html">Create a memorial</a></li><li><a href="#features">Features</a></li><li><a href="#events">Event planning</a></li><li><a href="kifo-pricing.html">Pricing</a></li><li><a href="kifo-memorial.html">Memorial gallery</a></li></ul>
     </div>
     <div>
       <div class="footer-col-title">Company</div>
@@ -721,18 +760,22 @@ window.addEventListener('scroll', () => {
   </div>
   <nav class="drawer-nav">
     <div class="drawer-section">Memorials</div>
-    <a href="index.html" class="drawer-link"><span class="drawer-link-icon">🏠</span>Home</a>
+    <a href="index.html" class="drawer-link active"><span class="drawer-link-icon">🏠</span>Home</a>
     <a href="kifo-gallery.html" class="drawer-link"><span class="drawer-link-icon">🔍</span>Browse memorials</a>
     <a href="kifo-memorial.html" class="drawer-link"><span class="drawer-link-icon">🕯</span>Example memorial</a>
     <a href="kifo-wizard.html" class="drawer-link"><span class="drawer-link-icon">✦</span>Create a memorial</a>
     <div class="drawer-section">AI Tools</div>
     <a href="kifo-ai-tribute.html" class="drawer-link"><span class="drawer-link-icon">✍️</span>AI Tribute Writer</a>
-    <a href="kifo-lifestory.html" class="drawer-link"><span class="drawer-link-icon">📖</span>AI Life Story</a>
+    <a href="kifo-lifestory.html" class="drawer-link"><span class="drawer-link-icon">📖</span>AI Life Story Generator</a>
     <div class="drawer-section">Account</div>
     <a href="kifo-dashboard.html" class="drawer-link"><span class="drawer-link-icon">📋</span>Dashboard</a>
     <a href="kifo-events.html" class="drawer-link"><span class="drawer-link-icon">📅</span>Events</a>
     <a href="kifo-settings.html" class="drawer-link"><span class="drawer-link-icon">⚙️</span>Settings</a>
+    <a href="kifo-profile.html" class="drawer-link"><span class="drawer-link-icon">👤</span>My profile</a>
     <a href="kifo-signin.html" class="drawer-link"><span class="drawer-link-icon">🔑</span>Sign in</a>
+    <div class="drawer-section">Company</div>
+    <a href="kifo-about.html" class="drawer-link"><span class="drawer-link-icon">💛</span>About & Contact</a>
+    <a href="kifo-pricing.html" class="drawer-link"><span class="drawer-link-icon">💳</span>Pricing</a>
   </nav>
   <div class="drawer-footer">
     <a href="kifo-wizard.html" class="drawer-cta">+ Create a memorial — free</a>
