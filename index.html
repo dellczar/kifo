@@ -30,7 +30,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:cen
 .nav-logo{font-family:'Cormorant Garamond',serif;font-size:1.9rem;font-weight:500;letter-spacing:0.08em;color:var(--dusk);text-decoration:none;}
 .nav-logo span{color:var(--terracotta);}
 .nav-links{display:flex;gap:2.5rem;list-style:none;align-items:center;}
-.nav-links a{font-size:0.82rem;letter-spacing:0.12em;text-transform:uppercase;text-decoration:none;color:var(--ash);transition:color 0.2s;}
+.nav-links a{font-size:0.95rem;letter-spacing:0.02em;text-transform:none;text-decoration:none;color:var(--ash);transition:color 0.2s;font-weight:400;}
 .nav-links a:hover{color:var(--terracotta);}
 .btn-nav{background:var(--dusk);color:var(--cream)!important;padding:0.55rem 1.4rem;border-radius:2px;font-size:0.78rem!important;letter-spacing:0.15em!important;transition:background 0.2s!important;}
 .btn-nav:hover{background:var(--terracotta)!important;}
@@ -74,9 +74,9 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:cen
 .candle-wrap{position:absolute;bottom:12%;right:12%;z-index:3;opacity:0;animation:candleIn 1s ease 1.6s forwards;}
 
 /* TRUST BAR */
-.trust-bar{background:var(--dusk);color:var(--cream);padding:1.2rem 5rem;display:flex;align-items:center;gap:4rem;flex-wrap:wrap;}
-.trust-item{display:flex;align-items:center;gap:0.6rem;font-size:0.78rem;letter-spacing:0.12em;text-transform:uppercase;white-space:nowrap;opacity:0.7;}
-.trust-dot{width:4px;height:4px;border-radius:50%;background:var(--terracotta);flex-shrink:0;}
+.trust-bar{background:var(--dusk);color:var(--cream);padding:1.6rem 5rem;display:flex;align-items:center;gap:3rem;flex-wrap:wrap;}
+.trust-item{display:flex;align-items:center;gap:0.6rem;font-size:0.88rem;letter-spacing:0.03em;text-transform:none;white-space:nowrap;opacity:0.85;font-weight:400;}
+.trust-dot{width:6px;height:6px;border-radius:50%;background:var(--sage-mid);flex-shrink:0;}
 
 /* SECTIONS */
 section{padding:7rem 5rem;}
@@ -92,12 +92,12 @@ section{padding:7rem 5rem;}
 .how-step{display:flex;gap:2rem;padding:2rem 0;border-bottom:1px solid var(--sand);cursor:pointer;transition:padding-left 0.3s;}
 .how-step:first-child{border-top:1px solid var(--sand);}
 .how-step:hover,.how-step.active{padding-left:0.8rem;}
-.how-step.active .step-icon{background:var(--terracotta);color:white;}
-.step-num{font-family:'Cormorant Garamond',serif;font-size:0.75rem;color:var(--sand);letter-spacing:0.1em;min-width:24px;margin-top:0.3rem;}
+.how-step.active .step-icon{background:var(--sage-accent);color:white;}
+.step-num{font-family:'Cormorant Garamond',serif;font-size:1rem;color:var(--sage-mid);letter-spacing:0.05em;min-width:28px;margin-top:0.2rem;font-weight:500;}
 .step-icon{width:44px;height:44px;border-radius:50%;background:var(--parchment);display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0;transition:background 0.3s,color 0.3s;}
 .step-body{flex:1;}
-.step-title{font-family:'Cormorant Garamond',serif;font-size:1.25rem;font-weight:500;color:var(--dusk);margin-bottom:0.4rem;}
-.step-desc{font-size:0.88rem;color:var(--ash);line-height:1.7;}
+.step-title{font-family:'Cormorant Garamond',serif;font-size:1.4rem;font-weight:500;color:var(--dusk);margin-bottom:0.5rem;}
+.step-desc{font-size:0.95rem;color:var(--ash);line-height:1.7;}
 
 .how-preview{background:var(--parchment);border-radius:4px;overflow:hidden;box-shadow:0 30px 80px rgba(44,36,32,0.15);}
 .mockup-header{height:180px;position:relative;overflow:hidden;}
@@ -124,7 +124,7 @@ section{padding:7rem 5rem;}
 .feature-card:hover{background:var(--parchment);}
 .feature-card:hover .feature-icon{transform:scale(1.1);}
 .feature-icon{font-size:1.8rem;margin-bottom:1rem;display:block;transition:transform 0.3s;}
-.feature-name{font-family:'Cormorant Garamond',serif;font-size:1.25rem;font-weight:500;color:var(--dusk);margin-bottom:0.5rem;}
+.feature-name{font-family:'Cormorant Garamond',serif;font-size:1.35rem;font-weight:500;color:var(--dusk);margin-bottom:0.5rem;}
 .feature-desc{font-size:0.85rem;line-height:1.7;color:var(--ash);}
 
 /* EVENTS */
@@ -414,6 +414,40 @@ footer{background:var(--dusk);color:var(--cream);padding:5rem 5rem 3rem;}
 .nav-dropdown a .dd-icon{font-size:0.95rem;width:18px;text-align:center;flex-shrink:0;}
 .nav-dropdown a .dd-badge{font-size:0.55rem;letter-spacing:0.1em;background:var(--sage);color:white;padding:0.1rem 0.4rem;border-radius:8px;margin-left:auto;text-transform:uppercase;}
 
+
+/* ── SAGE ACCENT ADDITIONS ─────────────────────────────── */
+/* Free forever badge */
+.free-tag{display:inline-flex;align-items:center;gap:0.35rem;background:var(--sage-light);color:var(--sage-accent);font-size:0.72rem;letter-spacing:0.08em;padding:0.25rem 0.7rem;border-radius:12px;font-weight:500;border:1px solid rgba(92,138,96,0.2);}
+
+/* Step numbers — sage pill */
+.step-num{background:var(--sage-light);border-radius:10px;padding:0.1rem 0.4rem;}
+
+/* Feature check marks */
+.feature-check{color:var(--sage-accent);font-size:1rem;}
+
+/* Testimonial stars — sage instead of gold for contrast */
+.testimonial-stars{color:var(--sage-accent);}
+
+/* Trust bar icons boost */
+.trust-item .trust-dot{animation:pulse-dot 2s ease-in-out infinite;}
+@keyframes pulse-dot{0%,100%{transform:scale(1);}50%{transform:scale(1.3);}}
+
+/* Primary CTA — slightly warmer, larger */
+.btn-primary-hero{font-size:1rem !important;padding:1rem 2rem !important;letter-spacing:0.04em !important;}
+
+/* "See how it works" secondary CTA — bigger, clearer */
+.btn-text-hero{font-size:1rem !important;font-weight:500 !important;}
+
+/* Pricing free plan — sage accent border */
+.plan-card.plan-free{border-color:rgba(92,138,96,0.3);}
+.plan-card.plan-free .plan-label{color:var(--sage-accent);}
+
+/* SIGN IN link in nav — more visible */
+.nav-sign-in{color:var(--dusk) !important;font-weight:500 !important;}
+
+/* Step connector line — sage */
+.how-step.active{border-left:3px solid var(--sage-accent);padding-left:1.25rem;}
+
 </style>
 </head>
 <body>
@@ -449,7 +483,7 @@ footer{background:var(--dusk);color:var(--cream);padding:5rem 5rem 3rem;}
         </div>
       </div>
     </li>
-    <li><a href="kifo-signin.html">Sign in</a></li>
+    <li><a href="kifo-signin.html" class="nav-sign-in">Sign in</a></li>
     <li><a href="kifo-wizard.html" class="btn-nav">Create a Memorial</a></li>
   </ul>
   <button class="mobile-hamburger" id="mobile-hamburger" onclick="openMobileNav()" aria-label="Open menu"><span></span><span></span><span></span></button>
@@ -462,7 +496,7 @@ footer{background:var(--dusk);color:var(--cream);padding:5rem 5rem 3rem;}
     <h1 class="hero-title">Honor every life<br><em>beautifully</em></h1>
     <p class="hero-sub">Kifo helps families create lasting online memorials, share cherished memories, and bring loved ones together — near and far — to celebrate a life fully lived.</p>
     <div class="hero-ctas">
-      <a href="kifo-wizard.html" class="btn-primary">Create a Memorial — Free</a>
+      <a href="kifo-wizard.html" class="btn-primary btn-primary-hero">Create a Memorial — Free</a>
       <a href="#how" class="btn-ghost">See how it works <svg width="14" height="10" viewBox="0 0 14 10" fill="none"><path d="M1 5h12M9 1l4 4-4 4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
     </div>
     <div class="hero-stat-row">
