@@ -397,7 +397,7 @@ input::placeholder{color:var(--sand);}
           <input type="password" placeholder="Your password" id="signin-password">
           <span class="input-icon" onclick="togglePassword('signin-password', this)">👁</span>
         </div>
-        <a href="#" class="forgot">Forgot password?</a>
+        <a href="javascript:void(0)" onclick="handleForgotPassword()" class="forgot">Forgot password?</a>
       </div>
       <button class="submit-btn" onclick="location.href='kifo-dashboard.html'">Sign in to Kifo</button>
       <div class="terms">Don't have an account? <a href="#" onclick="switchTab('signup');return false;">Create one free →</a></div>
@@ -452,7 +452,7 @@ input::placeholder{color:var(--sand);}
         </div>
       </div>
       <button class="submit-btn" onclick="location.href='kifo-wizard.html'">Create account — free</button>
-      <div class="terms">By creating an account you agree to Kifo's <a href="#">Terms of Use</a> and <a href="#">Privacy Policy</a>. Already have an account? <a href="#" onclick="switchTab('signin');return false;">Sign in →</a></div>
+      <div class="terms">By creating an account you agree to Kifo's <a href="kifo-about.html">Terms of Use</a> and <a href="kifo-about.html">Privacy Policy</a>. Already have an account? <a href="#" onclick="switchTab('signin');return false;">Sign in →</a></div>
     </div>
 
   </div>
@@ -492,6 +492,12 @@ function checkStrength(val) {
   fill.style.background = c.bg;
   label.textContent = c.text;
   label.style.color = c.bg;
+}
+
+function handleForgotPassword() {
+  var email = document.getElementById('email-input')?.value || '';
+  var msg = email ? 'Password reset sent to ' + email : 'Enter your email address first, then click Forgot password.';
+  alert(msg);
 }
 </script>
 <script>
