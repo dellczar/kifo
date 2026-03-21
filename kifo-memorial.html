@@ -368,6 +368,44 @@ textarea.tribute-textarea::placeholder{color:var(--sand);}
   .nav-right .nav-btn, .nav-actions > a:not(.mobile-hamburger) { display: none !important; }
 }
 
+
+/* ── AI WRITING PANEL ─────────────────────────────────── */
+.ai-panel{background:var(--dusk);border-radius:4px;margin-bottom:1.25rem;overflow:hidden;max-height:0;transition:max-height 0.4s cubic-bezier(0.4,0,0.2,1);position:relative;}
+.ai-panel.open{max-height:600px;}
+.ai-panel-inner{padding:1.5rem;}
+.ai-panel-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.25rem;}
+.ai-panel-title{font-size:0.62rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--gold);display:flex;align-items:center;gap:0.4rem;}
+.ai-panel-title::before{content:'✦';font-size:0.55rem;}
+.ai-panel-close{background:none;border:none;color:rgba(247,243,238,0.4);cursor:pointer;font-size:1rem;line-height:1;padding:0.2rem;transition:color 0.15s;}
+.ai-panel-close:hover{color:var(--cream);}
+.ai-panel-prompt{width:100%;padding:0.75rem 1rem;border:1.5px solid rgba(247,243,238,0.12);border-radius:3px;background:rgba(247,243,238,0.07);color:var(--cream);font-family:'DM Sans',sans-serif;font-size:0.85rem;font-weight:300;outline:none;resize:none;line-height:1.6;transition:border-color 0.2s;margin-bottom:1rem;}
+.ai-panel-prompt:focus{border-color:rgba(201,153,74,0.5);}
+.ai-panel-prompt::placeholder{color:rgba(247,243,238,0.25);}
+.ai-panel-options{display:flex;gap:0.5rem;flex-wrap:wrap;margin-bottom:1rem;}
+.ai-tone-pill{font-size:0.65rem;letter-spacing:0.1em;text-transform:uppercase;padding:0.3rem 0.7rem;border-radius:12px;border:1px solid rgba(247,243,238,0.15);color:rgba(247,243,238,0.45);cursor:pointer;transition:all 0.15s;background:transparent;font-family:'DM Sans',sans-serif;}
+.ai-tone-pill:hover,.ai-tone-pill.selected{border-color:var(--gold);color:var(--gold);background:rgba(201,153,74,0.1);}
+.ai-panel-actions{display:flex;align-items:center;gap:0.75rem;}
+.ai-generate-btn{background:var(--terracotta);color:white;border:none;padding:0.65rem 1.4rem;border-radius:3px;font-family:'DM Sans',sans-serif;font-size:0.75rem;letter-spacing:0.12em;text-transform:uppercase;cursor:pointer;transition:background 0.2s;display:flex;align-items:center;gap:0.5rem;}
+.ai-generate-btn:hover{background:var(--rust);}
+.ai-generate-btn:disabled{opacity:0.6;cursor:not-allowed;}
+.ai-result{display:none;margin-top:1.25rem;padding-top:1.25rem;border-top:1px solid rgba(247,243,238,0.08);}
+.ai-result.visible{display:block;}
+.ai-result-label{font-size:0.58rem;letter-spacing:0.18em;text-transform:uppercase;color:rgba(247,243,238,0.3);margin-bottom:0.6rem;}
+.ai-result-text{font-family:'Cormorant Garamond',serif;font-size:1.05rem;line-height:1.85;color:var(--cream);white-space:pre-wrap;}
+.ai-result-text.streaming::after{content:'▊';animation:aiBlink 0.8s steps(1) infinite;color:var(--gold);font-size:0.85em;}
+@keyframes aiBlink{0%,100%{opacity:1;}50%{opacity:0;}}
+.ai-result-actions{display:flex;gap:0.5rem;margin-top:1rem;}
+.ai-use-btn{font-size:0.68rem;letter-spacing:0.1em;text-transform:uppercase;padding:0.4rem 0.9rem;border-radius:2px;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all 0.2s;}
+.ai-use-primary{background:rgba(247,243,238,0.12);border:1px solid rgba(247,243,238,0.2);color:var(--cream);}
+.ai-use-primary:hover{background:rgba(247,243,238,0.2);}
+.ai-use-ghost{background:transparent;border:1px solid rgba(247,243,238,0.1);color:rgba(247,243,238,0.4);}
+.ai-use-ghost:hover{border-color:rgba(247,243,238,0.25);color:rgba(247,243,238,0.6);}
+.ai-write-btn{display:inline-flex;align-items:center;gap:0.35rem;font-size:0.65rem;letter-spacing:0.12em;text-transform:uppercase;padding:0.3rem 0.75rem;border-radius:2px;border:1px solid rgba(201,153,74,0.4);color:var(--gold);background:rgba(201,153,74,0.08);cursor:pointer;font-family:'DM Sans',sans-serif;transition:all 0.2s;}
+.ai-write-btn:hover{border-color:var(--gold);background:rgba(201,153,74,0.15);}
+.ai-write-btn-light{border-color:rgba(201,153,74,0.35);color:var(--sienna);background:rgba(201,153,74,0.06);}
+.ai-write-btn-light:hover{border-color:var(--sienna);background:rgba(201,153,74,0.12);}
+@keyframes aiSpin{from{transform:rotate(0deg);}to{transform:rotate(360deg);}}
+
 </style>
 </head>
 <body>
@@ -444,8 +482,41 @@ textarea.tribute-textarea::placeholder{color:var(--sand);}
     <div class="bio-section" id="tab-about">
       <div class="bio-header">
         <div class="bio-title">Life story</div>
+<button class="ai-write-btn" onclick="toggleAIPanel('lifestory')">✦ Generate with AI</button>
         <button class="bio-edit">Edit</button>
       </div>
+
+        <!-- AI LIFE STORY PANEL -->
+        <div class="ai-panel" id="ai-lifestory-panel">
+          <div class="ai-panel-inner">
+            <div class="ai-panel-header">
+              <div class="ai-panel-title">AI Life Story Generator</div>
+              <button class="ai-panel-close" onclick="closeAIPanel('lifestory')">✕</button>
+            </div>
+            <textarea class="ai-panel-prompt" id="ai-lifestory-prompt" rows="4" placeholder="Share some facts and memories — birthplace, occupation, family, hobbies, a favourite story...&#10;&#10;e.g. Born in Chicago 1942, taught at Lincoln Elementary for 31 years, loved her sunflower garden, married Robert in 1965..."></textarea>
+            <div class="ai-panel-options">
+              <button class="ai-tone-pill selected" onclick="selectTone(this,'warm')">🌿 Warm memoir</button>
+              <button class="ai-tone-pill" onclick="selectTone(this,'literary')">📜 Literary</button>
+              <button class="ai-tone-pill" onclick="selectTone(this,'classic')">🎖 Classic bio</button>
+            </div>
+            <div class="ai-panel-actions">
+              <button class="ai-generate-btn" id="ai-lifestory-btn" onclick="generateAILifestory()">
+                <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 1l1.2 3.5L11 6l-3.8 1.5L6 11 4.8 7.5 1 6l3.8-1.5L6 1z" fill="white" opacity="0.9"/></svg>
+                Generate life story
+              </button>
+              <a href="kifo-lifestory.html" style="font-size:0.7rem;color:rgba(247,243,238,0.25);text-decoration:none;" onmouseover="this.style.color='rgba(247,243,238,0.5)'" onmouseout="this.style.color='rgba(247,243,238,0.25)'">Full generator →</a>
+            </div>
+            <div class="ai-result" id="ai-lifestory-result">
+              <div class="ai-result-label">Generated life story</div>
+              <div class="ai-result-text" id="ai-lifestory-text"></div>
+              <div class="ai-result-actions">
+                <button class="ai-use-btn ai-use-primary" onclick="useAILifestory()">Use this story</button>
+                <button class="ai-use-btn ai-use-ghost" onclick="generateAILifestory()">↻ Try again</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
       <div class="bio-text">
         <p>Margaret Rose Williams was born on a warm summer morning in Chicago, Illinois, the second of five children to Thomas and Eleanor Hartley. She grew up in the Logan Square neighborhood, where she developed a lifelong love of gardening, jazz music, and feeding anyone who happened to cross the threshold of her kitchen.</p>
         <p>She met her husband, James Williams, at a church social in 1963, and they married the following spring in a ceremony her daughters still describe as "the most beautiful thing they've ever witnessed." Together they raised four children — Patricia, James Jr., Daniel, and Susan — in the same house they bought in 1968, a brick bungalow with a garden that neighbors have admired for decades.</p>
@@ -470,6 +541,39 @@ textarea.tribute-textarea::placeholder{color:var(--sand);}
       </div>
 
       <!-- Input -->
+
+      <!-- AI TRIBUTE PANEL -->
+      <div class="ai-panel" id="ai-tribute-panel">
+        <div class="ai-panel-inner">
+          <div class="ai-panel-header">
+            <div class="ai-panel-title">AI Tribute Writer</div>
+            <button class="ai-panel-close" onclick="closeAIPanel('tribute')">✕</button>
+          </div>
+          <textarea class="ai-panel-prompt" id="ai-tribute-prompt" rows="3" placeholder="Share a memory or detail — e.g. 'She always brought sunflowers to the neighbours, had a laugh that filled any room...'"></textarea>
+          <div class="ai-panel-options">
+            <button class="ai-tone-pill selected" onclick="selectTone(this,'warm')">🌿 Warm</button>
+            <button class="ai-tone-pill" onclick="selectTone(this,'poetic')">🕊 Poetic</button>
+            <button class="ai-tone-pill" onclick="selectTone(this,'celebratory')">🌟 Celebratory</button>
+            <button class="ai-tone-pill" onclick="selectTone(this,'spiritual')">🙏 Spiritual</button>
+          </div>
+          <div class="ai-panel-actions">
+            <button class="ai-generate-btn" id="ai-tribute-btn" onclick="generateAITribute()">
+              <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 1l1.2 3.5L11 6l-3.8 1.5L6 11 4.8 7.5 1 6l3.8-1.5L6 1z" fill="white" opacity="0.9"/></svg>
+              Generate tribute
+            </button>
+            <span style="font-size:0.7rem;color:rgba(247,243,238,0.25);">or write your own below ↓</span>
+          </div>
+          <div class="ai-result" id="ai-tribute-result">
+            <div class="ai-result-label">Generated tribute</div>
+            <div class="ai-result-text" id="ai-tribute-text"></div>
+            <div class="ai-result-actions">
+              <button class="ai-use-btn ai-use-primary" onclick="useAITribute()">Use this tribute</button>
+              <button class="ai-use-btn ai-use-ghost" onclick="generateAITribute()">↻ Try again</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <div class="tribute-input-card">
         <div class="tribute-input-header">
           <div class="tribute-input-avatar">You</div>
@@ -482,6 +586,7 @@ textarea.tribute-textarea::placeholder{color:var(--sand);}
             <button class="tribute-type-btn">Story</button>
             <button class="tribute-type-btn">🕯 Candle</button>
           </div>
+          <button class="ai-write-btn ai-write-btn-light" onclick="toggleAIPanel('tribute')">✦ Write with AI</button>
           <button class="tribute-submit">Post tribute</button>
         </div>
       </div>
@@ -581,7 +686,38 @@ textarea.tribute-textarea::placeholder{color:var(--sand);}
 
     <!-- STORIES TAB -->
     <div id="tab-stories" style="display:none;">
-      <div class="section-header"><div class="section-title">Stories</div><div class="section-count">12 stories</div></div>
+      <div class="section-header"><div class="section-title">Stories</div><div class="section-count">12 stories</div><button class="ai-write-btn" style="margin-left:auto;" onclick="toggleAIPanel('story')">✦ Write a story with AI</button></div>
+
+      <!-- AI STORY PANEL -->
+      <div class="ai-panel" id="ai-story-panel">
+        <div class="ai-panel-inner">
+          <div class="ai-panel-header">
+            <div class="ai-panel-title">AI Story Writer</div>
+            <button class="ai-panel-close" onclick="closeAIPanel('story')">✕</button>
+          </div>
+          <textarea class="ai-panel-prompt" id="ai-story-prompt" rows="3" placeholder="Describe a specific memory or story — a meal, a trip, a family tradition, something she always said..."></textarea>
+          <div class="ai-panel-options">
+            <button class="ai-tone-pill selected" onclick="selectTone(this,'warm')">🌿 Warm</button>
+            <button class="ai-tone-pill" onclick="selectTone(this,'poetic')">🕊 Poetic</button>
+            <button class="ai-tone-pill" onclick="selectTone(this,'humorous')">😊 Light & warm</button>
+          </div>
+          <div class="ai-panel-actions">
+            <button class="ai-generate-btn" id="ai-story-btn" onclick="generateAIStory()">
+              <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 1l1.2 3.5L11 6l-3.8 1.5L6 11 4.8 7.5 1 6l3.8-1.5L6 1z" fill="white" opacity="0.9"/></svg>
+              Generate story
+            </button>
+          </div>
+          <div class="ai-result" id="ai-story-result">
+            <div class="ai-result-label">Generated story</div>
+            <div class="ai-result-text" id="ai-story-text"></div>
+            <div class="ai-result-actions">
+              <button class="ai-use-btn ai-use-primary" onclick="useAIStory()">Post this story</button>
+              <button class="ai-use-btn ai-use-ghost" onclick="generateAIStory()">↻ Try again</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <div class="tribute-card" style="border-left:3px solid var(--sage);">
         <div class="tribute-card-header"><div class="tribute-author-row"><div class="tribute-author-avatar" style="background:linear-gradient(135deg,#8A9E7E,#4E6245);">P</div><div><div class="tribute-author-name">Patricia Williams</div><div class="tribute-author-rel">Daughter</div></div></div><div class="tribute-date">Nov 18, 2024</div></div>
         <div style="font-family:'Cormorant Garamond',serif;font-size:1.1rem;color:var(--dusk);margin-bottom:0.75rem;font-weight:500;">The Garden She Never Let Go</div>
@@ -797,6 +933,191 @@ document.addEventListener('keydown', function(e) { if (e.key === 'Escape') close
     if (a.getAttribute('href') === path) a.classList.add('active');
   });
 })();
+
+// ── AI PANEL STATE ────────────────────────────────────────
+var aiTone = 'warm';
+var aiPanelState = { tribute: false, lifestory: false, story: false };
+
+function selectTone(el, tone) {
+  aiTone = tone;
+  el.closest('.ai-panel-options').querySelectorAll('.ai-tone-pill').forEach(function(p) {
+    p.classList.remove('selected');
+  });
+  el.classList.add('selected');
+}
+
+function toggleAIPanel(type) {
+  var panel = document.getElementById('ai-' + type + '-panel');
+  var isOpen = aiPanelState[type];
+  // Close all panels first
+  Object.keys(aiPanelState).forEach(function(k) {
+    document.getElementById('ai-' + k + '-panel').classList.remove('open');
+    aiPanelState[k] = false;
+  });
+  if (!isOpen) {
+    panel.classList.add('open');
+    aiPanelState[type] = true;
+    setTimeout(function() {
+      var prompt = panel.querySelector('textarea');
+      if (prompt) prompt.focus();
+    }, 420);
+  }
+}
+
+function closeAIPanel(type) {
+  document.getElementById('ai-' + type + '-panel').classList.remove('open');
+  aiPanelState[type] = false;
+}
+
+// ── STREAM TEXT ───────────────────────────────────────────
+function streamText(elId, text, onDone) {
+  var el = document.getElementById(elId);
+  el.textContent = '';
+  el.classList.add('streaming');
+  var i = 0;
+  var speed = Math.max(6, Math.round(1600 / text.length));
+  var iv = setInterval(function() {
+    if (i >= text.length) {
+      clearInterval(iv);
+      el.classList.remove('streaming');
+      if (onDone) onDone();
+      return;
+    }
+    el.textContent += text.slice(i, i + 3);
+    i += 3;
+  }, speed);
+}
+
+// ── CALL CLAUDE API ───────────────────────────────────────
+async function callClaude(prompt, maxTokens) {
+  var res = await fetch('https://api.anthropic.com/v1/messages', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      model: 'claude-sonnet-4-20250514',
+      max_tokens: maxTokens || 600,
+      messages: [{ role: 'user', content: prompt }]
+    })
+  });
+  var data = await res.json();
+  return data.content && data.content[0] && data.content[0].text ? data.content[0].text.trim() : '';
+}
+
+function toneInstruction(tone) {
+  var map = {
+    warm: 'Write in a warm, personal, heartfelt tone.',
+    poetic: 'Write in a poetic, lyrical, evocative tone with beautiful imagery.',
+    celebratory: 'Write in a celebratory tone that honours joy and gratitude.',
+    spiritual: 'Write in a gentle, spiritual tone of peace and faith.',
+    humorous: 'Write with warmth and gentle humour that captures their spirit.',
+    literary: 'Write in a literary, memoir-quality style with vivid prose.',
+    classic: 'Write in a dignified, classic biographical style.'
+  };
+  return map[tone] || map.warm;
+}
+
+// ── GENERATE TRIBUTE ──────────────────────────────────────
+async function generateAITribute() {
+  var prompt = document.getElementById('ai-tribute-prompt').value.trim();
+  var btn = document.getElementById('ai-tribute-btn');
+  var resultEl = document.getElementById('ai-tribute-result');
+  var textEl = document.getElementById('ai-tribute-text');
+
+  btn.disabled = true;
+  btn.innerHTML = '<svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="animation:aiSpin 1s linear infinite"><circle cx="6" cy="6" r="4.5" stroke="white" stroke-width="1.5" stroke-dasharray="20" stroke-dashoffset="8" stroke-linecap="round"/></svg> Writing…';
+
+  resultEl.classList.add('visible');
+  textEl.textContent = '…';
+
+  try {
+    var fullPrompt = 'Write a heartfelt tribute for Margaret Rose Williams (June 3, 1942 – November 12, 2024). ' + toneInstruction(aiTone) + ' Write 3-4 sentences. Write ONLY the tribute text itself — no preamble, no quotes around it. ' + (prompt ? 'Incorporate this: ' + prompt : 'Focus on her warmth, family, and the lives she touched.');
+    var text = await callClaude(fullPrompt, 400);
+    streamText('ai-tribute-text', text);
+  } catch(e) {
+    textEl.textContent = 'Unable to connect. Please check your connection and try again.';
+  }
+
+  btn.disabled = false;
+  btn.innerHTML = '<svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 1l1.2 3.5L11 6l-3.8 1.5L6 11 4.8 7.5 1 6l3.8-1.5L6 1z" fill="white" opacity="0.9"/></svg> Generate tribute';
+}
+
+function useAITribute() {
+  var text = document.getElementById('ai-tribute-text').textContent;
+  var textarea = document.querySelector('.tribute-textarea');
+  if (textarea && text) {
+    textarea.value = text;
+    textarea.style.height = 'auto';
+    textarea.style.height = textarea.scrollHeight + 'px';
+    closeAIPanel('tribute');
+    textarea.focus();
+  }
+}
+
+// ── GENERATE LIFE STORY ───────────────────────────────────
+async function generateAILifestory() {
+  var prompt = document.getElementById('ai-lifestory-prompt').value.trim();
+  var btn = document.getElementById('ai-lifestory-btn');
+  var resultEl = document.getElementById('ai-lifestory-result');
+  var textEl = document.getElementById('ai-lifestory-text');
+
+  btn.disabled = true;
+  btn.innerHTML = '<svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="animation:aiSpin 1s linear infinite"><circle cx="6" cy="6" r="4.5" stroke="white" stroke-width="1.5" stroke-dasharray="20" stroke-dashoffset="8" stroke-linecap="round"/></svg> Writing…';
+
+  resultEl.classList.add('visible');
+  textEl.textContent = '…';
+
+  try {
+    var fullPrompt = 'Write a life story biography paragraph for Margaret Rose Williams (born June 3, 1942 in Chicago, Illinois; passed November 12, 2024). ' + toneInstruction(aiTone) + ' Write 3-4 rich paragraphs. Write ONLY the biography text — no title, no preamble. Third person (she/her). ' + (prompt ? 'Include these details: ' + prompt : 'Mention her career as a school librarian, her family, her love of gardening, and her warm spirit.');
+    var text = await callClaude(fullPrompt, 800);
+    streamText('ai-lifestory-text', text);
+  } catch(e) {
+    textEl.textContent = 'Unable to connect. Please check your connection and try again.';
+  }
+
+  btn.disabled = false;
+  btn.innerHTML = '<svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 1l1.2 3.5L11 6l-3.8 1.5L6 11 4.8 7.5 1 6l3.8-1.5L6 1z" fill="white" opacity="0.9"/></svg> Generate life story';
+}
+
+function useAILifestory() {
+  var text = document.getElementById('ai-lifestory-text').textContent;
+  var bioText = document.querySelector('.bio-text');
+  if (bioText && text) {
+    bioText.innerHTML = text.split('\n\n').map(function(p) {
+      return p.trim() ? '<p>' + p.trim() + '</p>' : '';
+    }).join('');
+    closeAIPanel('lifestory');
+  }
+}
+
+// ── GENERATE STORY ────────────────────────────────────────
+async function generateAIStory() {
+  var prompt = document.getElementById('ai-story-prompt').value.trim();
+  var btn = document.getElementById('ai-story-btn');
+  var resultEl = document.getElementById('ai-story-result');
+  var textEl = document.getElementById('ai-story-text');
+
+  btn.disabled = true;
+  btn.innerHTML = '<svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="animation:aiSpin 1s linear infinite"><circle cx="6" cy="6" r="4.5" stroke="white" stroke-width="1.5" stroke-dasharray="20" stroke-dashoffset="8" stroke-linecap="round"/></svg> Writing…';
+
+  resultEl.classList.add('visible');
+  textEl.textContent = '…';
+
+  try {
+    var fullPrompt = 'Write a short personal story or memory about Margaret Rose Williams (1942–2024). ' + toneInstruction(aiTone) + ' Write 2-3 paragraphs in first person, as if a family member or friend is sharing a specific memory. Write ONLY the story — no title, no preamble. Make it specific and vivid. ' + (prompt ? 'Base it on: ' + prompt : 'Write about a moment in her garden or kitchen that captures her warmth and generosity.');
+    var text = await callClaude(fullPrompt, 500);
+    streamText('ai-story-text', text);
+  } catch(e) {
+    textEl.textContent = 'Unable to connect. Please check your connection and try again.';
+  }
+
+  btn.disabled = false;
+  btn.innerHTML = '<svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 1l1.2 3.5L11 6l-3.8 1.5L6 11 4.8 7.5 1 6l3.8-1.5L6 1z" fill="white" opacity="0.9"/></svg> Generate story';
+}
+
+function useAIStory() {
+  closeAIPanel('story');
+}
+
 </script>
 </body>
 </html>
