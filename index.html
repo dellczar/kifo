@@ -217,7 +217,7 @@ footer{background:var(--dusk);color:var(--cream);padding:5rem 5rem 3rem;}
 @keyframes candleIn{from{opacity:0;transform:scale(0.7);}to{opacity:1;transform:scale(1);}}
 @keyframes flickerFloat{0%,100%{transform:translateY(0);}50%{transform:translateY(-6px);}}
 
-.reveal{opacity:0;transform:translateY(30px);transition:opacity 0.8s ease,transform 0.8s ease;}
+.reveal{opacity:0;transform:translateY(16px);transition:opacity 0.45s ease,transform 0.45s ease;}
 .reveal.visible{opacity:1;transform:translateY(0);}
 .reveal-delay-1{transition-delay:0.1s;}
 .reveal-delay-2{transition-delay:0.2s;}
@@ -447,6 +447,12 @@ footer{background:var(--dusk);color:var(--cream);padding:5rem 5rem 3rem;}
 
 /* Step connector line — sage */
 .how-step.active{border-left:3px solid var(--sage-accent);padding-left:1.25rem;}
+
+
+/* Reveal fallback — show all content if animation doesn't fire */
+@media (prefers-reduced-motion: reduce) {
+  .reveal { opacity: 1 !important; transform: none !important; }
+}
 
 </style>
 </head>
@@ -766,7 +772,7 @@ footer{background:var(--dusk);color:var(--cream);padding:5rem 5rem 3rem;}
 // Scroll reveal
 const observer = new IntersectionObserver(entries => {
   entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
-}, { threshold: 0.1 });
+}, { threshold: 0.05, rootMargin: '0px 0px -50px 0px' });
 document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
 // Step toggling
