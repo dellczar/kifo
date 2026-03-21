@@ -304,6 +304,42 @@ textarea{min-height:120px;resize:vertical;line-height:1.6;}
   .nav-right .nav-btn, .nav-actions > a:not(.mobile-hamburger) { display: none !important; }
 }
 
+
+/* ── WIZARD AI HELPER ──────────────────────────────── */
+.ai-bio-helper{background:var(--dusk);border-radius:3px;overflow:hidden;max-height:0;transition:max-height 0.4s cubic-bezier(0.4,0,0.2,1);margin-top:0.75rem;}
+.ai-bio-helper.open{max-height:500px;}
+.ai-bio-inner{padding:1.25rem;}
+.ai-bio-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;}
+.ai-bio-title{font-size:0.6rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--gold);display:flex;align-items:center;gap:0.35rem;}
+.ai-bio-title::before{content:'✦';font-size:0.55rem;}
+.ai-bio-close{background:none;border:none;color:rgba(247,243,238,0.35);cursor:pointer;font-size:1rem;padding:0.2rem;transition:color 0.15s;}
+.ai-bio-close:hover{color:var(--cream);}
+.ai-bio-hints{display:flex;flex-wrap:wrap;gap:0.4rem;margin-bottom:0.85rem;}
+.ai-bio-hint{font-size:0.65rem;padding:0.25rem 0.6rem;border-radius:10px;border:1px solid rgba(247,243,238,0.12);color:rgba(247,243,238,0.4);cursor:pointer;transition:all 0.15s;background:transparent;font-family:'DM Sans',sans-serif;}
+.ai-bio-hint:hover{border-color:var(--gold);color:var(--gold);}
+.ai-bio-prompt{width:100%;padding:0.65rem 0.85rem;border:1.5px solid rgba(247,243,238,0.1);border-radius:3px;background:rgba(247,243,238,0.06);color:var(--cream);font-family:'DM Sans',sans-serif;font-size:0.82rem;font-weight:300;outline:none;resize:none;line-height:1.6;transition:border-color 0.2s;margin-bottom:0.85rem;}
+.ai-bio-prompt:focus{border-color:rgba(201,153,74,0.45);}
+.ai-bio-prompt::placeholder{color:rgba(247,243,238,0.2);}
+.ai-bio-actions{display:flex;align-items:center;gap:0.75rem;}
+.ai-bio-gen-btn{background:var(--terracotta);color:white;border:none;padding:0.6rem 1.25rem;border-radius:3px;font-family:'DM Sans',sans-serif;font-size:0.72rem;letter-spacing:0.12em;text-transform:uppercase;cursor:pointer;transition:background 0.2s;display:flex;align-items:center;gap:0.4rem;}
+.ai-bio-gen-btn:hover{background:var(--rust);}
+.ai-bio-gen-btn:disabled{opacity:0.6;cursor:not-allowed;}
+.ai-bio-result{display:none;margin-top:1rem;padding-top:1rem;border-top:1px solid rgba(247,243,238,0.08);}
+.ai-bio-result.visible{display:block;}
+.ai-bio-result-label{font-size:0.58rem;letter-spacing:0.18em;text-transform:uppercase;color:rgba(247,243,238,0.3);margin-bottom:0.5rem;}
+.ai-bio-result-text{font-family:'Cormorant Garamond',serif;font-size:1rem;line-height:1.85;color:var(--cream);white-space:pre-wrap;}
+.ai-bio-result-text.streaming::after{content:'▊';animation:wiz-blink 0.8s steps(1) infinite;color:var(--gold);font-size:0.85em;}
+@keyframes wiz-blink{0%,100%{opacity:1;}50%{opacity:0;}}
+.ai-bio-result-actions{display:flex;gap:0.5rem;margin-top:0.85rem;}
+.ai-bio-use{font-size:0.68rem;letter-spacing:0.1em;text-transform:uppercase;padding:0.38rem 0.85rem;border-radius:2px;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all 0.2s;}
+.ai-bio-use-primary{background:rgba(247,243,238,0.1);border:1px solid rgba(247,243,238,0.18);color:var(--cream);}
+.ai-bio-use-primary:hover{background:rgba(247,243,238,0.18);}
+.ai-bio-use-ghost{background:transparent;border:1px solid rgba(247,243,238,0.08);color:rgba(247,243,238,0.35);}
+.ai-bio-use-ghost:hover{border-color:rgba(247,243,238,0.2);color:rgba(247,243,238,0.55);}
+.ai-bio-trigger{display:inline-flex;align-items:center;gap:0.35rem;font-size:0.65rem;letter-spacing:0.12em;text-transform:uppercase;padding:0.28rem 0.7rem;border-radius:2px;border:1px solid rgba(201,153,74,0.35);color:var(--gold);background:rgba(201,153,74,0.06);cursor:pointer;font-family:'DM Sans',sans-serif;transition:all 0.2s;margin-top:0.5rem;}
+.ai-bio-trigger:hover{border-color:var(--gold);background:rgba(201,153,74,0.12);}
+@keyframes wiz-spin{from{transform:rotate(0deg);}to{transform:rotate(360deg);}}
+
 </style>
 </head>
 <body>
@@ -388,7 +424,42 @@ textarea{min-height:120px;resize:vertical;line-height:1.6;}
           <input type="text" placeholder="margaret-rose-williams" style="margin-top:-0.5rem;">
         </div>
         <div class="form-group">
-          <label>Biography <span>optional — you can write this later</span></label>
+          <label>Biography <span>optional — you can write this later</span> <button class="ai-bio-trigger" onclick="toggleWizardAI()" type="button">✦ Write with AI</button></label>
+          
+          <!-- AI Biography Helper -->
+          <div class="ai-bio-helper" id="wizard-ai-panel">
+            <div class="ai-bio-inner">
+              <div class="ai-bio-header">
+                <div class="ai-bio-title">AI Biography Writer</div>
+                <button class="ai-bio-close" onclick="toggleWizardAI()" type="button">✕</button>
+              </div>
+              <div class="ai-bio-hints">
+                <button class="ai-bio-hint" onclick="addWizardHint('Their occupation and career')" type="button">Career</button>
+                <button class="ai-bio-hint" onclick="addWizardHint('Their hobbies and passions')" type="button">Hobbies</button>
+                <button class="ai-bio-hint" onclick="addWizardHint('Their family and relationships')" type="button">Family</button>
+                <button class="ai-bio-hint" onclick="addWizardHint('Their faith and values')" type="button">Faith</button>
+                <button class="ai-bio-hint" onclick="addWizardHint('A favourite memory or story')" type="button">Memory</button>
+                <button class="ai-bio-hint" onclick="addWizardHint('Their personality and spirit')" type="button">Personality</button>
+              </div>
+              <textarea class="ai-bio-prompt" id="wiz-ai-prompt" rows="3" placeholder="Share a few facts and memories — birthplace, career, hobbies, what made them special…"></textarea>
+              <div class="ai-bio-actions">
+                <button class="ai-bio-gen-btn" id="wiz-ai-btn" onclick="generateWizardBio()" type="button">
+                  <svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M6 1l1.2 3.5L11 6l-3.8 1.5L6 11 4.8 7.5 1 6l3.8-1.5L6 1z" fill="white" opacity="0.9"/></svg>
+                  Generate biography
+                </button>
+                <span style="font-size:0.68rem;color:rgba(247,243,238,0.22);">fills the field below ↓</span>
+              </div>
+              <div class="ai-bio-result" id="wiz-ai-result">
+                <div class="ai-bio-result-label">Generated biography</div>
+                <div class="ai-bio-result-text" id="wiz-ai-text"></div>
+                <div class="ai-bio-result-actions">
+                  <button class="ai-bio-use ai-bio-use-primary" onclick="useWizardBio()" type="button">Use this biography</button>
+                  <button class="ai-bio-use ai-bio-use-ghost" onclick="generateWizardBio()" type="button">↻ Try again</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
           <textarea placeholder="Share their story — who they were, what they loved, how they lived, what they meant to you and to the world..."></textarea>
         </div>
         <div class="form-group">
@@ -636,6 +707,83 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape') closeMobileN
     if (a.getAttribute('href') === path) a.classList.add('active');
   });
 })();
+
+// ── WIZARD AI BIOGRAPHY ───────────────────────────────
+var wizAIPanelOpen = false;
+
+function toggleWizardAI() {
+  wizAIPanelOpen = !wizAIPanelOpen;
+  var panel = document.getElementById('wizard-ai-panel');
+  panel.classList.toggle('open', wizAIPanelOpen);
+  if (wizAIPanelOpen) {
+    setTimeout(function() {
+      document.getElementById('wiz-ai-prompt').focus();
+    }, 420);
+  }
+}
+
+function addWizardHint(text) {
+  var prompt = document.getElementById('wiz-ai-prompt');
+  prompt.value = prompt.value ? prompt.value + ', ' + text.toLowerCase() : text;
+  prompt.focus();
+}
+
+async function generateWizardBio() {
+  var prompt = document.getElementById('wiz-ai-prompt').value.trim();
+  var nameFirst = document.querySelector('input[placeholder="e.g. Margaret"]')?.value || '';
+  var nameLast = document.querySelector('input[placeholder="e.g. Williams"]')?.value || '';
+  var name = (nameFirst + ' ' + nameLast).trim() || 'your loved one';
+  var btn = document.getElementById('wiz-ai-btn');
+  var resultEl = document.getElementById('wiz-ai-result');
+  var textEl = document.getElementById('wiz-ai-text');
+
+  btn.disabled = true;
+  btn.innerHTML = '<svg width="11" height="11" viewBox="0 0 12 12" fill="none" style="animation:wiz-spin 1s linear infinite"><circle cx="6" cy="6" r="4.5" stroke="white" stroke-width="1.5" stroke-dasharray="20" stroke-dashoffset="8" stroke-linecap="round"/></svg> Writing…';
+  resultEl.classList.add('visible');
+  textEl.textContent = '…';
+  textEl.classList.remove('streaming');
+
+  try {
+    var res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 600,
+        messages: [{ role: 'user', content: 'Write a warm, heartfelt biography for ' + name + ' to go on their online memorial page. Write 2-3 paragraphs in third person (he/she/they). Write ONLY the biography text — no title, no preamble. Make it feel personal and human.' + (prompt ? ' Include these details: ' + prompt : '') }]
+      })
+    });
+    var data = await res.json();
+    var text = data.content && data.content[0] ? data.content[0].text.trim() : '';
+    textEl.textContent = '';
+    textEl.classList.add('streaming');
+    var i = 0;
+    var speed = Math.max(6, Math.round(1600 / text.length));
+    var iv = setInterval(function() {
+      if (i >= text.length) { clearInterval(iv); textEl.classList.remove('streaming'); return; }
+      textEl.textContent += text.slice(i, i + 3); i += 3;
+    }, speed);
+  } catch(e) {
+    textEl.textContent = 'Unable to connect. Please check your connection and try again.';
+    textEl.classList.remove('streaming');
+  }
+
+  btn.disabled = false;
+  btn.innerHTML = '<svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M6 1l1.2 3.5L11 6l-3.8 1.5L6 11 4.8 7.5 1 6l3.8-1.5L6 1z" fill="white" opacity="0.9"/></svg> Generate biography';
+}
+
+function useWizardBio() {
+  var text = document.getElementById('wiz-ai-text').textContent;
+  var textarea = document.querySelector('#step-1 textarea');
+  if (textarea && text) {
+    textarea.value = text;
+    textarea.style.height = 'auto';
+    textarea.style.height = Math.min(textarea.scrollHeight, 320) + 'px';
+    toggleWizardAI();
+    textarea.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+}
+
 </script>
 
 <!-- MOBILE DRAWER -->
