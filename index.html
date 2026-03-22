@@ -749,6 +749,261 @@ footer{background:var(--ink);color:white;padding:5rem 5rem 3rem;}
   .footer-top { grid-template-columns: 1fr 1fr; gap: 2.5rem; }
 }
 
+
+/* ── RECENT MEMORIALS SECTION ──────────────────────────────── */
+.memorials-section {
+  padding: 6rem 0 6rem;
+  background: var(--bg-light);
+  overflow: hidden;
+}
+.memorials-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 3rem;
+}
+.memorials-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  margin-bottom: 2.5rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+.memorials-view-all {
+  font-size: 0.82rem;
+  color: var(--terracotta);
+  text-decoration: none;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  transition: gap 0.2s;
+}
+.memorials-view-all:hover { gap: 0.6rem; }
+
+/* Scrolling track */
+.memorials-track-wrap {
+  position: relative;
+}
+.memorials-track-wrap::before,
+.memorials-track-wrap::after {
+  content: '';
+  position: absolute;
+  top: 0; bottom: 0;
+  width: 80px;
+  z-index: 2;
+  pointer-events: none;
+}
+.memorials-track-wrap::before {
+  left: 0;
+  background: linear-gradient(90deg, var(--bg-light), transparent);
+}
+.memorials-track-wrap::after {
+  right: 0;
+  background: linear-gradient(-90deg, var(--bg-light), transparent);
+}
+
+.memorials-track {
+  display: flex;
+  gap: 1.5rem;
+  padding: 1.5rem 1rem 2rem;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  cursor: grab;
+}
+.memorials-track::-webkit-scrollbar { display: none; }
+.memorials-track:active { cursor: grabbing; }
+
+/* Individual memorial card */
+.mem-card {
+  flex-shrink: 0;
+  width: 220px;
+  background: var(--bg-light);
+  border-radius: 24px;
+  padding: 1.5rem 1.25rem 1.25rem;
+  box-shadow: var(--neu-card);
+  scroll-snap-align: start;
+  transition: transform 0.25s, box-shadow 0.25s;
+  text-decoration: none;
+  display: block;
+  position: relative;
+  overflow: hidden;
+}
+.mem-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 24px;
+  background: linear-gradient(145deg, rgba(255,255,255,0.6), transparent);
+  pointer-events: none;
+}
+.mem-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 12px 12px 32px #ccc7be, -6px -6px 20px #ffffff;
+}
+
+/* Portrait circle */
+.mem-portrait {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  margin: 0 auto 1rem;
+  position: relative;
+  box-shadow: 4px 4px 10px rgba(180,160,140,0.4), -3px -3px 8px rgba(255,255,255,0.8);
+}
+.mem-portrait svg {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+}
+
+/* Candle flame badge */
+.mem-candle-badge {
+  position: absolute;
+  bottom: 2px;
+  right: 2px;
+  width: 22px;
+  height: 22px;
+  background: linear-gradient(135deg, #F5C060, #E09030);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.7rem;
+  box-shadow: 2px 2px 5px rgba(180,130,40,0.35);
+}
+
+/* Text */
+.mem-name {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--ink);
+  text-align: center;
+  margin-bottom: 0.2rem;
+  line-height: 1.3;
+}
+.mem-years {
+  font-size: 0.72rem;
+  color: var(--text-light);
+  text-align: center;
+  margin-bottom: 0.75rem;
+  letter-spacing: 0.04em;
+}
+.mem-location {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem;
+  font-size: 0.72rem;
+  color: var(--text-mid);
+  margin-bottom: 0.85rem;
+}
+.mem-location-dot {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--terracotta);
+  flex-shrink: 0;
+}
+
+/* Divider */
+.mem-divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(0,0,0,0.07), transparent);
+  margin-bottom: 0.85rem;
+}
+
+/* Stats row */
+.mem-stats {
+  display: flex;
+  justify-content: center;
+  gap: 1.25rem;
+}
+.mem-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.1rem;
+}
+.mem-stat-val {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--ink);
+  line-height: 1;
+}
+.mem-stat-label {
+  font-size: 0.58rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-light);
+}
+
+/* Theme ribbon */
+.mem-ribbon {
+  position: absolute;
+  top: 14px;
+  right: -22px;
+  background: var(--terracotta);
+  color: white;
+  font-size: 0.52rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 0.2rem 1.8rem;
+  transform: rotate(35deg);
+  font-weight: 700;
+  opacity: 0.85;
+}
+.mem-ribbon.new { background: var(--terracotta); }
+.mem-ribbon.recent { background: var(--sage-accent); }
+
+/* Scroll nav dots */
+.memorials-dots {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-top: 1.5rem;
+}
+.mem-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--sand);
+  transition: all 0.3s;
+  cursor: pointer;
+}
+.mem-dot.active {
+  background: var(--terracotta);
+  width: 20px;
+  border-radius: 3px;
+}
+
+/* Warm ambient glow behind section */
+.memorials-section::before {
+  content: '';
+  position: absolute;
+  width: 600px;
+  height: 600px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(196,113,79,0.06) 0%, transparent 70%);
+  top: -100px;
+  right: -100px;
+  pointer-events: none;
+}
+.memorials-section { position: relative; }
+
+@media (max-width: 768px) {
+  .memorials-section { padding: 3.5rem 0; }
+  .memorials-inner { padding: 0 1.25rem; }
+  .mem-card { width: 185px; padding: 1.25rem 1rem 1rem; }
+  .mem-portrait { width: 68px; height: 68px; }
+  .memorials-header { flex-direction: column; align-items: flex-start; gap: 0.5rem; }
+}
+
 </style>
 </head>
 <body>
@@ -1036,6 +1291,403 @@ footer{background:var(--ink);color:white;padding:5rem 5rem 3rem;}
   </div>
 </section>
 
+<!-- RECENT MEMORIALS -->
+<section class="memorials-section">
+  <div class="memorials-inner">
+    <div class="memorials-header">
+      <div>
+        <div class="section-eyebrow">Recently added</div>
+        <h2 class="section-title">Lives being <em>remembered</em></h2>
+      </div>
+      <a href="kifo-gallery.html" class="memorials-view-all">Browse all memorials →</a>
+    </div>
+  </div>
+
+  <div class="memorials-track-wrap">
+    <div class="memorials-track" id="mem-track">
+      <a href="kifo-memorial.html" class="mem-card">
+        <div class="mem-ribbon new">NEW</div>
+        <div class="mem-portrait">
+          <svg viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <radialGradient id="bg8896" cx="30%" cy="30%" r="70%">
+      <stop offset="0%" stop-color="#E8D5C0"/>
+      <stop offset="100%" stop-color="#D4B898"/>
+    </radialGradient>
+    <clipPath id="circ5339"><circle cx="40" cy="40" r="38"/></clipPath>
+  </defs>
+  <circle cx="40" cy="40" r="38" fill="url(#bg8896)"/>
+  <g clip-path="url(#circ5339)">
+    <ellipse cx="40" cy="22" rx="18" ry="20" fill="#C0B8B0"/><path d="M22,30 Q18,50 20,70 Q22,75 25,75" stroke="#C0B8B0" stroke-width="8" fill="none" stroke-linecap="round"/><path d="M58,30 Q62,50 60,70 Q58,75 55,75" stroke="#C0B8B0" stroke-width="8" fill="none" stroke-linecap="round"/>
+    <ellipse cx="40" cy="36" rx="13" ry="15" fill="#C8906A"/>
+    <ellipse cx="36" cy="32" rx="2.5" ry="2" fill="rgba(0,0,0,0.25)"/>
+    <ellipse cx="44" cy="32" rx="2.5" ry="2" fill="rgba(0,0,0,0.25)"/>
+    <path d="M36,40 Q40,43 44,40" stroke="rgba(0,0,0,0.2)" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+    <ellipse cx="40" cy="60" rx="20" ry="20" fill="#C8906A" opacity="0.9"/>
+    
+  </g>
+</svg>
+          <div class="mem-candle-badge">🕯</div>
+        </div>
+        <div class="mem-name">Margaret Rose Williams</div>
+        <div class="mem-years">1942 — 2024 · Age 82</div>
+        <div class="mem-location">
+          <div class="mem-location-dot"></div>
+          Chicago, Illinois
+        </div>
+        <div class="mem-divider"></div>
+        <div class="mem-stats">
+          <div class="mem-stat">
+            <div class="mem-stat-val">48</div>
+            <div class="mem-stat-label">Candles</div>
+          </div>
+          <div class="mem-stat">
+            <div class="mem-stat-val">47</div>
+            <div class="mem-stat-label">Tributes</div>
+          </div>
+          <div class="mem-stat">
+            <div class="mem-stat-val">134</div>
+            <div class="mem-stat-label">Photos</div>
+          </div>
+        </div>
+      </a>
+      <a href="kifo-memorial.html" class="mem-card">
+        <div class="mem-ribbon recent">RECENT</div>
+        <div class="mem-portrait">
+          <svg viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <radialGradient id="bg7186" cx="30%" cy="30%" r="70%">
+      <stop offset="0%" stop-color="#C8D8C0"/>
+      <stop offset="100%" stop-color="#A8B898"/>
+    </radialGradient>
+    <clipPath id="circ2645"><circle cx="40" cy="40" r="38"/></clipPath>
+  </defs>
+  <circle cx="40" cy="40" r="38" fill="url(#bg7186)"/>
+  <g clip-path="url(#circ2645)">
+    <ellipse cx="40" cy="20" rx="18" ry="16" fill="#3A2810"/>
+    <ellipse cx="40" cy="36" rx="13" ry="15" fill="#8B5E3A"/>
+    <ellipse cx="36" cy="32" rx="2.5" ry="2" fill="rgba(0,0,0,0.25)"/>
+    <ellipse cx="44" cy="32" rx="2.5" ry="2" fill="rgba(0,0,0,0.25)"/>
+    <path d="M36,40 Q40,43 44,40" stroke="rgba(0,0,0,0.2)" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+    <ellipse cx="40" cy="60" rx="20" ry="20" fill="#8B5E3A" opacity="0.9"/>
+    
+  </g>
+</svg>
+          <div class="mem-candle-badge">🕯</div>
+        </div>
+        <div class="mem-name">James Arthur Thompson</div>
+        <div class="mem-years">1955 — 2023 · Age 68</div>
+        <div class="mem-location">
+          <div class="mem-location-dot"></div>
+          Atlanta, Georgia
+        </div>
+        <div class="mem-divider"></div>
+        <div class="mem-stats">
+          <div class="mem-stat">
+            <div class="mem-stat-val">31</div>
+            <div class="mem-stat-label">Candles</div>
+          </div>
+          <div class="mem-stat">
+            <div class="mem-stat-val">22</div>
+            <div class="mem-stat-label">Tributes</div>
+          </div>
+          <div class="mem-stat">
+            <div class="mem-stat-val">67</div>
+            <div class="mem-stat-label">Photos</div>
+          </div>
+        </div>
+      </a>
+      <a href="kifo-memorial.html" class="mem-card">
+        <div class="mem-ribbon new">NEW</div>
+        <div class="mem-portrait">
+          <svg viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <radialGradient id="bg7761" cx="30%" cy="30%" r="70%">
+      <stop offset="0%" stop-color="#D0C0E0"/>
+      <stop offset="100%" stop-color="#B8A0C8"/>
+    </radialGradient>
+    <clipPath id="circ1973"><circle cx="40" cy="40" r="38"/></clipPath>
+  </defs>
+  <circle cx="40" cy="40" r="38" fill="url(#bg7761)"/>
+  <g clip-path="url(#circ1973)">
+    <ellipse cx="40" cy="22" rx="18" ry="20" fill="#1A1008"/><path d="M22,30 Q18,50 20,70 Q22,75 25,75" stroke="#1A1008" stroke-width="8" fill="none" stroke-linecap="round"/><path d="M58,30 Q62,50 60,70 Q58,75 55,75" stroke="#1A1008" stroke-width="8" fill="none" stroke-linecap="round"/>
+    <ellipse cx="40" cy="36" rx="13" ry="15" fill="#6B3A20"/>
+    <ellipse cx="36" cy="32" rx="2.5" ry="2" fill="rgba(0,0,0,0.25)"/>
+    <ellipse cx="44" cy="32" rx="2.5" ry="2" fill="rgba(0,0,0,0.25)"/>
+    <path d="M36,40 Q40,43 44,40" stroke="rgba(0,0,0,0.2)" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+    <ellipse cx="40" cy="60" rx="20" ry="20" fill="#6B3A20" opacity="0.9"/>
+    
+  </g>
+</svg>
+          <div class="mem-candle-badge">🕯</div>
+        </div>
+        <div class="mem-name">Amara Diallo</div>
+        <div class="mem-years">1971 — 2025 · Age 53</div>
+        <div class="mem-location">
+          <div class="mem-location-dot"></div>
+          Paris, France
+        </div>
+        <div class="mem-divider"></div>
+        <div class="mem-stats">
+          <div class="mem-stat">
+            <div class="mem-stat-val">19</div>
+            <div class="mem-stat-label">Candles</div>
+          </div>
+          <div class="mem-stat">
+            <div class="mem-stat-val">31</div>
+            <div class="mem-stat-label">Tributes</div>
+          </div>
+          <div class="mem-stat">
+            <div class="mem-stat-val">88</div>
+            <div class="mem-stat-label">Photos</div>
+          </div>
+        </div>
+      </a>
+      <a href="kifo-memorial.html" class="mem-card">
+        
+        <div class="mem-portrait">
+          <svg viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <radialGradient id="bg6749" cx="30%" cy="30%" r="70%">
+      <stop offset="0%" stop-color="#C0D0D8"/>
+      <stop offset="100%" stop-color="#A0B8C0"/>
+    </radialGradient>
+    <clipPath id="circ5794"><circle cx="40" cy="40" r="38"/></clipPath>
+  </defs>
+  <circle cx="40" cy="40" r="38" fill="url(#bg6749)"/>
+  <g clip-path="url(#circ5794)">
+    <ellipse cx="40" cy="20" rx="18" ry="16" fill="#8A8078"/>
+    <ellipse cx="40" cy="36" rx="13" ry="15" fill="#B07850"/>
+    <ellipse cx="36" cy="32" rx="2.5" ry="2" fill="rgba(0,0,0,0.25)"/>
+    <ellipse cx="44" cy="32" rx="2.5" ry="2" fill="rgba(0,0,0,0.25)"/>
+    <path d="M36,40 Q40,43 44,40" stroke="rgba(0,0,0,0.2)" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+    <ellipse cx="40" cy="60" rx="20" ry="20" fill="#B07850" opacity="0.9"/>
+    
+  </g>
+</svg>
+          <div class="mem-candle-badge">🕯</div>
+        </div>
+        <div class="mem-name">Robert John Williams</div>
+        <div class="mem-years">1938 — 2019 · Age 81</div>
+        <div class="mem-location">
+          <div class="mem-location-dot"></div>
+          New York, New York
+        </div>
+        <div class="mem-divider"></div>
+        <div class="mem-stats">
+          <div class="mem-stat">
+            <div class="mem-stat-val">24</div>
+            <div class="mem-stat-label">Candles</div>
+          </div>
+          <div class="mem-stat">
+            <div class="mem-stat-val">31</div>
+            <div class="mem-stat-label">Tributes</div>
+          </div>
+          <div class="mem-stat">
+            <div class="mem-stat-val">87</div>
+            <div class="mem-stat-label">Photos</div>
+          </div>
+        </div>
+      </a>
+      <a href="kifo-memorial.html" class="mem-card">
+        <div class="mem-ribbon new">NEW</div>
+        <div class="mem-portrait">
+          <svg viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <radialGradient id="bg4491" cx="30%" cy="30%" r="70%">
+      <stop offset="0%" stop-color="#F0E0C8"/>
+      <stop offset="100%" stop-color="#E0C8A8"/>
+    </radialGradient>
+    <clipPath id="circ50"><circle cx="40" cy="40" r="38"/></clipPath>
+  </defs>
+  <circle cx="40" cy="40" r="38" fill="url(#bg4491)"/>
+  <g clip-path="url(#circ50)">
+    <ellipse cx="40" cy="22" rx="18" ry="20" fill="#3A2810"/><path d="M22,30 Q18,50 20,70 Q22,75 25,75" stroke="#3A2810" stroke-width="8" fill="none" stroke-linecap="round"/><path d="M58,30 Q62,50 60,70 Q58,75 55,75" stroke="#3A2810" stroke-width="8" fill="none" stroke-linecap="round"/>
+    <ellipse cx="40" cy="36" rx="13" ry="15" fill="#C89060"/>
+    <ellipse cx="36" cy="32" rx="2.5" ry="2" fill="rgba(0,0,0,0.25)"/>
+    <ellipse cx="44" cy="32" rx="2.5" ry="2" fill="rgba(0,0,0,0.25)"/>
+    <path d="M36,40 Q40,43 44,40" stroke="rgba(0,0,0,0.2)" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+    <ellipse cx="40" cy="60" rx="20" ry="20" fill="#C89060" opacity="0.9"/>
+    
+  </g>
+</svg>
+          <div class="mem-candle-badge">🕯</div>
+        </div>
+        <div class="mem-name">Yuki Tanaka</div>
+        <div class="mem-years">1948 — 2024 · Age 76</div>
+        <div class="mem-location">
+          <div class="mem-location-dot"></div>
+          Honolulu, Hawaii
+        </div>
+        <div class="mem-divider"></div>
+        <div class="mem-stats">
+          <div class="mem-stat">
+            <div class="mem-stat-val">62</div>
+            <div class="mem-stat-label">Candles</div>
+          </div>
+          <div class="mem-stat">
+            <div class="mem-stat-val">41</div>
+            <div class="mem-stat-label">Tributes</div>
+          </div>
+          <div class="mem-stat">
+            <div class="mem-stat-val">203</div>
+            <div class="mem-stat-label">Photos</div>
+          </div>
+        </div>
+      </a>
+      <a href="kifo-memorial.html" class="mem-card">
+        
+        <div class="mem-portrait">
+          <svg viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <radialGradient id="bg720" cx="30%" cy="30%" r="70%">
+      <stop offset="0%" stop-color="#E8D8C8"/>
+      <stop offset="100%" stop-color="#D0C0A8"/>
+    </radialGradient>
+    <clipPath id="circ9665"><circle cx="40" cy="40" r="38"/></clipPath>
+  </defs>
+  <circle cx="40" cy="40" r="38" fill="url(#bg720)"/>
+  <g clip-path="url(#circ9665)">
+    <ellipse cx="40" cy="22" rx="18" ry="20" fill="#E8E0D8"/><path d="M22,30 Q18,50 20,70 Q22,75 25,75" stroke="#E8E0D8" stroke-width="8" fill="none" stroke-linecap="round"/><path d="M58,30 Q62,50 60,70 Q58,75 55,75" stroke="#E8E0D8" stroke-width="8" fill="none" stroke-linecap="round"/>
+    <ellipse cx="40" cy="36" rx="13" ry="15" fill="#D4A878"/>
+    <ellipse cx="36" cy="32" rx="2.5" ry="2" fill="rgba(0,0,0,0.25)"/>
+    <ellipse cx="44" cy="32" rx="2.5" ry="2" fill="rgba(0,0,0,0.25)"/>
+    <path d="M36,40 Q40,43 44,40" stroke="rgba(0,0,0,0.2)" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+    <ellipse cx="40" cy="60" rx="20" ry="20" fill="#D4A878" opacity="0.9"/>
+    
+  </g>
+</svg>
+          <div class="mem-candle-badge">🕯</div>
+        </div>
+        <div class="mem-name">Eleanor Mae Hartley</div>
+        <div class="mem-years">1915 — 2002 · Age 87</div>
+        <div class="mem-location">
+          <div class="mem-location-dot"></div>
+          Boston, Massachusetts
+        </div>
+        <div class="mem-divider"></div>
+        <div class="mem-stats">
+          <div class="mem-stat">
+            <div class="mem-stat-val">16</div>
+            <div class="mem-stat-label">Candles</div>
+          </div>
+          <div class="mem-stat">
+            <div class="mem-stat-val">16</div>
+            <div class="mem-stat-label">Tributes</div>
+          </div>
+          <div class="mem-stat">
+            <div class="mem-stat-val">22</div>
+            <div class="mem-stat-label">Photos</div>
+          </div>
+        </div>
+      </a>
+      <a href="kifo-memorial.html" class="mem-card">
+        <div class="mem-ribbon recent">RECENT</div>
+        <div class="mem-portrait">
+          <svg viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <radialGradient id="bg2653" cx="30%" cy="30%" r="70%">
+      <stop offset="0%" stop-color="#D8C8A0"/>
+      <stop offset="100%" stop-color="#C0A880"/>
+    </radialGradient>
+    <clipPath id="circ198"><circle cx="40" cy="40" r="38"/></clipPath>
+  </defs>
+  <circle cx="40" cy="40" r="38" fill="url(#bg2653)"/>
+  <g clip-path="url(#circ198)">
+    <ellipse cx="40" cy="20" rx="18" ry="16" fill="#6B4020"/>
+    <ellipse cx="40" cy="36" rx="13" ry="15" fill="#9A6840"/>
+    <ellipse cx="36" cy="32" rx="2.5" ry="2" fill="rgba(0,0,0,0.25)"/>
+    <ellipse cx="44" cy="32" rx="2.5" ry="2" fill="rgba(0,0,0,0.25)"/>
+    <path d="M36,40 Q40,43 44,40" stroke="rgba(0,0,0,0.2)" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+    <ellipse cx="40" cy="60" rx="20" ry="20" fill="#9A6840" opacity="0.9"/>
+    
+  </g>
+</svg>
+          <div class="mem-candle-badge">🕯</div>
+        </div>
+        <div class="mem-name">Carlos Miguel Santos</div>
+        <div class="mem-years">1962 — 2024 · Age 62</div>
+        <div class="mem-location">
+          <div class="mem-location-dot"></div>
+          Miami, Florida
+        </div>
+        <div class="mem-divider"></div>
+        <div class="mem-stats">
+          <div class="mem-stat">
+            <div class="mem-stat-val">38</div>
+            <div class="mem-stat-label">Candles</div>
+          </div>
+          <div class="mem-stat">
+            <div class="mem-stat-val">28</div>
+            <div class="mem-stat-label">Tributes</div>
+          </div>
+          <div class="mem-stat">
+            <div class="mem-stat-val">94</div>
+            <div class="mem-stat-label">Photos</div>
+          </div>
+        </div>
+      </a>
+      <a href="kifo-memorial.html" class="mem-card">
+        <div class="mem-ribbon recent">RECENT</div>
+        <div class="mem-portrait">
+          <svg viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <radialGradient id="bg4724" cx="30%" cy="30%" r="70%">
+      <stop offset="0%" stop-color="#C8D8B0"/>
+      <stop offset="100%" stop-color="#B0C098"/>
+    </radialGradient>
+    <clipPath id="circ9333"><circle cx="40" cy="40" r="38"/></clipPath>
+  </defs>
+  <circle cx="40" cy="40" r="38" fill="url(#bg4724)"/>
+  <g clip-path="url(#circ9333)">
+    <ellipse cx="40" cy="22" rx="18" ry="20" fill="#8B3820"/><path d="M22,30 Q18,50 20,70 Q22,75 25,75" stroke="#8B3820" stroke-width="8" fill="none" stroke-linecap="round"/><path d="M58,30 Q62,50 60,70 Q58,75 55,75" stroke="#8B3820" stroke-width="8" fill="none" stroke-linecap="round"/>
+    <ellipse cx="40" cy="36" rx="13" ry="15" fill="#5A3018"/>
+    <ellipse cx="36" cy="32" rx="2.5" ry="2" fill="rgba(0,0,0,0.25)"/>
+    <ellipse cx="44" cy="32" rx="2.5" ry="2" fill="rgba(0,0,0,0.25)"/>
+    <path d="M36,40 Q40,43 44,40" stroke="rgba(0,0,0,0.2)" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+    <ellipse cx="40" cy="60" rx="20" ry="20" fill="#5A3018" opacity="0.9"/>
+    
+  </g>
+</svg>
+          <div class="mem-candle-badge">🕯</div>
+        </div>
+        <div class="mem-name">Grace Ifeoma Osei</div>
+        <div class="mem-years">1958 — 2023 · Age 65</div>
+        <div class="mem-location">
+          <div class="mem-location-dot"></div>
+          Houston, Texas
+        </div>
+        <div class="mem-divider"></div>
+        <div class="mem-stats">
+          <div class="mem-stat">
+            <div class="mem-stat-val">55</div>
+            <div class="mem-stat-label">Candles</div>
+          </div>
+          <div class="mem-stat">
+            <div class="mem-stat-val">38</div>
+            <div class="mem-stat-label">Tributes</div>
+          </div>
+          <div class="mem-stat">
+            <div class="mem-stat-val">112</div>
+            <div class="mem-stat-label">Photos</div>
+          </div>
+        </div>
+      </a>
+    </div>
+  </div>
+
+  <div class="memorials-dots" id="mem-dots">
+    <div class="mem-dot active" onclick="memScroll(0)"></div>
+    <div class="mem-dot" onclick="memScroll(1)"></div>
+    <div class="mem-dot" onclick="memScroll(2)"></div>
+    <div class="mem-dot" onclick="memScroll(3)"></div>
+    <div class="mem-dot" onclick="memScroll(4)"></div>
+    <div class="mem-dot" onclick="memScroll(5)"></div>
+    <div class="mem-dot" onclick="memScroll(6)"></div>
+    <div class="mem-dot" onclick="memScroll(7)"></div>
+  </div>
+</section>
+
 <!-- EVENTS -->
 <section class="events-section" id="events">
   <div class="events-inner">
@@ -1309,6 +1961,79 @@ window.addEventListener('scroll', function() {
     nav.style.boxShadow = 'none';
   }
 });
+
+
+// ── RECENT MEMORIALS CAROUSEL ────────────────────────────
+(function() {
+  var track = document.getElementById('mem-track');
+  var dots = document.querySelectorAll('.mem-dot');
+  if (!track) return;
+
+  function memScroll(idx) {
+    var card = track.children[idx];
+    if (!card) return;
+    track.scrollTo({ left: card.offsetLeft - 24, behavior: 'smooth' });
+  }
+  window.memScroll = memScroll;
+
+  // Update dots on scroll
+  var scrollTimer;
+  track.addEventListener('scroll', function() {
+    clearTimeout(scrollTimer);
+    scrollTimer = setTimeout(function() {
+      var scrollLeft = track.scrollLeft;
+      var cardW = track.children[0] ? track.children[0].offsetWidth + 24 : 240;
+      var idx = Math.round(scrollLeft / cardW);
+      dots.forEach(function(d, i) { d.classList.toggle('active', i === idx); });
+    }, 60);
+  });
+
+  // Drag to scroll
+  var isDragging = false, startX, startScroll;
+  track.addEventListener('mousedown', function(e) {
+    isDragging = true;
+    startX = e.pageX - track.offsetLeft;
+    startScroll = track.scrollLeft;
+    track.style.userSelect = 'none';
+  });
+  document.addEventListener('mousemove', function(e) {
+    if (!isDragging) return;
+    var x = e.pageX - track.offsetLeft;
+    track.scrollLeft = startScroll - (x - startX);
+  });
+  document.addEventListener('mouseup', function() {
+    isDragging = false;
+    track.style.userSelect = '';
+  });
+
+  // Auto-scroll every 4s
+  var autoTimer = setInterval(function() {
+    var scrollLeft = track.scrollLeft;
+    var maxScroll = track.scrollWidth - track.clientWidth;
+    if (scrollLeft >= maxScroll - 10) {
+      track.scrollTo({ left: 0, behavior: 'smooth' });
+    } else {
+      var cardW = track.children[0] ? track.children[0].offsetWidth + 24 : 240;
+      track.scrollBy({ left: cardW, behavior: 'smooth' });
+    }
+  }, 4000);
+
+  // Pause auto-scroll on hover/touch
+  track.addEventListener('mouseenter', function() { clearInterval(autoTimer); });
+  track.addEventListener('mouseleave', function() {
+    autoTimer = setInterval(function() {
+      var scrollLeft = track.scrollLeft;
+      var maxScroll = track.scrollWidth - track.clientWidth;
+      if (scrollLeft >= maxScroll - 10) {
+        track.scrollTo({ left: 0, behavior: 'smooth' });
+      } else {
+        var cardW = track.children[0] ? track.children[0].offsetWidth + 24 : 240;
+        track.scrollBy({ left: cardW, behavior: 'smooth' });
+      }
+    }, 4000);
+  });
+})();
+
 </script>
 </body>
 </html>
