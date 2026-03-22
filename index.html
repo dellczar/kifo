@@ -89,12 +89,12 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:cen
 .dd-icon{font-size:0.95rem;width:18px;text-align:center;flex-shrink:0;}
 
 /* ── HERO ─────────────────────────────────────────────────── */
-.hero{min-height:100vh;position:relative;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding:7rem 1.5rem 4rem;text-align:center;overflow:hidden;}
+
 
 /* Full-bleed background image using CSS */
-.hero-bg{position:absolute;inset:0;z-index:0;}
-.hero-bg-img{width:100%;height:100%;object-fit:cover;object-position:center 30%;}
-.hero-bg-overlay{position:absolute;inset:0;background:linear-gradient(180deg, rgba(240,235,227,0.72) 0%, rgba(240,235,227,0.60) 35%, rgba(240,235,227,0.82) 70%, rgba(240,235,227,0.97) 100%);}
+
+
+
 
 .hero-content{position:relative;z-index:2;max-width:560px;margin:0 auto;}
 
@@ -346,6 +346,306 @@ footer{background:var(--ink);color:white;padding:5rem 5rem 3rem;}
   .features-grid,.testimonials-grid,.pricing-grid{grid-template-columns:1fr;}
   .trust-bar{padding:1rem 1.5rem;}
 }
+
+/* ── ILLUSTRATED HERO SCENE ─────────────────────────────── */
+
+
+/* Sky — warm golden hour gradient */
+.scene-sky{
+  position:absolute;
+  inset:0;
+  background:linear-gradient(180deg,
+    #F5E6D0 0%,
+    #F2D9B8 20%,
+    #EDCBA0 40%,
+    #E8C090 55%,
+    #E0B888 65%,
+    #D9B080 75%,
+    #E8D5BC 85%,
+    #F0EBE3 100%
+  );
+}
+
+/* Sun glow orb */
+.scene-sun{
+  position:absolute;
+  width:180px;height:180px;
+  border-radius:50%;
+  background:radial-gradient(circle, rgba(255,220,120,0.9) 0%, rgba(255,180,80,0.5) 40%, transparent 70%);
+  top:25%;left:50%;
+  transform:translate(-50%,-50%);
+  filter:blur(2px);
+}
+
+/* Rolling hills */
+.scene-hill{
+  position:absolute;
+  border-radius:50%;
+  bottom:0;
+}
+.scene-hill-back{
+  width:160%;height:320px;
+  left:-30%;bottom:-80px;
+  background:linear-gradient(180deg,#C8A878 0%,#B89060 100%);
+  opacity:0.45;
+}
+.scene-hill-mid{
+  width:120%;height:260px;
+  left:-10%;bottom:-60px;
+  background:linear-gradient(180deg,#8A9E78 0%,#6A7E58 100%);
+  opacity:0.55;
+}
+.scene-hill-front{
+  width:100%;height:180px;
+  left:0;bottom:0;
+  background:linear-gradient(180deg,#7A9068 0%,#5A7048 100%);
+  opacity:0.6;
+}
+
+/* Ground */
+.scene-ground{
+  position:absolute;
+  bottom:0;left:0;right:0;
+  height:80px;
+  background:linear-gradient(180deg,#8A9E78,#6A7E58);
+  opacity:0.5;
+}
+
+/* Fade scene to hero background color at top — keeps text crisp */
+.scene-fade{
+  position:absolute;
+  top:0;left:0;right:0;
+  height:55%;
+  background:linear-gradient(180deg,
+    rgba(240,235,227,0.98) 0%,
+    rgba(240,235,227,0.90) 30%,
+    rgba(240,235,227,0.60) 60%,
+    transparent 100%
+  );
+}
+
+/* Candle */
+.scene-candle{
+  position:absolute;
+  bottom:110px;
+  left:calc(50% - 160px);
+  transform:translateX(-50%);
+}
+.candle-body{
+  width:22px;height:80px;
+  background:linear-gradient(135deg,#FFF8F0,#F5E8D0,#EDD8B8);
+  border-radius:2px 2px 3px 3px;
+  box-shadow:2px 2px 6px rgba(0,0,0,0.15);
+  position:relative;
+}
+.candle-base{
+  width:30px;height:10px;
+  background:linear-gradient(135deg,#E8D8C0,#D8C8A8);
+  border-radius:3px;
+  margin-left:-4px;
+  box-shadow:1px 2px 4px rgba(0,0,0,0.1);
+}
+.candle-flame{
+  width:14px;height:22px;
+  background:linear-gradient(180deg,#FFF0A0,#FFD040,#FF8020);
+  border-radius:50% 50% 30% 30%;
+  margin:0 auto -2px;
+  position:relative;
+  box-shadow:0 0 12px 4px rgba(255,180,40,0.5);
+  animation:flicker 2s ease-in-out infinite;
+}
+.candle-flame-inner{
+  position:absolute;
+  width:6px;height:12px;
+  background:rgba(255,255,200,0.8);
+  border-radius:50%;
+  top:4px;left:4px;
+}
+.candle-glow{
+  position:absolute;
+  width:60px;height:60px;
+  border-radius:50%;
+  background:radial-gradient(circle,rgba(255,200,80,0.35) 0%,transparent 70%);
+  top:-20px;left:-23px;
+  pointer-events:none;
+  animation:glowPulse 2s ease-in-out infinite;
+}
+@keyframes flicker{
+  0%,100%{transform:scaleX(1) scaleY(1);}
+  25%{transform:scaleX(0.92) scaleY(1.05) rotate(-1deg);}
+  75%{transform:scaleX(1.05) scaleY(0.97) rotate(1deg);}
+}
+@keyframes glowPulse{
+  0%,100%{opacity:0.8;transform:scale(1);}
+  50%{opacity:1;transform:scale(1.15);}
+}
+
+/* Framed photo */
+.scene-frame{
+  position:absolute;
+  bottom:100px;
+  right:calc(50% - 220px);
+  transform:translateX(50%);
+}
+.frame-border{
+  width:90px;height:110px;
+  background:linear-gradient(135deg,#8B6340,#6B4320,#8B6340);
+  border-radius:4px;
+  padding:6px;
+  box-shadow:4px 4px 12px rgba(0,0,0,0.35), 1px 1px 0 rgba(255,255,255,0.15) inset;
+}
+.frame-photo{
+  width:100%;height:100%;
+  background:linear-gradient(160deg,#D4C0A8,#C0A888,#A89070);
+  border-radius:2px;
+  display:flex;align-items:center;justify-content:center;
+  overflow:hidden;
+}
+.frame-silhouette{
+  width:40px;height:60px;
+  background:rgba(80,50,20,0.5);
+  border-radius:50% 50% 0 0 / 60% 60% 0 0;
+  position:relative;
+}
+.frame-silhouette::before{
+  content:'';
+  position:absolute;
+  width:18px;height:18px;
+  background:rgba(80,50,20,0.5);
+  border-radius:50%;
+  top:-14px;left:11px;
+}
+
+/* Flowers */
+.scene-flowers{
+  position:absolute;
+  bottom:90px;
+  left:50%;
+  transform:translateX(-50%);
+  display:flex;
+  gap:30px;
+  align-items:flex-end;
+}
+.flower{
+  position:relative;
+  width:40px;height:40px;
+}
+.petal{
+  position:absolute;
+  width:16px;height:22px;
+  background:rgba(255,240,230,0.85);
+  border-radius:50%;
+  left:12px;top:0;
+  transform-origin:center 20px;
+  box-shadow:0 0 4px rgba(255,200,180,0.4);
+}
+.petal.p1{transform:rotate(0deg);}
+.petal.p2{transform:rotate(72deg);}
+.petal.p3{transform:rotate(144deg);}
+.petal.p4{transform:rotate(216deg);}
+.petal.p5{transform:rotate(288deg);}
+.flower-center{
+  position:absolute;
+  width:12px;height:12px;
+  background:radial-gradient(circle,#F5C060,#E09030);
+  border-radius:50%;
+  top:50%;left:50%;
+  transform:translate(-50%,-50%);
+  box-shadow:0 0 4px rgba(200,140,40,0.5);
+}
+.f1{transform:scale(1.1);}
+.f2{transform:scale(0.85);}
+.f3{transform:scale(1);}
+.f1 .petal{background:rgba(255,220,210,0.9);}
+.f2 .petal{background:rgba(240,250,240,0.85);}
+.f3 .petal{background:rgba(255,235,220,0.9);}
+
+/* Doves */
+.scene-doves{
+  position:absolute;
+  top:28%;left:15%;
+  width:200px;height:80px;
+}
+.dove{
+  position:absolute;
+  display:flex;align-items:center;gap:0;
+}
+.dove-body{
+  width:16px;height:7px;
+  background:rgba(255,255,255,0.75);
+  border-radius:50%;
+  position:relative;
+}
+.dove-body::after{
+  content:'';
+  position:absolute;
+  right:-5px;top:1px;
+  width:8px;height:4px;
+  background:rgba(255,255,255,0.6);
+  border-radius:0 50% 50% 0;
+}
+.dove-wing{
+  width:14px;height:8px;
+  background:rgba(255,255,255,0.7);
+  border-radius:50%;
+}
+.dove-wing-l{transform:rotate(-20deg) translateY(-2px);}
+.dove-wing-r{transform:rotate(20deg) translateY(-2px);}
+.dove-1{top:0;left:0;transform:scale(1);animation:doveFloat 3s ease-in-out infinite;}
+.dove-2{top:20px;left:50px;transform:scale(0.75);animation:doveFloat 3.5s ease-in-out infinite 0.5s;}
+.dove-3{top:5px;left:100px;transform:scale(0.6);animation:doveFloat 4s ease-in-out infinite 1s;}
+@keyframes doveFloat{
+  0%,100%{transform:translateY(0) scale(var(--s,1));}
+  50%{transform:translateY(-6px) scale(var(--s,1));}
+}
+
+/* Eucalyptus stem */
+.scene-candle::after{
+  content:'';
+  position:absolute;
+  width:2px;height:40px;
+  background:linear-gradient(180deg,#7A9068,#5A7048);
+  bottom:10px;left:30px;
+  border-radius:2px;
+  transform:rotate(20deg);
+}
+
+
+/* ── HERO SECTION ────────────────────────────────────────── */
+.hero-section {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 5.5rem 1.5rem 0;
+  text-align: center;
+  overflow: hidden;
+  background: #F5EDE0;
+}
+
+/* SVG art layer — fills the full section behind content */
+.hero-art {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+.hero-art svg {
+  width: 100%;
+  height: 100%;
+}
+
+/* Content sits above the art */
+.hero-content {
+  position: relative;
+  z-index: 2;
+  max-width: 560px;
+  margin: 0 auto;
+  padding-bottom: 5rem;
+}
+
 </style>
 </head>
 <body>
@@ -391,12 +691,68 @@ footer{background:var(--ink);color:white;padding:5rem 5rem 3rem;}
 </nav>
 
 <!-- HERO -->
-<div class="hero">
-  <div class="hero-bg">
-    <img class="hero-bg-img" src="kifo-hero.png" alt="Memorial scene with candle and framed photo at sunset" onerror="this.parentElement.style.background='linear-gradient(180deg,#F5E8D8 0%,#E8D5BE 50%,#F0EBE3 100%)'">
-    <div class="hero-bg-overlay"></div>
+<section class="hero-section">
+
+  <!-- SVG scene: golden hour, candle, framed photo, flowers, doves -->
+  <div class="hero-art" aria-hidden="true">
+    <svg viewBox="0 0 1280 720" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <!-- Background: soft warm cream, not sky, not golden -->
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#F5EDE0"/>
+      <stop offset="60%" stop-color="#EFE4D0"/>
+      <stop offset="100%" stop-color="#DDD0B8"/>
+    </linearGradient>
+    <!-- Hills -->
+    <linearGradient id="hillFar" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#A8C090"/>
+      <stop offset="100%" stop-color="#88A070"/>
+    </linearGradient>
+    <linearGradient id="hillMid" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#7A9E68"/>
+      <stop offset="100%" stop-color="#587848"/>
+    </linearGradient>
+    <linearGradient id="hillFront" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#688A55"/>
+      <stop offset="100%" stop-color="#486840"/>
+    </linearGradient>
+    <linearGradient id="ground" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#587848"/>
+      <stop offset="100%" stop-color="#3A5830"/>
+    </linearGradient>
+    <!-- Top fade: blends scene into page bg so text area is clean -->
+    <linearGradient id="topFade" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%"  stop-color="#F5EDE0" stop-opacity="1"/>
+      <stop offset="55%" stop-color="#F5EDE0" stop-opacity="1"/>
+      <stop offset="85%" stop-color="#F5EDE0" stop-opacity="0"/>
+      <stop offset="100%" stop-color="#F5EDE0" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Base background — warm cream -->
+  <rect width="1280" height="720" fill="url(#bg)"/>
+
+  <!-- Far hill — wide, pale, behind everything -->
+  <ellipse cx="640" cy="760" rx="900" ry="320" fill="url(#hillFar)" opacity="0.55"/>
+
+  <!-- Mid-left hill -->
+  <ellipse cx="250" cy="740" rx="580" ry="260" fill="url(#hillMid)" opacity="0.7"/>
+
+  <!-- Mid-right hill -->
+  <ellipse cx="1050" cy="750" rx="560" ry="250" fill="url(#hillMid)" opacity="0.65"/>
+
+  <!-- Front hill — spans full width, anchors the scene -->
+  <ellipse cx="640" cy="790" rx="780" ry="240" fill="url(#hillFront)" opacity="0.85"/>
+
+  <!-- Ground strip at bottom -->
+  <rect y="660" width="1280" height="60" fill="url(#ground)" opacity="0.7"/>
+
+  <!-- Soft top fade — keeps text area above hills clean -->
+  <rect width="1280" height="720" fill="url(#topFade)"/>
+</svg>
   </div>
 
+  <!-- Hero text content — sits above SVG, no clashing -->
   <div class="hero-content">
     <div class="hero-eyebrow">
       <span class="hero-eyebrow-icon">♥</span>
@@ -434,14 +790,13 @@ footer{background:var(--ink);color:white;padding:5rem 5rem 3rem;}
       </a>
     </div>
 
-    <!-- Testimonial card -->
     <div class="hero-testimonial">
       <div class="testimonial-stars">★★★★★</div>
       <p class="testimonial-quote">"Creating my father's memorial brought our family so much closer together during a difficult time."</p>
       <div class="testimonial-attr">— Sarah M., California</div>
     </div>
   </div>
-</div>
+</section>
 
 <!-- TRUST BAR -->
 <div class="trust-bar">
