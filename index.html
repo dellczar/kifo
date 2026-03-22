@@ -329,13 +329,7 @@ footer{background:var(--ink);color:white;padding:5rem 5rem 3rem;}
 .btn-primary-hero,.btn-text-hero{} /* no-op classes */
 
 /* ── RESPONSIVE ───────────────────────────────────────────── */
-@media(max-width:1000px){
-  .how-inner,.events-inner{grid-template-columns:1fr;}
-  .how-visual{display:none;}
-  .features-grid,.testimonials-grid,.pricing-grid{grid-template-columns:1fr 1fr;}
-  .footer-top{grid-template-columns:1fr 1fr;gap:2.5rem;}
-  footer{padding:4rem 2rem 2.5rem;}
-}
+
 @media(max-width:768px){
   nav{padding:1rem 1.5rem;}
   .nav-links,.nav-sign-in{display:none;}
@@ -622,7 +616,7 @@ footer{background:var(--ink);color:white;padding:5rem 5rem 3rem;}
   padding: 5.5rem 1.5rem 0;
   text-align: center;
   overflow: hidden;
-  background: #F5EDE0;
+  background: #F8F2EA;
 }
 
 /* SVG art layer — fills the full section behind content */
@@ -644,6 +638,115 @@ footer{background:var(--ink);color:white;padding:5rem 5rem 3rem;}
   max-width: 560px;
   margin: 0 auto;
   padding-bottom: 5rem;
+}
+
+
+/* ═══════════════════════════════════════════════════════
+   MOBILE RESPONSIVE — complete overhaul
+   ═══════════════════════════════════════════════════════ */
+
+@media (max-width: 768px) {
+
+  /* NAV */
+  nav { padding: 1rem 1.25rem; }
+  .nav-links, .nav-sign-in { display: none; }
+  .mobile-hamburger { display: flex !important; }
+
+  /* HERO */
+  .hero-section {
+    padding: 4.5rem 1.25rem 0;
+    min-height: 100svh;
+  }
+  .hero-content { max-width: 100%; padding-bottom: 3rem; }
+  .hero-eyebrow { font-size: 0.62rem; padding: 0.35rem 0.85rem; }
+  .hero-title { font-size: clamp(2.4rem, 10vw, 3.5rem); }
+  .hero-sub { font-size: 0.95rem; }
+  .hero-cta-wrap { gap: 1rem; }
+  .btn-hero-primary { padding: 1rem 1.25rem; }
+  .btn-hero-primary-label { font-size: 1rem; }
+  .hero-trust { font-size: 0.72rem; gap: 0.6rem; }
+  .btn-hero-secondary { padding: 0.85rem 1.25rem; font-size: 0.88rem; }
+  .hero-testimonial { margin: 1.5rem auto 0; padding: 1.25rem; }
+  .testimonial-quote { font-size: 0.95rem; }
+
+  /* TRUST BAR */
+  .trust-bar { padding: 1rem 1.25rem; justify-content: center; }
+  .trust-bar-inner { font-size: 0.65rem; text-align: center; }
+
+  /* SECTIONS — all get tight mobile padding */
+  .how-section,
+  .features-section,
+  .events-section,
+  .testimonials-section,
+  .pricing-section,
+  .cta-section { padding: 3.5rem 1.25rem; }
+
+  /* HOW IT WORKS — single column, hide visual panel */
+  .how-inner { grid-template-columns: 1fr; gap: 2.5rem; }
+  .how-visual { display: none; }
+  .section-title { font-size: clamp(1.8rem, 6vw, 2.4rem); }
+
+  /* FEATURES — single column */
+  .features-grid { grid-template-columns: 1fr; gap: 1rem; }
+  .feature-card { padding: 1.5rem; border-radius: 16px; }
+
+  /* EVENTS — single column */
+  .events-inner { grid-template-columns: 1fr; gap: 2rem; }
+  .event-card { padding: 1rem 1.25rem; }
+
+  /* TESTIMONIALS — single column */
+  .testimonials-grid { grid-template-columns: 1fr; gap: 1rem; }
+  .t-card { padding: 1.5rem; border-radius: 16px; }
+
+  /* PRICING — single column */
+  .pricing-grid { grid-template-columns: 1fr; gap: 1.5rem; }
+  .plan-card { padding: 2rem 1.5rem; border-radius: 20px; }
+  .plan-price { font-size: 3rem; }
+
+  /* CTA */
+  .cta-btn { padding: 1rem 2rem; font-size: 0.85rem; }
+  .cta-section .section-title { font-size: clamp(1.8rem, 6vw, 2.4rem); }
+
+  /* FOOTER — single column on mobile */
+  footer { padding: 3rem 1.25rem 2rem; }
+  .footer-top {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+    padding-bottom: 2.5rem;
+  }
+  .footer-brand { font-size: 1.5rem; margin-bottom: 0.5rem; }
+  .footer-tagline { font-size: 0.82rem; max-width: 100%; }
+  .footer-col-title { margin-bottom: 0.85rem; margin-top: 0.25rem; }
+  .footer-links { gap: 0.5rem; }
+  .footer-links a { font-size: 0.88rem; }
+  .footer-bottom { flex-direction: column; gap: 0.75rem; text-align: center; }
+  .footer-legal { gap: 1.25rem; }
+
+  /* MOBILE DRAWER */
+  .mobile-drawer-overlay { display: block; }
+}
+
+@media (max-width: 480px) {
+  /* Extra small phones */
+  .hero-title { font-size: 2.2rem; }
+  .hero-sub { font-size: 0.9rem; }
+  .btn-hero-primary-label { font-size: 0.95rem; }
+  .hero-trust { flex-direction: column; gap: 0.35rem; }
+  .hero-trust-dot { display: none; }
+  .plan-price { font-size: 2.8rem; }
+}
+
+@media (min-width: 769px) and (max-width: 1000px) {
+  /* Tablet */
+  nav { padding: 1rem 2rem; }
+  .how-inner, .events-inner { grid-template-columns: 1fr; gap: 3rem; }
+  .how-visual { display: none; }
+  .features-grid, .testimonials-grid { grid-template-columns: 1fr 1fr; }
+  .pricing-grid { grid-template-columns: 1fr; max-width: 500px; margin: 3.5rem auto 0; }
+  .how-section, .features-section, .events-section,
+  .testimonials-section, .pricing-section, .cta-section { padding: 5rem 2.5rem; }
+  footer { padding: 4rem 2.5rem 2.5rem; }
+  .footer-top { grid-template-columns: 1fr 1fr; gap: 2.5rem; }
 }
 
 </style>
@@ -697,57 +800,76 @@ footer{background:var(--ink);color:white;padding:5rem 5rem 3rem;}
   <div class="hero-art" aria-hidden="true">
     <svg viewBox="0 0 1280 720" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
   <defs>
-    <!-- Background: soft warm cream, not sky, not golden -->
-    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="#F5EDE0"/>
-      <stop offset="60%" stop-color="#EFE4D0"/>
-      <stop offset="100%" stop-color="#DDD0B8"/>
+    <!-- Clean warm sky — no sun, just soft gradient -->
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#F8F2EA"/>
+      <stop offset="55%" stop-color="#F2E8D8"/>
+      <stop offset="100%" stop-color="#E8DCC8"/>
     </linearGradient>
-    <!-- Hills -->
-    <linearGradient id="hillFar" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="#A8C090"/>
-      <stop offset="100%" stop-color="#88A070"/>
+
+    <!-- Hill gradients — lush greens -->
+    <linearGradient id="hill-far" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#9AB888"/>
+      <stop offset="100%" stop-color="#78966A"/>
     </linearGradient>
-    <linearGradient id="hillMid" x1="0" y1="0" x2="0" y2="1">
+    <linearGradient id="hill-mid" x1="0" y1="0" x2="0" y2="1">
       <stop offset="0%" stop-color="#7A9E68"/>
-      <stop offset="100%" stop-color="#587848"/>
+      <stop offset="100%" stop-color="#587A48"/>
     </linearGradient>
-    <linearGradient id="hillFront" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="#688A55"/>
+    <linearGradient id="hill-front" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#628A50"/>
       <stop offset="100%" stop-color="#486840"/>
     </linearGradient>
     <linearGradient id="ground" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="#587848"/>
+      <stop offset="0%" stop-color="#567848"/>
       <stop offset="100%" stop-color="#3A5830"/>
     </linearGradient>
-    <!-- Top fade: blends scene into page bg so text area is clean -->
+
+    <!-- Top fade — solid cream → transparent, keeps text crisp -->
     <linearGradient id="topFade" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%"  stop-color="#F5EDE0" stop-opacity="1"/>
-      <stop offset="55%" stop-color="#F5EDE0" stop-opacity="1"/>
-      <stop offset="85%" stop-color="#F5EDE0" stop-opacity="0"/>
-      <stop offset="100%" stop-color="#F5EDE0" stop-opacity="0"/>
+      <stop offset="0%"   stop-color="#F8F2EA" stop-opacity="1"/>
+      <stop offset="55%"  stop-color="#F8F2EA" stop-opacity="0.85"/>
+      <stop offset="80%"  stop-color="#F8F2EA" stop-opacity="0.3"/>
+      <stop offset="100%" stop-color="#F8F2EA" stop-opacity="0"/>
     </linearGradient>
   </defs>
 
-  <!-- Base background — warm cream -->
-  <rect width="1280" height="720" fill="url(#bg)"/>
+  <!-- Sky -->
+  <rect width="1280" height="720" fill="url(#sky)"/>
 
-  <!-- Far hill — wide, pale, behind everything -->
-  <ellipse cx="640" cy="760" rx="900" ry="320" fill="url(#hillFar)" opacity="0.55"/>
+  <!-- Far hills — soft, misty -->
+  <ellipse cx="200"  cy="680" rx="560" ry="160" fill="url(#hill-far)" opacity="0.45"/>
+  <ellipse cx="900"  cy="690" rx="580" ry="150" fill="url(#hill-far)" opacity="0.4"/>
+  <ellipse cx="1220" cy="680" rx="360" ry="140" fill="url(#hill-far)" opacity="0.35"/>
 
-  <!-- Mid-left hill -->
-  <ellipse cx="250" cy="740" rx="580" ry="260" fill="url(#hillMid)" opacity="0.7"/>
+  <!-- Mid hills -->
+  <ellipse cx="0"    cy="700" rx="480" ry="190" fill="url(#hill-mid)" opacity="0.65"/>
+  <ellipse cx="640"  cy="710" rx="560" ry="200" fill="url(#hill-mid)" opacity="0.6"/>
+  <ellipse cx="1280" cy="700" rx="460" ry="185" fill="url(#hill-mid)" opacity="0.6"/>
 
-  <!-- Mid-right hill -->
-  <ellipse cx="1050" cy="750" rx="560" ry="250" fill="url(#hillMid)" opacity="0.65"/>
+  <!-- Front hills — fullest green -->
+  <ellipse cx="160"  cy="730" rx="440" ry="220" fill="url(#hill-front)" opacity="0.8"/>
+  <ellipse cx="820"  cy="740" rx="520" ry="230" fill="url(#hill-front)" opacity="0.75"/>
+  <ellipse cx="1180" cy="730" rx="380" ry="210" fill="url(#hill-front)" opacity="0.75"/>
 
-  <!-- Front hill — spans full width, anchors the scene -->
-  <ellipse cx="640" cy="790" rx="780" ry="240" fill="url(#hillFront)" opacity="0.85"/>
+  <!-- Ground strip -->
+  <rect y="660" width="1280" height="60" fill="url(#ground)" opacity="0.6"/>
 
-  <!-- Ground strip at bottom -->
-  <rect y="660" width="1280" height="60" fill="url(#ground)" opacity="0.7"/>
+  <!-- Subtle grass texture — tiny blades -->
+  <g opacity="0.18" fill="#3A5830">
+    <rect x="80"  y="656" width="2" height="8" rx="1"/>
+    <rect x="95"  y="659" width="2" height="6" rx="1"/>
+    <rect x="200" y="655" width="2" height="9" rx="1"/>
+    <rect x="350" y="657" width="2" height="7" rx="1"/>
+    <rect x="500" y="654" width="2" height="10" rx="1"/>
+    <rect x="640" y="658" width="2" height="7" rx="1"/>
+    <rect x="780" y="655" width="2" height="9" rx="1"/>
+    <rect x="900" y="657" width="2" height="8" rx="1"/>
+    <rect x="1050" y="654" width="2" height="10" rx="1"/>
+    <rect x="1180" y="656" width="2" height="8" rx="1"/>
+  </g>
 
-  <!-- Soft top fade — keeps text area above hills clean -->
+  <!-- Top fade overlay — protects headline text area -->
   <rect width="1280" height="720" fill="url(#topFade)"/>
 </svg>
   </div>
