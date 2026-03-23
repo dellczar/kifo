@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Events — Kifo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --cream:#F7F3EE;--parchment:#EDE5D8;--sand:#D9C9B0;--sienna:#9E6B4A;
+  --terracotta:#C4714F;--rust:#A8432A;--sage:#7A8C6E;--moss:#4E6245;
+  --dusk:#2C2420;--ash:#6B5F58;--gold:#C9994A;--warm-white:#FDFAF6;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--cream);color:var(--dusk);font-family:'DM Sans',sans-serif;font-weight:300;min-height:100vh;}
+
+/* NAV */
+nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:1rem 2.5rem;background:rgba(247,243,238,0.92);backdrop-filter:blur(16px);border-bottom:1px solid var(--sand);}
+.nav-logo{font-family:'Cormorant Garamond',serif;font-size:1.6rem;font-weight:500;letter-spacing:0.08em;color:var(--dusk);text-decoration:none;}
+.nav-logo span{color:var(--terracotta);}
+.nav-actions{display:flex;gap:0.75rem;align-items:center;}
+.nav-back{font-size:0.75rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--ash);text-decoration:none;display:flex;align-items:center;gap:0.4rem;transition:color 0.2s;}
+.nav-back:hover{color:var(--sienna);}
+.btn{font-size:0.75rem;letter-spacing:0.1em;text-transform:uppercase;padding:0.55rem 1.2rem;border-radius:2px;cursor:pointer;border:none;font-family:'DM Sans',sans-serif;transition:all 0.2s;text-decoration:none;display:inline-flex;align-items:center;gap:0.4rem;}
+.btn-ghost{background:transparent;color:var(--ash);border:1px solid var(--sand);}
+.btn-ghost:hover{border-color:var(--sienna);color:var(--sienna);}
+.btn-primary{background:var(--terracotta);color:white;}
+.btn-primary:hover{background:var(--rust);}
+
+/* PAGE HEADER */
+.page-header{padding:3rem 2.5rem 0;max-width:1200px;margin:0 auto;}
+.page-eyebrow{font-size:0.68rem;letter-spacing:0.22em;text-transform:uppercase;color:var(--sienna);margin-bottom:0.6rem;display:flex;align-items:center;gap:0.6rem;}
+.page-eyebrow::before{content:'';width:1.5rem;height:1px;background:var(--sienna);}
+.page-title{font-family:'Cormorant Garamond',serif;font-size:2.5rem;font-weight:300;color:var(--dusk);margin-bottom:0.5rem;}
+.page-title em{font-style:italic;color:var(--terracotta);}
+.page-sub{font-size:0.92rem;color:var(--ash);max-width:500px;line-height:1.7;}
+
+/* TABS */
+.tab-bar{padding:1.5rem 2.5rem 0;max-width:1200px;margin:0 auto;display:flex;gap:0;border-bottom:1px solid var(--sand);margin-bottom:2.5rem;}
+.tab{font-size:0.72rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--ash);padding:0.9rem 1.25rem;cursor:pointer;border-bottom:2px solid transparent;transition:all 0.2s;white-space:nowrap;}
+.tab:hover{color:var(--dusk);}
+.tab.active{color:var(--terracotta);border-bottom-color:var(--terracotta);}
+
+/* MAIN GRID */
+.main-grid{display:grid;grid-template-columns:1fr 360px;gap:2rem;max-width:1200px;margin:0 auto;padding:0 2.5rem 6rem;}
+
+/* EVENT CARDS */
+.events-list{display:flex;flex-direction:column;gap:1.25rem;}
+
+.event-card-big{background:var(--warm-white);border-radius:5px;overflow:hidden;box-shadow:0 2px 12px rgba(44,36,32,0.06);border-left:4px solid var(--terracotta);transition:box-shadow 0.2s;}
+.event-card-big:hover{box-shadow:0 8px 32px rgba(44,36,32,0.1);}
+.event-card-big.past{border-left-color:var(--sand);opacity:0.7;}
+.event-card-big.anniversary{border-left-color:var(--gold);}
+
+.ecb-inner{display:grid;grid-template-columns:auto 1fr auto;gap:1.5rem;padding:1.75rem;}
+.ecb-date{display:flex;flex-direction:column;align-items:center;justify-content:center;width:64px;height:64px;background:var(--parchment);border-radius:4px;flex-shrink:0;}
+.ecb-month{font-size:0.62rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--sienna);}
+.ecb-day{font-family:'Cormorant Garamond',serif;font-size:1.9rem;color:var(--dusk);line-height:1;}
+.ecb-year{font-size:0.62rem;color:var(--sand);}
+
+.ecb-body{flex:1;min-width:0;}
+.ecb-type{font-size:0.65rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--sienna);margin-bottom:0.4rem;}
+.event-card-big.anniversary .ecb-type{color:var(--gold);}
+.ecb-title{font-family:'Cormorant Garamond',serif;font-size:1.4rem;font-weight:500;color:var(--dusk);margin-bottom:0.3rem;}
+.ecb-memorial{font-size:0.78rem;color:var(--ash);margin-bottom:0.6rem;}
+.ecb-details{display:flex;flex-wrap:wrap;gap:1rem;}
+.ecb-detail{font-size:0.78rem;color:var(--ash);display:flex;align-items:center;gap:0.35rem;}
+.ecb-actions{display:flex;flex-direction:column;gap:0.5rem;align-items:flex-end;justify-content:flex-start;}
+.ecb-btn{font-size:0.7rem;letter-spacing:0.1em;text-transform:uppercase;padding:0.45rem 1rem;border-radius:2px;cursor:pointer;border:none;font-family:'DM Sans',sans-serif;transition:all 0.2s;white-space:nowrap;}
+.ecb-btn-primary{background:var(--terracotta);color:white;}
+.ecb-btn-primary:hover{background:var(--rust);}
+.ecb-btn-ghost{background:transparent;color:var(--ash);border:1px solid var(--sand);}
+.ecb-btn-ghost:hover{border-color:var(--sienna);color:var(--sienna);}
+
+.ecb-footer{padding:0.9rem 1.75rem;background:var(--parchment);border-top:1px solid var(--sand);display:flex;align-items:center;justify-content:space-between;}
+.ecb-rsvp-count{font-size:0.78rem;color:var(--ash);display:flex;align-items:center;gap:0.75rem;}
+.rsvp-avatars{display:flex;}
+.rsvp-avatar{width:24px;height:24px;border-radius:50%;border:2px solid var(--parchment);background:linear-gradient(135deg,#D4C4B2,#9E6B4A);margin-left:-6px;font-size:0.6rem;display:flex;align-items:center;justify-content:center;color:white;}
+.rsvp-avatar:first-child{margin-left:0;}
+.ecb-share{display:flex;gap:0.5rem;}
+.ecb-share-btn{width:28px;height:28px;border-radius:50%;background:var(--sand);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background 0.2s;font-size:0.75rem;}
+.ecb-share-btn:hover{background:var(--sienna);}
+
+/* CREATE EVENT CTA */
+.create-event-card{background:var(--parchment);border-radius:5px;border:2px dashed var(--sand);padding:2.5rem;text-align:center;cursor:pointer;transition:all 0.2s;}
+.create-event-card:hover{border-color:var(--sienna);background:var(--cream);}
+.create-event-icon{font-size:2.5rem;margin-bottom:0.75rem;}
+.create-event-title{font-family:'Cormorant Garamond',serif;font-size:1.3rem;color:var(--dusk);margin-bottom:0.4rem;}
+.create-event-sub{font-size:0.8rem;color:var(--ash);margin-bottom:1.25rem;}
+
+/* SIDEBAR */
+.sidebar{}
+
+/* RSVP LIST */
+.rsvp-card{background:var(--warm-white);border-radius:4px;padding:1.5rem;box-shadow:0 2px 12px rgba(44,36,32,0.05);margin-bottom:1.25rem;}
+.rsvp-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.25rem;}
+.rsvp-title{font-family:'Cormorant Garamond',serif;font-size:1.1rem;color:var(--dusk);}
+.rsvp-count{background:var(--terracotta);color:white;font-size:0.68rem;padding:0.2rem 0.55rem;border-radius:10px;}
+.rsvp-list{display:flex;flex-direction:column;gap:0.6rem;}
+.rsvp-person{display:flex;align-items:center;gap:0.6rem;}
+.rsvp-person-avatar{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-size:0.85rem;color:white;flex-shrink:0;}
+.rsvp-person-name{font-size:0.82rem;color:var(--dusk);}
+.rsvp-person-when{font-size:0.68rem;color:var(--ash);}
+.rsvp-more{font-size:0.72rem;color:var(--sienna);text-align:center;margin-top:0.75rem;cursor:pointer;}
+
+/* EVENT CREATOR PANEL */
+.creator-panel{background:var(--warm-white);border-radius:4px;overflow:hidden;box-shadow:0 2px 12px rgba(44,36,32,0.05);margin-bottom:1.25rem;}
+.creator-header{background:var(--dusk);padding:1.25rem 1.5rem;}
+.creator-header-title{font-family:'Cormorant Garamond',serif;font-size:1.1rem;color:var(--cream);}
+.creator-header-sub{font-size:0.72rem;color:rgba(255,255,255,0.4);margin-top:0.2rem;}
+.creator-form{padding:1.25rem 1.5rem;}
+.cf-group{margin-bottom:1.1rem;}
+.cf-label{font-size:0.65rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--ash);margin-bottom:0.4rem;display:block;}
+.cf-input{width:100%;padding:0.65rem 0.85rem;border:1.5px solid var(--sand);border-radius:3px;background:var(--cream);color:var(--dusk);font-family:'DM Sans',sans-serif;font-size:0.85rem;font-weight:300;outline:none;transition:border-color 0.2s;}
+.cf-input:focus{border-color:var(--sienna);}
+.cf-input::placeholder{color:var(--sand);}
+.cf-row{display:grid;grid-template-columns:1fr 1fr;gap:0.75rem;margin-bottom:1.1rem;}
+.cf-textarea{width:100%;padding:0.65rem 0.85rem;border:1.5px solid var(--sand);border-radius:3px;background:var(--cream);color:var(--dusk);font-family:'DM Sans',sans-serif;font-size:0.85rem;font-weight:300;outline:none;min-height:70px;resize:vertical;transition:border-color 0.2s;line-height:1.6;}
+.cf-textarea:focus{border-color:var(--sienna);}
+.event-type-pills{display:flex;gap:0.5rem;flex-wrap:wrap;margin-bottom:1.1rem;}
+.event-pill{font-size:0.68rem;letter-spacing:0.1em;text-transform:uppercase;padding:0.35rem 0.75rem;border-radius:2px;border:1px solid var(--sand);background:transparent;color:var(--ash);cursor:pointer;font-family:'DM Sans',sans-serif;transition:all 0.2s;}
+.event-pill:hover,.event-pill.active{background:var(--parchment);border-color:var(--sienna);color:var(--sienna);}
+.cf-submit{width:100%;padding:0.8rem;background:var(--terracotta);color:white;border:none;border-radius:2px;font-size:0.75rem;letter-spacing:0.12em;text-transform:uppercase;cursor:pointer;font-family:'DM Sans',sans-serif;transition:background 0.2s;margin-top:0.25rem;}
+.cf-submit:hover{background:var(--rust);}
+
+/* CALENDAR MINI */
+.mini-cal{background:var(--warm-white);border-radius:4px;padding:1.25rem;box-shadow:0 2px 12px rgba(44,36,32,0.05);}
+.mini-cal-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;}
+.mini-cal-month{font-family:'Cormorant Garamond',serif;font-size:1rem;color:var(--dusk);}
+.mini-cal-nav{background:none;border:none;color:var(--ash);cursor:pointer;font-size:0.85rem;padding:0.2rem;}
+.mini-cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:2px;text-align:center;}
+.cal-dow{font-size:0.6rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--sand);padding:0.3rem 0;}
+.cal-day{font-size:0.78rem;color:var(--ash);padding:0.35rem;border-radius:2px;cursor:pointer;transition:background 0.15s;}
+.cal-day:hover{background:var(--parchment);}
+.cal-day.today{background:var(--parchment);color:var(--dusk);font-weight:500;}
+.cal-day.has-event{position:relative;color:var(--terracotta);font-weight:500;}
+.cal-day.has-event::after{content:'';position:absolute;bottom:2px;left:50%;transform:translateX(-50%);width:4px;height:4px;border-radius:50%;background:var(--terracotta);}
+.cal-day.other-month{color:var(--sand);}
+
+@media(max-width:900px){
+  .main-grid{grid-template-columns:1fr;padding:0 1.5rem 4rem;}
+  .page-header{padding:2rem 1.5rem 0;}
+  .tab-bar{padding:1rem 1.5rem 0;}
+  .ecb-inner{grid-template-columns:auto 1fr;}.ecb-actions{display:none;}
+}
+
+/* ── MOBILE NAV ─────────────────────────────────────────────── */
+.mobile-hamburger {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  width: 36px;
+  height: 36px;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 3px;
+  transition: background 0.2s;
+  flex-shrink: 0;
+  border: none;
+  background: transparent;
+}
+.mobile-hamburger:hover { background: var(--parchment, #EDE5D8); }
+.mobile-hamburger span {
+  display: block;
+  height: 1.5px;
+  background: var(--dusk, #2C2420);
+  border-radius: 2px;
+  transition: transform 0.3s ease, opacity 0.3s ease, width 0.3s ease;
+  transform-origin: center;
+}
+.mobile-hamburger.open span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+.mobile-hamburger.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+.mobile-hamburger.open span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
+
+/* DRAWER OVERLAY */
+.mobile-drawer-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(44,36,32,0.45);
+  z-index: 998;
+  backdrop-filter: blur(3px);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+.mobile-drawer-overlay.open { opacity: 1; }
+
+/* DRAWER */
+.mobile-drawer {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 280px;
+  background: var(--warm-white, #FDFAF6);
+  z-index: 999;
+  transform: translateX(100%);
+  transition: transform 0.32s cubic-bezier(0.4,0,0.2,1);
+  box-shadow: -8px 0 32px rgba(44,36,32,0.15);
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+}
+.mobile-drawer.open { transform: translateX(0); }
+
+.drawer-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.25rem 1.5rem;
+  border-bottom: 1px solid var(--parchment, #EDE5D8);
+}
+.drawer-logo {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.5rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  color: var(--dusk, #2C2420);
+  text-decoration: none;
+}
+.drawer-logo span { color: var(--terracotta, #C4714F); }
+.drawer-close {
+  width: 32px;
+  height: 32px;
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-size: 1.2rem;
+  color: var(--ash, #6B5F58);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 3px;
+  transition: background 0.2s;
+}
+.drawer-close:hover { background: var(--parchment, #EDE5D8); }
+
+.drawer-nav {
+  flex: 1;
+  padding: 1.25rem 0;
+}
+.drawer-section {
+  font-size: 0.58rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--sand, #D9C9B0);
+  padding: 0 1.5rem;
+  margin: 1rem 0 0.4rem;
+}
+.drawer-link {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.8rem 1.5rem;
+  font-size: 0.88rem;
+  color: var(--ash, #6B5F58);
+  text-decoration: none;
+  transition: background 0.15s, color 0.15s;
+  border-left: 2px solid transparent;
+}
+.drawer-link:hover {
+  background: var(--parchment, #EDE5D8);
+  color: var(--dusk, #2C2420);
+}
+.drawer-link.active {
+  color: var(--terracotta, #C4714F);
+  border-left-color: var(--terracotta, #C4714F);
+  background: rgba(196,113,79,0.06);
+}
+.drawer-link-icon { font-size: 1rem; width: 20px; text-align: center; flex-shrink: 0; }
+
+.drawer-footer {
+  padding: 1.25rem 1.5rem;
+  border-top: 1px solid var(--parchment, #EDE5D8);
+}
+.drawer-cta {
+  display: block;
+  width: 100%;
+  padding: 0.85rem;
+  background: var(--terracotta, #C4714F);
+  color: white;
+  text-align: center;
+  border-radius: 3px;
+  font-size: 0.78rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  text-decoration: none;
+  font-family: 'DM Sans', sans-serif;
+  transition: background 0.2s;
+}
+.drawer-cta:hover { background: var(--rust, #A8432A); }
+
+@media (max-width: 768px) {
+  .mobile-hamburger { display: flex !important; }
+  .mobile-drawer-overlay { display: block; }
+}
+
+
+@media (max-width: 768px) {
+  .nav-links { display: none !important; }
+  .nav-actions .btn-ghost, .nav-actions .btn-primary,
+  .nav-right .nav-link { display: none !important; }
+  .nav-right .nav-btn, .nav-actions > a:not(.mobile-hamburger) { display: none !important; }
+}
+
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="kifo.html" class="nav-logo">Ki<span>f</span>o</a>
+  <div class="nav-actions">
+        <a href="kifo-memorial.html" class="nav-back">← Margaret's memorial</a>
+    <a href="kifo-dashboard.html" class="btn btn-ghost">Dashboard</a>
+    <button class="btn btn-primary" onclick="document.querySelector('.creator-panel').scrollIntoView({behavior:'smooth'})">+ Create event</button>
+  </div>
+  <button class="mobile-hamburger" id="mobile-hamburger" onclick="openMobileNav()" aria-label="Open menu"><span></span><span></span><span></span></button>
+</nav>
+
+<div class="page-header">
+  <div class="page-eyebrow">Event planning</div>
+  <h1 class="page-title">Gather those who <em>loved her</em></h1>
+  <p class="page-sub">Create events, collect RSVPs, and keep family informed — all in one place attached to the memorial.</p>
+</div>
+
+<div class="tab-bar">
+  <div class="tab active">Upcoming</div>
+  <div class="tab">Past events</div>
+  <div class="tab">All events</div>
+</div>
+
+<div class="main-grid">
+
+  <!-- LEFT: EVENTS -->
+  <div class="events-list">
+
+    <!-- Event 1 -->
+    <div class="event-card-big">
+      <div class="ecb-inner">
+        <div class="ecb-date">
+          <div class="ecb-month">Nov</div>
+          <div class="ecb-day">30</div>
+          <div class="ecb-year">2024</div>
+        </div>
+        <div class="ecb-body">
+          <div class="ecb-type">Celebration of Life</div>
+          <div class="ecb-title">Celebration of Life Gathering</div>
+          <div class="ecb-memorial">Margaret Rose Williams</div>
+          <div class="ecb-details">
+            <div class="ecb-detail">🕑 2:00 PM – 5:00 PM</div>
+            <div class="ecb-detail">📍 Logan Square Community Hall, Chicago</div>
+            <div class="ecb-detail">👤 23 attending</div>
+          </div>
+        </div>
+        <div class="ecb-actions">
+          <button class="ecb-btn ecb-btn-primary">Manage event</button>
+          <button class="ecb-btn ecb-btn-ghost">Share</button>
+          <button class="ecb-btn ecb-btn-ghost">Edit</button>
+        </div>
+      </div>
+      <div class="ecb-footer">
+        <div class="ecb-rsvp-count">
+          <div class="rsvp-avatars">
+            <div class="rsvp-avatar">J</div>
+            <div class="rsvp-avatar" style="background:linear-gradient(135deg,#8A9E7E,#4E6245);">P</div>
+            <div class="rsvp-avatar" style="background:linear-gradient(135deg,#C8B8A2,#9E6B4A);">S</div>
+            <div class="rsvp-avatar" style="background:linear-gradient(135deg,#BDC4B2,#7A8C6E);">D</div>
+            <div class="rsvp-avatar" style="font-size:0.55rem;background:var(--ash);">+19</div>
+          </div>
+          <span>23 people attending</span>
+        </div>
+        <div class="ecb-share">
+          <button class="ecb-share-btn" title="Copy link">🔗</button>
+          <button class="ecb-share-btn" title="Email guests">✉</button>
+          <button class="ecb-share-btn" title="WhatsApp">💬</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Event 2 -->
+    <div class="event-card-big anniversary">
+      <div class="ecb-inner">
+        <div class="ecb-date" style="background:rgba(201,153,74,0.1);">
+          <div class="ecb-month" style="color:var(--gold);">Dec</div>
+          <div class="ecb-day">3</div>
+          <div class="ecb-year">2024</div>
+        </div>
+        <div class="ecb-body">
+          <div class="ecb-type">Birthday Remembrance</div>
+          <div class="ecb-title">Margaret's 83rd birthday</div>
+          <div class="ecb-memorial">Margaret Rose Williams</div>
+          <div class="ecb-details">
+            <div class="ecb-detail">🕯 Light a candle in her memory</div>
+            <div class="ecb-detail">🌿 Share a memory from this day</div>
+          </div>
+        </div>
+        <div class="ecb-actions">
+          <button class="ecb-btn ecb-btn-ghost">View event</button>
+          <button class="ecb-btn ecb-btn-ghost">Edit</button>
+        </div>
+      </div>
+      <div class="ecb-footer">
+        <div class="ecb-rsvp-count">Auto-reminder sent to 12 guests on Dec 3</div>
+        <div class="ecb-share">
+          <button class="ecb-share-btn" title="Copy link">🔗</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Event 3 (past) -->
+    <div class="event-card-big past">
+      <div class="ecb-inner">
+        <div class="ecb-date">
+          <div class="ecb-month">Nov</div>
+          <div class="ecb-day">15</div>
+          <div class="ecb-year">2024</div>
+        </div>
+        <div class="ecb-body">
+          <div class="ecb-type">Funeral Service</div>
+          <div class="ecb-title">Funeral & Burial Service</div>
+          <div class="ecb-memorial">Margaret Rose Williams</div>
+          <div class="ecb-details">
+            <div class="ecb-detail">🕑 10:00 AM</div>
+            <div class="ecb-detail">📍 St. John's Church, Chicago</div>
+            <div class="ecb-detail">👤 84 attended</div>
+          </div>
+        </div>
+        <div class="ecb-actions">
+          <button class="ecb-btn ecb-btn-ghost">View archive</button>
+        </div>
+      </div>
+      <div class="ecb-footer" style="background:var(--cream);">
+        <div class="ecb-rsvp-count" style="color:var(--sand);">84 people attended · Event has passed</div>
+        <div style="font-size:0.7rem;color:var(--sand);">Nov 15, 2024</div>
+      </div>
+    </div>
+
+    <!-- Create new -->
+    <div class="create-event-card" onclick="document.querySelector('.creator-panel').scrollIntoView({behavior:'smooth'})">
+      <div class="create-event-icon">🗓️</div>
+      <div class="create-event-title">Create a new event</div>
+      <div class="create-event-sub">Funeral service, gathering, anniversary, or remembrance day</div>
+      <div class="btn btn-primary" style="display:inline-flex;justify-content:center;">+ Add event</div>
+    </div>
+
+  </div>
+
+  <!-- SIDEBAR -->
+  <div class="sidebar">
+
+    <!-- Create event panel -->
+    <div class="creator-panel">
+      <div class="creator-header">
+        <div class="creator-header-title">Create an event</div>
+        <div class="creator-header-sub">Linked to Margaret's memorial</div>
+      </div>
+      <div class="creator-form">
+        <div style="margin-bottom:1rem;">
+          <div class="cf-label">Event type</div>
+          <div class="event-type-pills">
+            <button class="event-pill active" onclick="togglePill(this)">Service</button>
+            <button class="event-pill" onclick="togglePill(this)">Gathering</button>
+            <button class="event-pill" onclick="togglePill(this)">Anniversary</button>
+            <button class="event-pill" onclick="togglePill(this)">Other</button>
+          </div>
+        </div>
+        <div class="cf-group">
+          <label class="cf-label">Event name</label>
+          <input type="text" class="cf-input" placeholder="e.g. Graveside remembrance">
+        </div>
+        <div class="cf-row">
+          <div>
+            <label class="cf-label">Date</label>
+            <input type="date" class="cf-input">
+          </div>
+          <div>
+            <label class="cf-label">Time</label>
+            <input type="text" class="cf-input" placeholder="e.g. 2:00 PM">
+          </div>
+        </div>
+        <div class="cf-group">
+          <label class="cf-label">Location</label>
+          <input type="text" class="cf-input" placeholder="Venue name or address">
+        </div>
+        <div class="cf-group">
+          <label class="cf-label">Livestream link <span style="font-size:0.65rem;color:var(--sand);text-transform:none;">optional</span></label>
+          <input type="text" class="cf-input" placeholder="YouTube, Zoom or Teams link">
+        </div>
+        <div class="cf-group">
+          <label class="cf-label">Message to guests</label>
+          <textarea class="cf-textarea" placeholder="Any details guests should know — parking, dress code, what to bring..."></textarea>
+        </div>
+        <div class="cf-group">
+          <label class="cf-label">Invite guests</label>
+          <textarea class="cf-textarea" placeholder="Email addresses, separated by commas" style="min-height:50px;"></textarea>
+        </div>
+        <label style="display:flex;align-items:center;gap:0.5rem;font-size:0.78rem;color:var(--ash);margin-bottom:1.1rem;cursor:pointer;">
+          <input type="checkbox" checked style="accent-color:var(--terracotta);"> Collect RSVPs from guests
+        </label>
+        <button class="cf-submit">Create event</button>
+      </div>
+    </div>
+
+    <!-- RSVPs -->
+    <div class="rsvp-card">
+      <div class="rsvp-header">
+        <div class="rsvp-title">RSVPs — Nov 30</div>
+        <div class="rsvp-count">23</div>
+      </div>
+      <div class="rsvp-list">
+        <div class="rsvp-person"><div class="rsvp-person-avatar" style="background:linear-gradient(135deg,#C4A882,#9E6B4A);">J</div><div><div class="rsvp-person-name">James Williams Jr.</div><div class="rsvp-person-when">RSVP'd 2 days ago</div></div></div>
+        <div class="rsvp-person"><div class="rsvp-person-avatar" style="background:linear-gradient(135deg,#8A9E7E,#4E6245);">P</div><div><div class="rsvp-person-name">Patricia Williams</div><div class="rsvp-person-when">RSVP'd 3 days ago</div></div></div>
+        <div class="rsvp-person"><div class="rsvp-person-avatar" style="background:linear-gradient(135deg,#D4C4B2,#B09070);">S</div><div><div class="rsvp-person-name">Sarah Mitchell</div><div class="rsvp-person-when">RSVP'd 1 day ago</div></div></div>
+        <div class="rsvp-person"><div class="rsvp-person-avatar" style="background:linear-gradient(135deg,#BDC4B2,#7A8C6E);">D</div><div><div class="rsvp-person-name">Daniel Osei</div><div class="rsvp-person-when">RSVP'd 4 hours ago</div></div></div>
+        <div class="rsvp-person"><div class="rsvp-person-avatar" style="background:linear-gradient(135deg,#C8B8A2,#9E6B4A);">R</div><div><div class="rsvp-person-name">Rose Kowalski</div><div class="rsvp-person-when">RSVP'd 1 day ago</div></div></div>
+      </div>
+      <div class="rsvp-more">+18 more guests ↓</div>
+    </div>
+
+    <!-- Mini calendar -->
+    <div class="mini-cal">
+      <div class="mini-cal-header">
+        <button class="mini-cal-nav">‹</button>
+        <div class="mini-cal-month">November 2024</div>
+        <button class="mini-cal-nav">›</button>
+      </div>
+      <div class="mini-cal-grid">
+        <div class="cal-dow">Su</div><div class="cal-dow">Mo</div><div class="cal-dow">Tu</div><div class="cal-dow">We</div><div class="cal-dow">Th</div><div class="cal-dow">Fr</div><div class="cal-dow">Sa</div>
+        <div class="cal-day other-month">27</div><div class="cal-day other-month">28</div><div class="cal-day other-month">29</div><div class="cal-day other-month">30</div><div class="cal-day other-month">31</div><div class="cal-day">1</div><div class="cal-day">2</div>
+        <div class="cal-day">3</div><div class="cal-day">4</div><div class="cal-day">5</div><div class="cal-day">6</div><div class="cal-day">7</div><div class="cal-day">8</div><div class="cal-day">9</div>
+        <div class="cal-day">10</div><div class="cal-day">11</div><div class="cal-day today">12</div><div class="cal-day has-event">13</div><div class="cal-day">14</div><div class="cal-day has-event">15</div><div class="cal-day">16</div>
+        <div class="cal-day">17</div><div class="cal-day">18</div><div class="cal-day">19</div><div class="cal-day">20</div><div class="cal-day">21</div><div class="cal-day">22</div><div class="cal-day">23</div>
+        <div class="cal-day">24</div><div class="cal-day">25</div><div class="cal-day">26</div><div class="cal-day">27</div><div class="cal-day">28</div><div class="cal-day">29</div><div class="cal-day has-event">30</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+function togglePill(el) {
+  document.querySelectorAll('.event-pill').forEach(p => p.classList.remove('active'));
+  el.classList.add('active');
+}
+</script>
+
+<!-- MOBILE DRAWER -->
+<div class="mobile-drawer-overlay" id="mobile-overlay" onclick="closeMobileNav()"></div>
+<div class="mobile-drawer" id="mobile-drawer">
+  <div class="drawer-header">
+    <a href="index.html" class="drawer-logo">Ki<span>f</span>o</a>
+    <button class="drawer-close" onclick="closeMobileNav()">✕</button>
+  </div>
+  <nav class="drawer-nav">
+    <div class="drawer-section">Memorials</div>
+    <a href="index.html" class="drawer-link"><span class="drawer-link-icon">🏠</span>Home</a>
+    <a href="kifo-gallery.html" class="drawer-link"><span class="drawer-link-icon">🔍</span>Browse memorials</a>
+    <a href="kifo-memorial.html" class="drawer-link"><span class="drawer-link-icon">🕯</span>Example memorial</a>
+    <a href="kifo-wizard.html" class="drawer-link"><span class="drawer-link-icon">✦</span>Create a memorial</a>
+    <div class="drawer-section">AI Tools</div>
+    <a href="kifo-ai-tribute.html" class="drawer-link"><span class="drawer-link-icon">✍️</span>AI Tribute Writer</a>
+    <a href="kifo-lifestory.html" class="drawer-link"><span class="drawer-link-icon">📖</span>AI Life Story</a>
+    <div class="drawer-section">Account</div>
+    <a href="kifo-dashboard.html" class="drawer-link"><span class="drawer-link-icon">📋</span>Dashboard</a>
+    <a href="kifo-events.html" class="drawer-link"><span class="drawer-link-icon">📅</span>Events</a>
+    <a href="kifo-settings.html" class="drawer-link"><span class="drawer-link-icon">⚙️</span>Settings</a>
+    <a href="kifo-signin.html" class="drawer-link"><span class="drawer-link-icon">🔑</span>Sign in</a>
+  </nav>
+  <div class="drawer-footer">
+    <a href="kifo-wizard.html" class="drawer-cta">+ Create a memorial — free</a>
+  </div>
+</div>
+
+<script>
+function openMobileNav() {
+  document.getElementById('mobile-drawer').classList.add('open');
+  document.getElementById('mobile-overlay').classList.add('open');
+  const ham = document.getElementById('mobile-hamburger');
+  if (ham) ham.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeMobileNav() {
+  document.getElementById('mobile-drawer').classList.remove('open');
+  document.getElementById('mobile-overlay').classList.remove('open');
+  const ham = document.getElementById('mobile-hamburger');
+  if (ham) ham.classList.remove('open');
+  document.body.style.overflow = '';
+}
+document.addEventListener('keydown', function(e) { if (e.key === 'Escape') closeMobileNav(); });
+(function() {
+  var path = window.location.pathname.split('/').pop() || 'index.html';
+  document.querySelectorAll('.drawer-link').forEach(function(a) {
+    if (a.getAttribute('href') === path) a.classList.add('active');
+  });
+})();
+</script>
+</body>
+</html>

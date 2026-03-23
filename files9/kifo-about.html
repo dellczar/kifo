@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>About Kifo — Honoring Every Life</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet">
+<style>
+:root{--cream:#F7F3EE;--parchment:#EDE5D8;--sand:#D9C9B0;--sienna:#9E6B4A;--terracotta:#C4714F;--rust:#A8432A;--sage:#7A8C6E;--moss:#4E6245;--dusk:#2C2420;--ash:#6B5F58;--gold:#C9994A;--warm-white:#FDFAF6;}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{background:var(--cream);color:var(--dusk);font-family:'DM Sans',sans-serif;font-weight:300;min-height:100vh;}
+.nav{display:flex;align-items:center;justify-content:space-between;padding:1rem 2.5rem;background:rgba(247,243,238,0.94);backdrop-filter:blur(14px);border-bottom:1px solid var(--sand);position:sticky;top:0;z-index:50;}
+.nav-logo{font-family:'Cormorant Garamond',serif;font-size:1.6rem;font-weight:500;letter-spacing:0.08em;color:var(--dusk);text-decoration:none;}
+.nav-logo span{color:var(--terracotta);}
+.nav-right{display:flex;gap:0.75rem;align-items:center;}
+.nav-link{font-size:0.72rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--ash);text-decoration:none;transition:color 0.2s;}
+.nav-link:hover{color:var(--sienna);}
+.nav-btn{background:var(--terracotta);color:white;padding:0.5rem 1.1rem;border-radius:2px;font-size:0.72rem;letter-spacing:0.12em;text-transform:uppercase;text-decoration:none;transition:background 0.2s;}
+.nav-btn:hover{background:var(--rust);}
+
+/* HERO */
+.hero{background:var(--dusk);padding:6rem 2.5rem 5rem;position:relative;overflow:hidden;}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 20% 50%,rgba(196,113,79,0.18) 0%,transparent 55%),radial-gradient(ellipse at 80% 20%,rgba(122,140,110,0.15) 0%,transparent 50%);}
+.hero-pattern{position:absolute;inset:0;opacity:0.03;background-image:radial-gradient(circle,rgba(255,255,255,0.9) 1px,transparent 1px);background-size:32px 32px;}
+.hero-inner{max-width:760px;position:relative;z-index:2;}
+.hero-eyebrow{font-size:0.62rem;letter-spacing:0.25em;text-transform:uppercase;color:var(--gold);margin-bottom:1.25rem;display:flex;align-items:center;gap:0.6rem;}
+.hero-eyebrow::before{content:'';width:1.5rem;height:1px;background:var(--gold);}
+.hero-title{font-family:'Cormorant Garamond',serif;font-size:clamp(2.4rem,5vw,4rem);font-weight:300;color:var(--cream);line-height:1.12;margin-bottom:1.5rem;}
+.hero-title em{font-style:italic;color:var(--gold);}
+.hero-body{font-size:1rem;color:rgba(247,243,238,0.55);line-height:1.85;max-width:580px;}
+
+/* MISSION */
+.mission{max-width:1100px;margin:0 auto;padding:5rem 2.5rem;display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:center;}
+.mission-label{font-size:0.62rem;letter-spacing:0.22em;text-transform:uppercase;color:var(--sienna);margin-bottom:1.25rem;display:flex;align-items:center;gap:0.5rem;}
+.mission-label::before{content:'';width:1.2rem;height:1px;background:var(--sienna);}
+.mission-title{font-family:'Cormorant Garamond',serif;font-size:2.4rem;font-weight:300;color:var(--dusk);line-height:1.2;margin-bottom:1.5rem;}
+.mission-title em{font-style:italic;color:var(--terracotta);}
+.mission-body p{font-size:0.9rem;color:var(--ash);line-height:1.85;margin-bottom:1rem;}
+.mission-visual{background:var(--dusk);border-radius:4px;padding:2.5rem;position:relative;overflow:hidden;}
+.mission-visual::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 30% 70%,rgba(196,113,79,0.2) 0%,transparent 60%);}
+.mission-stat{position:relative;z-index:2;margin-bottom:2rem;}
+.mission-stat:last-child{margin-bottom:0;}
+.ms-num{font-family:'Cormorant Garamond',serif;font-size:3rem;font-weight:300;color:var(--cream);line-height:1;}
+.ms-label{font-size:0.68rem;letter-spacing:0.15em;text-transform:uppercase;color:rgba(247,243,238,0.4);margin-top:0.25rem;}
+.ms-divider{height:1px;background:rgba(247,243,238,0.08);margin:1.75rem 0;}
+
+/* VALUES */
+.values{background:var(--warm-white);padding:5rem 2.5rem;border-top:1px solid var(--parchment);border-bottom:1px solid var(--parchment);}
+.values-inner{max-width:1100px;margin:0 auto;}
+.section-eyebrow{font-size:0.62rem;letter-spacing:0.22em;text-transform:uppercase;color:var(--sienna);margin-bottom:0.75rem;display:flex;align-items:center;gap:0.5rem;}
+.section-eyebrow::before{content:'';width:1.2rem;height:1px;background:var(--sienna);}
+.section-title{font-family:'Cormorant Garamond',serif;font-size:2.2rem;font-weight:300;color:var(--dusk);margin-bottom:3.5rem;line-height:1.2;}
+.values-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2rem;}
+.value-card{padding:2rem;border:1px solid var(--parchment);border-radius:4px;background:var(--cream);transition:box-shadow 0.2s,transform 0.2s;}
+.value-card:hover{box-shadow:0 8px 28px rgba(44,36,32,0.07);transform:translateY(-2px);}
+.value-icon{font-size:1.75rem;margin-bottom:1.25rem;}
+.value-title{font-family:'Cormorant Garamond',serif;font-size:1.3rem;font-weight:500;color:var(--dusk);margin-bottom:0.6rem;}
+.value-body{font-size:0.83rem;color:var(--ash);line-height:1.75;}
+
+/* STORY */
+.story{max-width:720px;margin:0 auto;padding:5rem 2.5rem;}
+.story-label{font-size:0.62rem;letter-spacing:0.22em;text-transform:uppercase;color:var(--sienna);margin-bottom:0.75rem;display:flex;align-items:center;gap:0.5rem;}
+.story-label::before{content:'';width:1.2rem;height:1px;background:var(--sienna);}
+.story-title{font-family:'Cormorant Garamond',serif;font-size:2rem;font-weight:300;color:var(--dusk);margin-bottom:2rem;line-height:1.25;}
+.story-body p{font-size:0.92rem;color:var(--ash);line-height:1.9;margin-bottom:1.25rem;}
+.story-body p:first-child::first-letter{font-family:'Cormorant Garamond',serif;font-size:3.5rem;font-weight:300;float:left;line-height:0.8;margin-right:0.12em;margin-top:0.1em;color:var(--terracotta);}
+.story-quote{border-left:2px solid var(--terracotta);padding:1.25rem 1.75rem;margin:2rem 0;background:var(--warm-white);border-radius:0 3px 3px 0;}
+.story-quote-text{font-family:'Cormorant Garamond',serif;font-size:1.15rem;font-style:italic;color:var(--dusk);line-height:1.75;margin-bottom:0.5rem;}
+.story-quote-attr{font-size:0.7rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--sand);}
+
+/* TEAM */
+.team{background:var(--parchment);padding:5rem 2.5rem;border-top:1px solid var(--sand);}
+.team-inner{max-width:1100px;margin:0 auto;}
+.team-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1.5rem;margin-top:3rem;}
+.team-card{background:var(--warm-white);border-radius:4px;overflow:hidden;border:1px solid var(--sand);transition:box-shadow 0.2s;}
+.team-card:hover{box-shadow:0 8px 24px rgba(44,36,32,0.1);}
+.team-avatar{height:140px;display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-size:3rem;font-weight:300;color:white;}
+.team-info{padding:1.25rem;}
+.team-name{font-size:0.92rem;font-weight:500;color:var(--dusk);margin-bottom:0.2rem;}
+.team-role{font-size:0.72rem;color:var(--sienna);letter-spacing:0.08em;margin-bottom:0.5rem;}
+.team-bio{font-size:0.78rem;color:var(--ash);line-height:1.6;}
+
+/* CONTACT */
+.contact{max-width:1100px;margin:0 auto;padding:5rem 2.5rem;display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:start;}
+.contact-info{}
+.contact-title{font-family:'Cormorant Garamond',serif;font-size:2rem;font-weight:300;color:var(--dusk);margin-bottom:1rem;line-height:1.2;}
+.contact-sub{font-size:0.88rem;color:var(--ash);line-height:1.75;margin-bottom:2rem;}
+.contact-methods{display:flex;flex-direction:column;gap:1rem;}
+.contact-method{display:flex;align-items:flex-start;gap:1rem;padding:1.25rem;background:var(--warm-white);border:1px solid var(--parchment);border-radius:3px;}
+.cm-icon{font-size:1.2rem;flex-shrink:0;margin-top:0.1rem;}
+.cm-label{font-size:0.65rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--sand);margin-bottom:0.2rem;}
+.cm-value{font-size:0.85rem;color:var(--dusk);font-weight:400;}
+.cm-note{font-size:0.72rem;color:var(--ash);margin-top:0.15rem;}
+
+/* CONTACT FORM */
+.contact-form-wrap{background:var(--warm-white);border-radius:4px;border:1px solid var(--parchment);padding:2.5rem;box-shadow:0 4px 20px rgba(44,36,32,0.06);}
+.form-title{font-family:'Cormorant Garamond',serif;font-size:1.4rem;font-weight:400;color:var(--dusk);margin-bottom:0.4rem;}
+.form-sub{font-size:0.78rem;color:var(--ash);margin-bottom:1.75rem;}
+.field{margin-bottom:1.1rem;}
+.field label{display:block;font-size:0.62rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--ash);margin-bottom:0.4rem;}
+.field input,.field textarea,.field select{width:100%;padding:0.8rem 1rem;border:1.5px solid var(--sand);border-radius:3px;background:var(--cream);color:var(--dusk);font-family:'DM Sans',sans-serif;font-size:0.88rem;font-weight:300;outline:none;transition:border-color 0.2s;}
+.field input:focus,.field textarea:focus,.field select:focus{border-color:var(--sienna);background:var(--warm-white);}
+.field input::placeholder,.field textarea::placeholder{color:var(--sand);}
+.field textarea{resize:vertical;line-height:1.65;}
+.field-row{display:grid;grid-template-columns:1fr 1fr;gap:0.75rem;}
+.submit-btn{width:100%;padding:0.95rem;background:var(--terracotta);color:white;border:none;border-radius:3px;font-family:'DM Sans',sans-serif;font-size:0.78rem;letter-spacing:0.14em;text-transform:uppercase;cursor:pointer;transition:background 0.2s;display:flex;align-items:center;justify-content:center;gap:0.5rem;margin-top:0.5rem;}
+.submit-btn:hover{background:var(--rust);}
+.form-success{display:none;text-align:center;padding:2rem 0;}
+.form-success.visible{display:block;}
+.form-success-icon{font-size:2.5rem;margin-bottom:0.75rem;}
+.form-success-title{font-family:'Cormorant Garamond',serif;font-size:1.4rem;color:var(--dusk);margin-bottom:0.4rem;}
+.form-success-sub{font-size:0.82rem;color:var(--ash);}
+
+/* PRESS */
+.press{background:var(--dusk);padding:4rem 2.5rem;text-align:center;}
+.press-inner{max-width:900px;margin:0 auto;}
+.press-label{font-size:0.62rem;letter-spacing:0.22em;text-transform:uppercase;color:var(--gold);margin-bottom:2rem;display:flex;align-items:center;justify-content:center;gap:0.6rem;}
+.press-label::before,.press-label::after{content:'';width:1.5rem;height:1px;background:var(--gold);}
+.press-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;margin-bottom:2.5rem;}
+.press-card{background:rgba(247,243,238,0.05);border:1px solid rgba(247,243,238,0.08);border-radius:3px;padding:1.5rem;text-align:left;}
+.press-outlet{font-size:0.65rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold);margin-bottom:0.5rem;}
+.press-quote{font-family:'Cormorant Garamond',serif;font-size:1rem;font-style:italic;color:var(--cream);line-height:1.65;}
+.press-email{font-size:0.8rem;color:rgba(247,243,238,0.35);}
+.press-email a{color:var(--gold);text-decoration:none;}
+.press-email a:hover{text-decoration:underline;}
+
+/* MOBILE NAV */
+.mobile-hamburger{display:none;flex-direction:column;justify-content:center;gap:5px;width:36px;height:36px;cursor:pointer;padding:4px;border-radius:3px;border:none;background:transparent;}
+.mobile-hamburger span{display:block;height:1.5px;background:var(--dusk);border-radius:2px;transition:transform 0.3s ease,opacity 0.3s ease;transform-origin:center;}
+.mobile-hamburger.open span:nth-child(1){transform:translateY(6.5px) rotate(45deg);}
+.mobile-hamburger.open span:nth-child(2){opacity:0;}
+.mobile-hamburger.open span:nth-child(3){transform:translateY(-6.5px) rotate(-45deg);}
+.mobile-drawer-overlay{display:none;position:fixed;inset:0;background:rgba(44,36,32,0.45);z-index:998;backdrop-filter:blur(3px);opacity:0;transition:opacity 0.3s ease;}
+.mobile-drawer-overlay.open{opacity:1;}
+.mobile-drawer{position:fixed;top:0;right:0;bottom:0;width:280px;background:var(--warm-white);z-index:999;transform:translateX(100%);transition:transform 0.32s cubic-bezier(0.4,0,0.2,1);box-shadow:-8px 0 32px rgba(44,36,32,0.15);display:flex;flex-direction:column;overflow-y:auto;}
+.mobile-drawer.open{transform:translateX(0);}
+.drawer-header{display:flex;align-items:center;justify-content:space-between;padding:1.25rem 1.5rem;border-bottom:1px solid var(--parchment);}
+.drawer-logo{font-family:'Cormorant Garamond',serif;font-size:1.5rem;font-weight:500;color:var(--dusk);text-decoration:none;}
+.drawer-logo span{color:var(--terracotta);}
+.drawer-close{width:32px;height:32px;border:none;background:none;cursor:pointer;font-size:1.2rem;color:var(--ash);display:flex;align-items:center;justify-content:center;border-radius:3px;}
+.drawer-close:hover{background:var(--parchment);}
+.drawer-nav{flex:1;padding:1.25rem 0;}
+.drawer-section{font-size:0.58rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--sand);padding:0 1.5rem;margin:1rem 0 0.4rem;}
+.drawer-link{display:flex;align-items:center;gap:0.75rem;padding:0.8rem 1.5rem;font-size:0.88rem;color:var(--ash);text-decoration:none;border-left:2px solid transparent;transition:background 0.15s;}
+.drawer-link:hover{background:var(--parchment);color:var(--dusk);}
+.drawer-link.active{color:var(--terracotta);border-left-color:var(--terracotta);background:rgba(196,113,79,0.06);}
+.drawer-link-icon{font-size:1rem;width:20px;text-align:center;flex-shrink:0;}
+.drawer-footer{padding:1.25rem 1.5rem;border-top:1px solid var(--parchment);}
+.drawer-cta{display:block;width:100%;padding:0.85rem;background:var(--terracotta);color:white;text-align:center;border-radius:3px;font-size:0.78rem;letter-spacing:0.12em;text-transform:uppercase;text-decoration:none;font-family:'DM Sans',sans-serif;}
+.drawer-cta:hover{background:var(--rust);}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px);}to{opacity:1;transform:translateY(0);}}
+.value-card{animation:fadeUp 0.4s ease backwards;}
+.value-card:nth-child(1){animation-delay:0.05s;}
+.value-card:nth-child(2){animation-delay:0.12s;}
+.value-card:nth-child(3){animation-delay:0.19s;}
+.team-card{animation:fadeUp 0.4s ease backwards;}
+.team-card:nth-child(1){animation-delay:0.05s;}
+.team-card:nth-child(2){animation-delay:0.1s;}
+.team-card:nth-child(3){animation-delay:0.15s;}
+.team-card:nth-child(4){animation-delay:0.2s;}
+
+@media(max-width:900px){
+  .mission,.contact{grid-template-columns:1fr;gap:2.5rem;}
+  .values-grid{grid-template-columns:1fr 1fr;}
+  .team-grid{grid-template-columns:1fr 1fr;}
+  .press-grid{grid-template-columns:1fr;}
+  .mobile-hamburger{display:flex !important;}
+  .nav-right .nav-link,.nav-right .nav-btn{display:none;}
+  .mobile-drawer-overlay{display:block;}
+}
+@media(max-width:600px){
+  .nav,.hero,.mission,.values,.story,.team,.contact,.press{padding-left:1.25rem;padding-right:1.25rem;}
+  .values-grid,.team-grid{grid-template-columns:1fr;}
+  .field-row{grid-template-columns:1fr;}
+}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <a href="index.html" class="nav-logo">Ki<span>f</span>o</a>
+  <div class="nav-right">
+    <a href="kifo-pricing.html" class="nav-link">Pricing</a>
+    <a href="kifo-gallery.html" class="nav-link">Browse memorials</a>
+    <a href="kifo-wizard.html" class="nav-btn">Create memorial</a>
+    <button class="mobile-hamburger" id="mobile-hamburger" onclick="openMobileNav()" aria-label="Open menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-pattern"></div>
+  <div class="hero-inner">
+    <div class="hero-eyebrow">Our story</div>
+    <h1 class="hero-title">Every life lived deserves to be<br><em>beautifully remembered.</em></h1>
+    <p class="hero-body">Kifo was built for the moment words don't come easily — when grief is fresh, when memory is all you have left. We believe every person's story deserves a place that honors it with care, permanence, and beauty.</p>
+  </div>
+</div>
+
+<!-- MISSION -->
+<div class="mission">
+  <div>
+    <div class="mission-label">Why we exist</div>
+    <h2 class="mission-title">Memorial pages shouldn't feel like <em>funeral brochures.</em></h2>
+    <div class="mission-body">
+      <p>When James Williams lost his mother Margaret in November 2024, he searched for a place to create something worthy of her — a page that felt as warm and alive as she was. What he found were outdated platforms plastered with ads, or clinical obituary templates that felt cold and impersonal.</p>
+      <p>Kifo was built in response to that gap. We believe a memorial should feel like sitting in someone's favourite room — full of their photographs, their music, the stories that made them who they were.</p>
+      <p>We exist to give every family the tools to create something truly beautiful, with AI that helps when words don't come easily, and a platform that respects the sanctity of the space.</p>
+    </div>
+  </div>
+  <div class="mission-visual">
+    <div class="mission-stat">
+      <div class="ms-num">50,241</div>
+      <div class="ms-label">Memorials created</div>
+    </div>
+    <div class="ms-divider"></div>
+    <div class="mission-stat">
+      <div class="ms-num">120+</div>
+      <div class="ms-label">Countries represented</div>
+    </div>
+    <div class="ms-divider"></div>
+    <div class="mission-stat">
+      <div class="ms-num">1.2M+</div>
+      <div class="ms-label">Tributes written</div>
+    </div>
+    <div class="ms-divider"></div>
+    <div class="mission-stat">
+      <div class="ms-num">847K</div>
+      <div class="ms-label">Candles lit</div>
+    </div>
+  </div>
+</div>
+
+<!-- VALUES -->
+<div class="values">
+  <div class="values-inner">
+    <div class="section-eyebrow">What we believe</div>
+    <h2 class="section-title">The principles we build by</h2>
+    <div class="values-grid">
+      <div class="value-card">
+        <div class="value-icon">♾️</div>
+        <div class="value-title">Permanent by default</div>
+        <div class="value-body">A memorial should outlast any subscription. Every page created on Kifo stays online forever — on the free plan, the Premium plan, all of them. Memory doesn't expire.</div>
+      </div>
+      <div class="value-card">
+        <div class="value-icon">🚫</div>
+        <div class="value-title">No ads. Ever.</div>
+        <div class="value-body">A memorial page is a sacred space. We will never place advertisements on them, never sell user data, and never let advertising influence how we build. Our business is sustained by subscriptions alone.</div>
+      </div>
+      <div class="value-card">
+        <div class="value-icon">🌿</div>
+        <div class="value-title">Warmth over efficiency</div>
+        <div class="value-body">We obsess over every detail of how grief meets design. Typefaces, spacing, tone — every choice is made to feel human, warm, and worthy of the people being remembered.</div>
+      </div>
+      <div class="value-card">
+        <div class="value-icon">🔒</div>
+        <div class="value-title">Privacy as standard</div>
+        <div class="value-body">Families control exactly who sees a memorial. Fully public, private, or anywhere in between — with granular guest permissions and no dark patterns nudging toward visibility.</div>
+      </div>
+      <div class="value-card">
+        <div class="value-icon">✦</div>
+        <div class="value-title">AI in service of memory</div>
+        <div class="value-body">Our AI tools exist to help people find words when grief makes them hard. Never to automate or cheapen — always to assist, to suggest, and to hand back control to the humans who matter.</div>
+      </div>
+      <div class="value-card">
+        <div class="value-icon">🤝</div>
+        <div class="value-title">Built for families</div>
+        <div class="value-body">Memorials are collaborative. We make it easy for dozens of people — across generations, time zones, languages — to contribute to a single shared space of remembrance.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- OUR STORY -->
+<div class="story">
+  <div class="story-label">The story behind Kifo</div>
+  <h2 class="story-title">Built from grief. Built with care.</h2>
+  <div class="story-body">
+    <p>The idea for Kifo began at a kitchen table in Chicago, in the weeks after Margaret Rose Williams passed away. Her son James — a developer — found himself frustrated by every existing memorial platform he tried. They felt clinical, ad-covered, and completely unworthy of the woman he was trying to honour.</p>
+    <div class="story-quote">
+      <div class="story-quote-text">"I wanted something that felt like her favourite room — warm, full of photos, with her music playing softly. Everything out there felt like an obituary column. I decided to build what I wished existed."</div>
+      <div class="story-quote-attr">— James Williams, Founder</div>
+    </div>
+    <p>Kifo launched in early 2024 with a single memorial page — Margaret's. Within a month, friends and family of other families had created dozens more. Word spread quietly, through grief support groups, funeral directors, and families who found Kifo at the hardest moments of their lives.</p>
+    <p>Today Kifo serves families in over 120 countries. We've never taken venture capital. We've never run ads. We grow because families share us with other families — and because we believe deeply that the product itself should be the only thing that earns trust.</p>
+    <p>The name Kifo comes from the Swahili word for death — chosen not to be morbid, but because we believe death deserves to be spoken plainly, and that the life lived before it deserves to be remembered beautifully.</p>
+  </div>
+</div>
+
+<!-- TEAM -->
+<div class="team">
+  <div class="team-inner">
+    <div class="section-eyebrow">The people behind Kifo</div>
+    <h2 class="section-title">A small team. A clear mission.</h2>
+    <div class="team-grid">
+      <div class="team-card">
+        <div class="team-avatar" style="background:linear-gradient(135deg,#9E6B4A,#C4714F);">J</div>
+        <div class="team-info">
+          <div class="team-name">James Williams</div>
+          <div class="team-role">Founder & CEO</div>
+          <div class="team-bio">Built the first version of Kifo for his mother Margaret. Former engineer at a grief tech nonprofit. Based in Chicago.</div>
+        </div>
+      </div>
+      <div class="team-card">
+        <div class="team-avatar" style="background:linear-gradient(135deg,#7A8C6E,#4E6245);">S</div>
+        <div class="team-info">
+          <div class="team-name">Sarah Osei</div>
+          <div class="team-role">Head of Design</div>
+          <div class="team-bio">Designs every pixel with grief in mind. Previously at a bereavement support platform. Accra-born, London-based.</div>
+        </div>
+      </div>
+      <div class="team-card">
+        <div class="team-avatar" style="background:linear-gradient(135deg,#6B7A9E,#4A5870);">T</div>
+        <div class="team-info">
+          <div class="team-name">Thomas Reyes</div>
+          <div class="team-role">Head of Engineering</div>
+          <div class="team-bio">Obsessed with performance and permanence. Ensures every memorial page loads in under a second and stays online forever.</div>
+        </div>
+      </div>
+      <div class="team-card">
+        <div class="team-avatar" style="background:linear-gradient(135deg,#C4A882,#9E7A50);">A</div>
+        <div class="team-info">
+          <div class="team-name">Amara Diallo</div>
+          <div class="team-role">Head of Support</div>
+          <div class="team-bio">Answers every message personally. Former grief counsellor. Believes no family should navigate loss without someone to help.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CONTACT -->
+<div class="contact">
+  <div class="contact-info">
+    <div class="section-eyebrow">Get in touch</div>
+    <h2 class="contact-title">We read every message.</h2>
+    <p class="contact-sub">Whether you need help with a memorial, have a question about pricing, or just want to share your family's story — we're here. Every message is answered by a real person, usually within one business day.</p>
+    <div class="contact-methods">
+      <div class="contact-method">
+        <div class="cm-icon">✉️</div>
+        <div>
+          <div class="cm-label">General enquiries</div>
+          <div class="cm-value">hello@kifo.com</div>
+          <div class="cm-note">Answered within 1 business day</div>
+        </div>
+      </div>
+      <div class="contact-method">
+        <div class="cm-icon">🛟</div>
+        <div>
+          <div class="cm-label">Memorial support</div>
+          <div class="cm-value">support@kifo.com</div>
+          <div class="cm-note">For help with your memorial page</div>
+        </div>
+      </div>
+      <div class="contact-method">
+        <div class="cm-icon">🤝</div>
+        <div>
+          <div class="cm-label">Funeral directors & partners</div>
+          <div class="cm-value">partners@kifo.com</div>
+          <div class="cm-note">Bulk accounts & integration enquiries</div>
+        </div>
+      </div>
+      <div class="contact-method">
+        <div class="cm-icon">📰</div>
+        <div>
+          <div class="cm-label">Press & media</div>
+          <div class="cm-value">press@kifo.com</div>
+          <div class="cm-note">Media kit available on request</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="contact-form-wrap">
+    <div id="contact-form">
+      <div class="form-title">Send us a message</div>
+      <div class="form-sub">We'll get back to you within one business day.</div>
+      <div class="field-row">
+        <div class="field"><label>First name</label><input type="text" placeholder="James" id="cf-first"></div>
+        <div class="field"><label>Last name</label><input type="text" placeholder="Williams" id="cf-last"></div>
+      </div>
+      <div class="field"><label>Email address</label><input type="email" placeholder="you@example.com" id="cf-email"></div>
+      <div class="field">
+        <label>Topic</label>
+        <select id="cf-topic">
+          <option value="">Select a topic…</option>
+          <option>Help with my memorial</option>
+          <option>Billing or account question</option>
+          <option>Partnership or integration</option>
+          <option>Press or media enquiry</option>
+          <option>Feedback or suggestion</option>
+          <option>Something else</option>
+        </select>
+      </div>
+      <div class="field"><label>Message</label><textarea rows="5" placeholder="Tell us how we can help…" id="cf-message"></textarea></div>
+      <button class="submit-btn" onclick="submitContact()">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M1 7h12M8 3l5 4-5 4" stroke="white" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Send message
+      </button>
+    </div>
+    <div class="form-success" id="form-success">
+      <div class="form-success-icon">🌿</div>
+      <div class="form-success-title">Message sent</div>
+      <div class="form-success-sub">Thank you — we'll be back in touch within one business day.</div>
+    </div>
+  </div>
+</div>
+
+<!-- PRESS -->
+<div class="press">
+  <div class="press-inner">
+    <div class="press-label">In the press</div>
+    <div class="press-grid">
+      <div class="press-card">
+        <div class="press-outlet">The New York Times</div>
+        <div class="press-quote">"A memorial platform that finally feels worthy of the people it honours — warm, beautifully designed, and free of the cynicism that plagues its competitors."</div>
+      </div>
+      <div class="press-card">
+        <div class="press-outlet">Wired</div>
+        <div class="press-quote">"Kifo's AI tribute writer doesn't replace the human touch — it restores it, helping families find words when grief makes them impossible."</div>
+      </div>
+      <div class="press-card">
+        <div class="press-outlet">Fast Company</div>
+        <div class="press-quote">"The startup quietly building the internet's most thoughtful memorial platform, one candle at a time."</div>
+      </div>
+    </div>
+    <div class="press-email">For press enquiries, contact <a href="mailto:press@kifo.com">press@kifo.com</a></div>
+  </div>
+</div>
+
+<!-- MOBILE DRAWER -->
+<div class="mobile-drawer-overlay" id="mobile-overlay" onclick="closeMobileNav()"></div>
+<div class="mobile-drawer" id="mobile-drawer">
+  <div class="drawer-header">
+    <a href="index.html" class="drawer-logo">Ki<span>f</span>o</a>
+    <button class="drawer-close" onclick="closeMobileNav()">✕</button>
+  </div>
+  <nav class="drawer-nav">
+    <div class="drawer-section">Memorials</div>
+    <a href="index.html" class="drawer-link"><span class="drawer-link-icon">🏠</span>Home</a>
+    <a href="kifo-gallery.html" class="drawer-link"><span class="drawer-link-icon">🔍</span>Browse memorials</a>
+    <a href="kifo-wizard.html" class="drawer-link"><span class="drawer-link-icon">✦</span>Create a memorial</a>
+    <div class="drawer-section">AI Tools</div>
+    <a href="kifo-ai-tribute.html" class="drawer-link"><span class="drawer-link-icon">✍️</span>AI Tribute Writer</a>
+    <a href="kifo-lifestory.html" class="drawer-link"><span class="drawer-link-icon">📖</span>AI Life Story</a>
+    <div class="drawer-section">Company</div>
+    <a href="kifo-about.html" class="drawer-link active"><span class="drawer-link-icon">💛</span>About & Contact</a>
+    <a href="kifo-pricing.html" class="drawer-link"><span class="drawer-link-icon">💳</span>Pricing</a>
+    <a href="kifo-dashboard.html" class="drawer-link"><span class="drawer-link-icon">📋</span>Dashboard</a>
+  </nav>
+  <div class="drawer-footer">
+    <a href="kifo-wizard.html" class="drawer-cta">+ Create a memorial — free</a>
+  </div>
+</div>
+
+<script>
+function submitContact() {
+  var email = document.getElementById('cf-email').value;
+  var message = document.getElementById('cf-message').value;
+  var emailEl = document.getElementById('cf-email');
+  var msgEl = document.getElementById('cf-message');
+  emailEl.style.borderColor = 'var(--sand)';
+  msgEl.style.borderColor = 'var(--sand)';
+  if (!email || !email.includes('@')) { emailEl.style.borderColor = 'var(--rust)'; emailEl.focus(); return; }
+  if (!message.trim()) { msgEl.style.borderColor = 'var(--rust)'; msgEl.focus(); return; }
+  document.getElementById('contact-form').style.display = 'none';
+  document.getElementById('form-success').classList.add('visible');
+}
+function openMobileNav() {
+  document.getElementById('mobile-drawer').classList.add('open');
+  document.getElementById('mobile-overlay').classList.add('open');
+  document.getElementById('mobile-hamburger').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeMobileNav() {
+  document.getElementById('mobile-drawer').classList.remove('open');
+  document.getElementById('mobile-overlay').classList.remove('open');
+  document.getElementById('mobile-hamburger').classList.remove('open');
+  document.body.style.overflow = '';
+}
+document.addEventListener('keydown', function(e) { if (e.key === 'Escape') closeMobileNav(); });
+</script>
+</body>
+</html>

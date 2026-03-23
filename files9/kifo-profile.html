@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>James Williams — Memorial Curator · Kifo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --cream:#F7F3EE;--parchment:#EDE5D8;--sand:#D9C9B0;
+  --sienna:#9E6B4A;--terracotta:#C4714F;--rust:#A8432A;
+  --sage:#7A8C6E;--moss:#4E6245;--dusk:#2C2420;--ash:#6B5F58;
+  --gold:#C9994A;--warm-white:#FDFAF6;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{background:var(--cream);color:var(--dusk);font-family:'DM Sans',sans-serif;font-weight:300;min-height:100vh;}
+
+/* ── NAV ──────────────────────────────────────────────────── */
+.nav{display:flex;align-items:center;justify-content:space-between;padding:1rem 2.5rem;background:rgba(247,243,238,0.92);backdrop-filter:blur(14px);border-bottom:1px solid var(--sand);position:sticky;top:0;z-index:50;}
+.nav-logo{font-family:'Cormorant Garamond',serif;font-size:1.6rem;font-weight:500;letter-spacing:0.08em;color:var(--dusk);text-decoration:none;}
+.nav-logo span{color:var(--terracotta);}
+.nav-right{display:flex;gap:0.75rem;align-items:center;}
+.nav-btn{font-size:0.72rem;letter-spacing:0.12em;text-transform:uppercase;padding:0.5rem 1.1rem;border-radius:2px;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all 0.2s;text-decoration:none;}
+.nav-btn-ghost{background:transparent;border:1px solid var(--sand);color:var(--ash);}
+.nav-btn-ghost:hover{border-color:var(--sienna);color:var(--sienna);}
+.nav-btn-primary{background:var(--terracotta);border:1px solid var(--terracotta);color:white;}
+.nav-btn-primary:hover{background:var(--rust);}
+
+/* ── PROFILE HERO ─────────────────────────────────────────── */
+.profile-hero{position:relative;overflow:hidden;}
+
+/* Cover image area */
+.cover-area{height:220px;background:linear-gradient(135deg,#2C2420 0%,#4E3828 30%,#3A5040 65%,#2C3C32 100%);position:relative;overflow:hidden;}
+.cover-pattern{position:absolute;inset:0;opacity:0.06;background-image:radial-gradient(circle,rgba(255,255,255,0.9) 1px,transparent 1px);background-size:28px 28px;}
+.cover-glow{position:absolute;inset:0;background:radial-gradient(ellipse at 30% 60%,rgba(196,113,79,0.25) 0%,transparent 55%),radial-gradient(ellipse at 75% 30%,rgba(122,140,110,0.2) 0%,transparent 50%);}
+.cover-candles{position:absolute;bottom:1.5rem;right:2rem;display:flex;gap:1.5rem;opacity:0.35;}
+
+/* Profile info strip */
+.profile-strip{background:var(--warm-white);border-bottom:1px solid var(--parchment);padding:0 2.5rem 2rem;}
+.profile-identity{display:flex;align-items:flex-end;gap:1.5rem;margin-bottom:1.5rem;padding-top:0;}
+
+.profile-avatar{width:96px;height:96px;border-radius:50%;background:linear-gradient(135deg,#9E6B4A,#C4714F);border:4px solid var(--warm-white);display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-size:2.4rem;color:white;font-weight:500;flex-shrink:0;margin-top:-48px;box-shadow:0 4px 20px rgba(44,36,32,0.15);position:relative;z-index:2;}
+
+.profile-info{flex:1;padding-top:0.75rem;}
+.profile-name{font-family:'Cormorant Garamond',serif;font-size:2rem;font-weight:400;color:var(--dusk);line-height:1.1;margin-bottom:0.2rem;}
+.profile-handle{font-size:0.78rem;color:var(--sand);letter-spacing:0.05em;margin-bottom:0.5rem;}
+.profile-bio{font-size:0.88rem;color:var(--ash);line-height:1.65;max-width:520px;}
+
+.profile-actions{display:flex;gap:0.65rem;align-items:center;padding-top:0.75rem;flex-shrink:0;}
+.profile-follow-btn{background:var(--dusk);color:var(--cream);border:none;padding:0.6rem 1.5rem;border-radius:2px;font-size:0.72rem;letter-spacing:0.12em;text-transform:uppercase;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all 0.2s;}
+.profile-follow-btn:hover{background:var(--terracotta);}
+.profile-follow-btn.following{background:transparent;border:1px solid var(--sand);color:var(--ash);}
+.profile-follow-btn.following:hover{border-color:var(--rust);color:var(--rust);}
+.profile-share-btn{width:36px;height:36px;border:1px solid var(--sand);border-radius:2px;background:transparent;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:0.9rem;transition:all 0.2s;}
+.profile-share-btn:hover{border-color:var(--sienna);}
+
+/* Stats row */
+.profile-stats{display:flex;gap:2.5rem;margin-top:1.5rem;}
+.ps-item{text-align:center;}
+.ps-num{font-family:'Cormorant Garamond',serif;font-size:1.6rem;font-weight:500;color:var(--dusk);line-height:1;}
+.ps-label{font-size:0.62rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--sand);margin-top:0.15rem;}
+
+/* Badges */
+.profile-badges{display:flex;gap:0.5rem;flex-wrap:wrap;margin-top:1rem;}
+.badge{display:flex;align-items:center;gap:0.35rem;font-size:0.65rem;letter-spacing:0.12em;text-transform:uppercase;padding:0.25rem 0.65rem;border-radius:12px;border:1px solid;}
+.badge-gold{color:var(--gold);border-color:rgba(201,153,74,0.35);background:rgba(201,153,74,0.08);}
+.badge-sage{color:var(--moss);border-color:rgba(78,98,69,0.3);background:rgba(78,98,69,0.07);}
+.badge-terracotta{color:var(--terracotta);border-color:rgba(196,113,79,0.3);background:rgba(196,113,79,0.07);}
+
+/* ── MAIN LAYOUT ──────────────────────────────────────────── */
+.main{max-width:1180px;margin:0 auto;padding:2.5rem 2.5rem 5rem;display:grid;grid-template-columns:1fr 300px;gap:2.5rem;}
+
+/* ── TABS ─────────────────────────────────────────────────── */
+.tabs{display:flex;gap:0;border-bottom:1px solid var(--sand);margin-bottom:2.5rem;}
+.tab{font-size:0.72rem;letter-spacing:0.12em;text-transform:uppercase;padding:0.8rem 1.25rem;cursor:pointer;color:var(--ash);border-bottom:2px solid transparent;margin-bottom:-1px;transition:all 0.2s;}
+.tab:hover{color:var(--dusk);}
+.tab.active{color:var(--terracotta);border-bottom-color:var(--terracotta);}
+
+/* ── MEMORIAL CARDS ───────────────────────────────────────── */
+.memorials-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.25rem;}
+.mem-card{background:var(--warm-white);border-radius:4px;overflow:hidden;border:1px solid var(--parchment);transition:box-shadow 0.25s,transform 0.25s;cursor:pointer;text-decoration:none;display:block;color:inherit;}
+.mem-card:hover{box-shadow:0 8px 32px rgba(44,36,32,0.1);transform:translateY(-2px);}
+.mem-cover{height:110px;position:relative;overflow:hidden;}
+.mem-cover-bg{position:absolute;inset:0;transition:transform 0.4s;}
+.mem-card:hover .mem-cover-bg{transform:scale(1.04);}
+.mem-cover-candles{position:absolute;bottom:0.5rem;right:0.6rem;font-size:0.7rem;color:rgba(247,243,238,0.8);background:rgba(44,36,32,0.4);padding:0.15rem 0.45rem;border-radius:2px;backdrop-filter:blur(4px);}
+.mem-avatar{width:44px;height:44px;border-radius:50%;border:3px solid white;position:absolute;bottom:-22px;left:1rem;box-shadow:0 2px 8px rgba(44,36,32,0.12);}
+.mem-body{padding:1.75rem 1rem 1.25rem;}
+.mem-name{font-family:'Cormorant Garamond',serif;font-size:1.05rem;font-weight:500;color:var(--dusk);margin-bottom:0.2rem;line-height:1.2;}
+.mem-dates{font-size:0.68rem;color:var(--ash);margin-bottom:0.5rem;}
+.mem-stats{display:flex;gap:0.75rem;font-size:0.68rem;color:var(--sand);}
+.mem-stats span{display:flex;align-items:center;gap:0.25rem;}
+
+/* Relationship tag */
+.mem-rel{position:absolute;top:0.6rem;left:0.6rem;font-size:0.58rem;letter-spacing:0.12em;text-transform:uppercase;background:rgba(44,36,32,0.55);color:rgba(247,243,238,0.85);padding:0.18rem 0.5rem;border-radius:2px;backdrop-filter:blur(4px);}
+
+/* ── TRIBUTES TAB ─────────────────────────────────────────── */
+.tributes-list{display:flex;flex-direction:column;gap:1.25rem;}
+.tribute-item{background:var(--warm-white);border-radius:4px;border:1px solid var(--parchment);padding:1.5rem;transition:box-shadow 0.2s;}
+.tribute-item:hover{box-shadow:0 4px 16px rgba(44,36,32,0.07);}
+.ti-memorial{display:flex;align-items:center;gap:0.6rem;margin-bottom:1rem;}
+.ti-mem-avatar{width:28px;height:28px;border-radius:50%;flex-shrink:0;}
+.ti-mem-name{font-size:0.75rem;font-weight:500;color:var(--dusk);}
+.ti-mem-date{font-size:0.68rem;color:var(--sand);}
+.ti-body{font-family:'Cormorant Garamond',serif;font-size:1.05rem;line-height:1.8;color:var(--dusk);font-style:italic;margin-bottom:1rem;padding-left:1rem;border-left:2px solid var(--parchment);}
+.ti-footer{display:flex;align-items:center;justify-content:space-between;}
+.ti-reactions{display:flex;gap:0.5rem;}
+.ti-reaction{font-size:0.72rem;color:var(--ash);display:flex;align-items:center;gap:0.25rem;cursor:pointer;transition:color 0.15s;}
+.ti-reaction:hover{color:var(--terracotta);}
+.ti-date{font-size:0.68rem;color:var(--sand);}
+
+/* ── SIDEBAR ──────────────────────────────────────────────── */
+.sidebar{display:flex;flex-direction:column;gap:1.5rem;}
+.sidebar-card{background:var(--warm-white);border-radius:4px;border:1px solid var(--parchment);overflow:hidden;}
+.sc-header{padding:1rem 1.25rem;border-bottom:1px solid var(--parchment);}
+.sc-title{font-size:0.65rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--sienna);display:flex;align-items:center;gap:0.4rem;}
+.sc-title::before{content:'';width:1rem;height:1px;background:var(--sienna);}
+.sc-body{padding:1.25rem;}
+
+/* Followers */
+.followers-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:0.5rem;}
+.follower-avatar{width:36px;height:36px;border-radius:50%;background:var(--parchment);display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-size:0.85rem;color:var(--ash);cursor:pointer;transition:transform 0.15s;}
+.follower-avatar:hover{transform:scale(1.1);}
+
+/* Activity feed */
+.activity-feed{display:flex;flex-direction:column;gap:0;}
+.activity-item{display:flex;gap:0.75rem;padding:0.75rem 0;border-bottom:1px solid var(--parchment);}
+.activity-item:last-child{border-bottom:none;padding-bottom:0;}
+.ai-icon{font-size:1rem;flex-shrink:0;margin-top:0.1rem;}
+.ai-text{font-size:0.78rem;color:var(--ash);line-height:1.55;}
+.ai-text strong{color:var(--dusk);font-weight:500;}
+.ai-time{font-size:0.65rem;color:var(--sand);margin-top:0.15rem;}
+
+/* Anniversary reminders */
+.reminders-list{display:flex;flex-direction:column;gap:0.75rem;}
+.reminder-item{display:flex;align-items:center;gap:0.75rem;padding:0.75rem;background:var(--parchment);border-radius:3px;}
+.ri-icon{font-size:1rem;flex-shrink:0;}
+.ri-name{font-size:0.82rem;font-weight:500;color:var(--dusk);}
+.ri-date{font-size:0.7rem;color:var(--ash);}
+.ri-days{font-size:0.65rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--terracotta);margin-left:auto;white-space:nowrap;}
+
+/* ── EMPTY TABS ───────────────────────────────────────────── */
+.tab-panel{display:none;}
+.tab-panel.active{display:block;}
+
+/* ── PAGINATION ───────────────────────────────────────────── */
+.load-more{text-align:center;margin-top:2rem;}
+.load-more-btn{font-size:0.72rem;letter-spacing:0.12em;text-transform:uppercase;padding:0.75rem 2rem;border:1.5px solid var(--sand);background:transparent;color:var(--ash);border-radius:2px;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all 0.2s;}
+.load-more-btn:hover{border-color:var(--sienna);color:var(--sienna);}
+
+/* ── COPY TOAST ───────────────────────────────────────────── */
+.toast{position:fixed;bottom:2rem;right:2rem;background:var(--moss);color:white;padding:0.75rem 1.2rem;border-radius:3px;font-size:0.8rem;display:flex;align-items:center;gap:0.4rem;box-shadow:0 4px 16px rgba(44,36,32,0.2);transform:translateY(60px);opacity:0;transition:all 0.25s;z-index:200;}
+.toast.show{transform:translateY(0);opacity:1;}
+
+/* ── MOBILE NAV ───────────────────────────────────────────── */
+.mobile-hamburger{display:none;flex-direction:column;justify-content:center;gap:5px;width:36px;height:36px;cursor:pointer;padding:4px;border-radius:3px;transition:background 0.2s;flex-shrink:0;border:none;background:transparent;}
+.mobile-hamburger span{display:block;height:1.5px;background:var(--dusk);border-radius:2px;transition:transform 0.3s ease,opacity 0.3s ease;transform-origin:center;}
+.mobile-hamburger.open span:nth-child(1){transform:translateY(6.5px) rotate(45deg);}
+.mobile-hamburger.open span:nth-child(2){opacity:0;}
+.mobile-hamburger.open span:nth-child(3){transform:translateY(-6.5px) rotate(-45deg);}
+.mobile-drawer-overlay{display:none;position:fixed;inset:0;background:rgba(44,36,32,0.45);z-index:998;backdrop-filter:blur(3px);opacity:0;transition:opacity 0.3s ease;}
+.mobile-drawer-overlay.open{opacity:1;}
+.mobile-drawer{position:fixed;top:0;right:0;bottom:0;width:280px;background:var(--warm-white);z-index:999;transform:translateX(100%);transition:transform 0.32s cubic-bezier(0.4,0,0.2,1);box-shadow:-8px 0 32px rgba(44,36,32,0.15);display:flex;flex-direction:column;overflow-y:auto;}
+.mobile-drawer.open{transform:translateX(0);}
+.drawer-header{display:flex;align-items:center;justify-content:space-between;padding:1.25rem 1.5rem;border-bottom:1px solid var(--parchment);}
+.drawer-logo{font-family:'Cormorant Garamond',serif;font-size:1.5rem;font-weight:500;letter-spacing:0.08em;color:var(--dusk);text-decoration:none;}
+.drawer-logo span{color:var(--terracotta);}
+.drawer-close{width:32px;height:32px;border:none;background:none;cursor:pointer;font-size:1.2rem;color:var(--ash);display:flex;align-items:center;justify-content:center;border-radius:3px;transition:background 0.2s;}
+.drawer-close:hover{background:var(--parchment);}
+.drawer-nav{flex:1;padding:1.25rem 0;}
+.drawer-section{font-size:0.58rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--sand);padding:0 1.5rem;margin:1rem 0 0.4rem;}
+.drawer-link{display:flex;align-items:center;gap:0.75rem;padding:0.8rem 1.5rem;font-size:0.88rem;color:var(--ash);text-decoration:none;transition:background 0.15s,color 0.15s;border-left:2px solid transparent;}
+.drawer-link:hover{background:var(--parchment);color:var(--dusk);}
+.drawer-link.active{color:var(--terracotta);border-left-color:var(--terracotta);background:rgba(196,113,79,0.06);}
+.drawer-link-icon{font-size:1rem;width:20px;text-align:center;flex-shrink:0;}
+.drawer-footer{padding:1.25rem 1.5rem;border-top:1px solid var(--parchment);}
+.drawer-cta{display:block;width:100%;padding:0.85rem;background:var(--terracotta);color:white;text-align:center;border-radius:3px;font-size:0.78rem;letter-spacing:0.12em;text-transform:uppercase;text-decoration:none;font-family:'DM Sans',sans-serif;transition:background 0.2s;}
+.drawer-cta:hover{background:var(--rust);}
+
+/* ── ANIMATIONS ───────────────────────────────────────────── */
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
+.profile-strip{animation:fadeUp 0.5s ease forwards;}
+.memorials-grid .mem-card{animation:fadeUp 0.4s ease backwards;}
+.memorials-grid .mem-card:nth-child(1){animation-delay:0.05s;}
+.memorials-grid .mem-card:nth-child(2){animation-delay:0.1s;}
+.memorials-grid .mem-card:nth-child(3){animation-delay:0.15s;}
+.memorials-grid .mem-card:nth-child(4){animation-delay:0.2s;}
+
+@keyframes candleFlicker{0%,100%{transform:translateY(0) scaleX(1);}33%{transform:translateY(-3px) scaleX(0.95);}66%{transform:translateY(2px) scaleX(1.02);}}
+.candle-svg{animation:candleFlicker 2.5s ease-in-out infinite;}
+
+/* ── RESPONSIVE ───────────────────────────────────────────── */
+@media(max-width:900px){
+  .main{grid-template-columns:1fr;gap:2rem;}
+  .sidebar{display:none;}
+  .memorials-grid{grid-template-columns:1fr;}
+  .mobile-hamburger{display:flex !important;}
+  .nav-right .nav-btn{display:none;}
+  .mobile-drawer-overlay{display:block;}
+  .profile-actions{display:none;}
+}
+@media(max-width:600px){
+  .nav,.profile-strip{padding-left:1.25rem;padding-right:1.25rem;}
+  .main{padding:1.5rem 1.25rem 4rem;}
+  .profile-stats{gap:1.5rem;}
+  .profile-name{font-size:1.6rem;}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <a href="index.html" class="nav-logo">Ki<span>f</span>o</a>
+  <div class="nav-right">
+    <a href="kifo-gallery.html" class="nav-btn nav-btn-ghost">Browse memorials</a>
+    <a href="kifo-dashboard.html" class="nav-btn nav-btn-primary">Dashboard</a>
+    <button class="mobile-hamburger" id="mobile-hamburger" onclick="openMobileNav()" aria-label="Open menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- PROFILE HERO -->
+<div class="profile-hero">
+  <!-- Cover -->
+  <div class="cover-area">
+    <div class="cover-pattern"></div>
+    <div class="cover-glow"></div>
+    <!-- Decorative candles -->
+    <div class="cover-candles">
+      <svg class="candle-svg" width="24" height="40" viewBox="0 0 24 40" fill="none">
+        <ellipse cx="12" cy="5" rx="3" ry="4" fill="#F5C842" opacity="0.8"/>
+        <ellipse cx="12" cy="6" rx="1.5" ry="2.5" fill="#F5A825" opacity="0.7"/>
+        <line x1="12" y1="9" x2="12" y2="12" stroke="#4E3020" stroke-width="1" stroke-linecap="round"/>
+        <rect x="8" y="12" width="8" height="22" rx="1" fill="#EDE5D8" opacity="0.7"/>
+        <rect x="7" y="32" width="10" height="5" rx="1" fill="#D9C9B0" opacity="0.6"/>
+      </svg>
+      <svg class="candle-svg" width="20" height="34" viewBox="0 0 20 34" fill="none" style="animation-delay:0.8s">
+        <ellipse cx="10" cy="4" rx="2.5" ry="3.5" fill="#F5C842" opacity="0.8"/>
+        <line x1="10" y1="8" x2="10" y2="10" stroke="#4E3020" stroke-width="1" stroke-linecap="round"/>
+        <rect x="6" y="10" width="8" height="18" rx="1" fill="#EDE5D8" opacity="0.7"/>
+        <rect x="5" y="27" width="10" height="4" rx="1" fill="#D9C9B0" opacity="0.6"/>
+      </svg>
+      <svg class="candle-svg" width="28" height="48" viewBox="0 0 28 48" fill="none" style="animation-delay:1.4s">
+        <ellipse cx="14" cy="6" rx="3.5" ry="5" fill="#F5C842" opacity="0.8"/>
+        <line x1="14" y1="11" x2="14" y2="14" stroke="#4E3020" stroke-width="1.2" stroke-linecap="round"/>
+        <rect x="9" y="14" width="10" height="26" rx="1.5" fill="#EDE5D8" opacity="0.7"/>
+        <rect x="8" y="38" width="12" height="6" rx="1.5" fill="#D9C9B0" opacity="0.6"/>
+      </svg>
+    </div>
+  </div>
+
+  <!-- Profile strip -->
+  <div class="profile-strip">
+    <div class="profile-identity">
+      <div class="profile-avatar">J</div>
+      <div class="profile-info">
+        <div class="profile-name">James Williams</div>
+        <div class="profile-handle">kifo.com/u/james-williams</div>
+        <div class="profile-bio">Keeper of family memories. Honoring Margaret, Robert, and Eleanor — and everyone who shaped our family's story.</div>
+        <div class="profile-badges">
+          <div class="badge badge-gold">✦ Premium curator</div>
+          <div class="badge badge-sage">🌿 3 memorials</div>
+          <div class="badge badge-terracotta">🕯 127 candles lit</div>
+        </div>
+      </div>
+      <div class="profile-actions">
+        <button class="profile-follow-btn" id="follow-btn" onclick="toggleFollow()">Follow</button>
+        <button class="profile-share-btn" onclick="copyProfileLink()" title="Share profile">🔗</button>
+      </div>
+    </div>
+
+    <div class="profile-stats">
+      <div class="ps-item">
+        <div class="ps-num">3</div>
+        <div class="ps-label">Memorials</div>
+      </div>
+      <div class="ps-item">
+        <div class="ps-num">127</div>
+        <div class="ps-label">Candles lit</div>
+      </div>
+      <div class="ps-item">
+        <div class="ps-num">48</div>
+        <div class="ps-label">Tributes posted</div>
+      </div>
+      <div class="ps-item">
+        <div class="ps-num">1.2K</div>
+        <div class="ps-label">Memorial visits</div>
+      </div>
+      <div class="ps-item">
+        <div class="ps-num">12</div>
+        <div class="ps-label">Followers</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MAIN -->
+<div class="main">
+
+  <!-- LEFT COLUMN -->
+  <div>
+    <!-- Tabs -->
+    <div class="tabs">
+      <div class="tab active" onclick="switchTab('memorials', this)">Memorials</div>
+      <div class="tab" onclick="switchTab('tributes', this)">Tributes</div>
+      <div class="tab" onclick="switchTab('candles', this)">Candles</div>
+    </div>
+
+    <!-- MEMORIALS TAB -->
+    <div class="tab-panel active" id="tab-memorials">
+      <div class="memorials-grid">
+
+        <a href="kifo-memorial.html" class="mem-card">
+          <div class="mem-cover">
+            <div class="mem-cover-bg" style="background:linear-gradient(135deg,#8A9E7E,#4E6245,#2C2420);"></div>
+            <div class="mem-rel">Mother</div>
+            <div class="mem-cover-candles">🕯 48</div>
+          </div>
+          <div class="mem-avatar" style="background:linear-gradient(135deg,#D4C4B2,#B09070);display:flex;align-items:center;justify-content:center;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="4" stroke="white" stroke-width="1.5"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg>
+          </div>
+          <div class="mem-body">
+            <div class="mem-name">Margaret Rose Williams</div>
+            <div class="mem-dates">June 3, 1942 — November 12, 2024</div>
+            <div class="mem-stats">
+              <span>💬 47 tributes</span>
+              <span>📷 134 photos</span>
+            </div>
+          </div>
+        </a>
+
+        <a href="kifo-memorial.html" class="mem-card">
+          <div class="mem-cover">
+            <div class="mem-cover-bg" style="background:linear-gradient(135deg,#5C3820,#9E6B4A,#C4A882);"></div>
+            <div class="mem-rel">Father</div>
+            <div class="mem-cover-candles">🕯 24</div>
+          </div>
+          <div class="mem-avatar" style="background:linear-gradient(135deg,#C4B49A,#9E8070);display:flex;align-items:center;justify-content:center;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="4" stroke="white" stroke-width="1.5"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg>
+          </div>
+          <div class="mem-body">
+            <div class="mem-name">Robert John Williams</div>
+            <div class="mem-dates">March 14, 1938 — July 2, 2019</div>
+            <div class="mem-stats">
+              <span>💬 31 tributes</span>
+              <span>📷 87 photos</span>
+            </div>
+          </div>
+        </a>
+
+        <a href="kifo-memorial.html" class="mem-card">
+          <div class="mem-cover">
+            <div class="mem-cover-bg" style="background:linear-gradient(135deg,#6B7A9E,#BDC4D4,#8090B0);"></div>
+            <div class="mem-rel">Grandmother</div>
+            <div class="mem-cover-candles">🕯 17</div>
+          </div>
+          <div class="mem-avatar" style="background:linear-gradient(135deg,#BDC4D4,#8A9EB8);display:flex;align-items:center;justify-content:center;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="4" stroke="white" stroke-width="1.5"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg>
+          </div>
+          <div class="mem-body">
+            <div class="mem-name">Eleanor Mae Williams</div>
+            <div class="mem-dates">October 1, 1915 — March 8, 1998</div>
+            <div class="mem-stats">
+              <span>💬 14 tributes</span>
+              <span>📷 52 photos</span>
+            </div>
+          </div>
+        </a>
+
+        <!-- Create new card -->
+        <a href="kifo-wizard.html" class="mem-card" style="border:1.5px dashed var(--sand);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:2.5rem;text-align:center;min-height:200px;background:transparent;">
+          <div style="font-size:1.8rem;margin-bottom:0.75rem;opacity:0.35;">+</div>
+          <div style="font-family:'Cormorant Garamond',serif;font-size:1rem;color:var(--ash);margin-bottom:0.3rem;">Create a memorial</div>
+          <div style="font-size:0.75rem;color:var(--sand);">Honor someone else</div>
+        </a>
+
+      </div>
+    </div>
+
+    <!-- TRIBUTES TAB -->
+    <div class="tab-panel" id="tab-tributes">
+      <div class="tributes-list">
+
+        <div class="tribute-item">
+          <div class="ti-memorial">
+            <div class="ti-mem-avatar" style="background:linear-gradient(135deg,#8A9E7E,#4E6245);"></div>
+            <div>
+              <div class="ti-mem-name">Margaret Rose Williams</div>
+              <div class="ti-mem-date">November 12, 2024 · 1 year anniversary</div>
+            </div>
+          </div>
+          <div class="ti-body">"Mom, your garden still blooms every spring. We tend it now, thinking of you with every flower. The sunflowers came back stronger this year — I think they remember you too."</div>
+          <div class="ti-footer">
+            <div class="ti-reactions">
+              <span class="ti-reaction">🕯 14</span>
+              <span class="ti-reaction">❤️ 22</span>
+            </div>
+            <div class="ti-date">Nov 12, 2024</div>
+          </div>
+        </div>
+
+        <div class="tribute-item">
+          <div class="ti-memorial">
+            <div class="ti-mem-avatar" style="background:linear-gradient(135deg,#5C3820,#9E6B4A);"></div>
+            <div>
+              <div class="ti-mem-name">Robert John Williams</div>
+              <div class="ti-mem-date">July 2, 2024 · 5 year anniversary</div>
+            </div>
+          </div>
+          <div class="ti-body">"Five years, Dad. I still hear your voice every time I'm about to make a decision — that steady, measured way you had of cutting through the noise. I hope I'm making you proud."</div>
+          <div class="ti-footer">
+            <div class="ti-reactions">
+              <span class="ti-reaction">🕯 9</span>
+              <span class="ti-reaction">❤️ 11</span>
+            </div>
+            <div class="ti-date">Jul 2, 2024</div>
+          </div>
+        </div>
+
+        <div class="tribute-item">
+          <div class="ti-memorial">
+            <div class="ti-mem-avatar" style="background:linear-gradient(135deg,#8A9E7E,#4E6245);"></div>
+            <div>
+              <div class="ti-mem-name">Margaret Rose Williams</div>
+              <div class="ti-mem-date">June 3, 2024 · Her 82nd birthday</div>
+            </div>
+          </div>
+          <div class="ti-body">"Happy birthday, Grandma. We made your peach cobbler today using Linda's best guess at the recipe. It wasn't quite right — but we laughed the whole time trying."</div>
+          <div class="ti-footer">
+            <div class="ti-reactions">
+              <span class="ti-reaction">🕯 18</span>
+              <span class="ti-reaction">❤️ 34</span>
+            </div>
+            <div class="ti-date">Jun 3, 2024</div>
+          </div>
+        </div>
+
+      </div>
+      <div class="load-more">
+        <button class="load-more-btn">Load more tributes</button>
+      </div>
+    </div>
+
+    <!-- CANDLES TAB -->
+    <div class="tab-panel" id="tab-candles">
+      <div style="display:flex;flex-direction:column;gap:0.75rem;">
+        <div style="font-size:0.65rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--sand);margin-bottom:0.5rem;">127 candles lit across 3 memorials</div>
+
+        <!-- Candle log items -->
+        <div style="background:var(--warm-white);border:1px solid var(--parchment);border-radius:3px;padding:1rem 1.25rem;display:flex;align-items:center;gap:1rem;">
+          <svg width="20" height="36" viewBox="0 0 20 36" fill="none"><ellipse cx="10" cy="5" rx="2.5" ry="4" fill="#F5C842" opacity="0.9"/><line x1="10" y1="9" x2="10" y2="11" stroke="#4E3020" stroke-width="1" stroke-linecap="round"/><rect x="6" y="11" width="8" height="18" rx="1" fill="#EDE5D8"/><rect x="5" y="28" width="10" height="5" rx="1" fill="#D9C9B0"/></svg>
+          <div style="flex:1;"><div style="font-size:0.85rem;font-weight:500;color:var(--dusk);">Margaret Rose Williams</div><div style="font-size:0.72rem;color:var(--ash);">Lit a candle · "Thinking of you today, Mom"</div></div>
+          <div style="font-size:0.68rem;color:var(--sand);">2 days ago</div>
+        </div>
+        <div style="background:var(--warm-white);border:1px solid var(--parchment);border-radius:3px;padding:1rem 1.25rem;display:flex;align-items:center;gap:1rem;">
+          <svg width="20" height="36" viewBox="0 0 20 36" fill="none"><ellipse cx="10" cy="5" rx="2.5" ry="4" fill="#F5C842" opacity="0.9"/><line x1="10" y1="9" x2="10" y2="11" stroke="#4E3020" stroke-width="1" stroke-linecap="round"/><rect x="6" y="11" width="8" height="18" rx="1" fill="#EDE5D8"/><rect x="5" y="28" width="10" height="5" rx="1" fill="#D9C9B0"/></svg>
+          <div style="flex:1;"><div style="font-size:0.85rem;font-weight:500;color:var(--dusk);">Robert John Williams</div><div style="font-size:0.72rem;color:var(--ash);">Lit a candle · "5 years today, Dad"</div></div>
+          <div style="font-size:0.68rem;color:var(--sand);">3 months ago</div>
+        </div>
+        <div style="background:var(--warm-white);border:1px solid var(--parchment);border-radius:3px;padding:1rem 1.25rem;display:flex;align-items:center;gap:1rem;">
+          <svg width="20" height="36" viewBox="0 0 20 36" fill="none"><ellipse cx="10" cy="5" rx="2.5" ry="4" fill="#F5C842" opacity="0.9"/><line x1="10" y1="9" x2="10" y2="11" stroke="#4E3020" stroke-width="1" stroke-linecap="round"/><rect x="6" y="11" width="8" height="18" rx="1" fill="#EDE5D8"/><rect x="5" y="28" width="10" height="5" rx="1" fill="#D9C9B0"/></svg>
+          <div style="flex:1;"><div style="font-size:0.85rem;font-weight:500;color:var(--dusk);">Eleanor Mae Williams</div><div style="font-size:0.72rem;color:var(--ash);">Lit a candle on her birthday</div></div>
+          <div style="font-size:0.68rem;color:var(--sand);">5 months ago</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RIGHT SIDEBAR -->
+  <div class="sidebar">
+
+    <!-- Upcoming reminders -->
+    <div class="sidebar-card">
+      <div class="sc-header"><div class="sc-title">Upcoming remembrances</div></div>
+      <div class="sc-body">
+        <div class="reminders-list">
+          <div class="reminder-item">
+            <div class="ri-icon">🌻</div>
+            <div>
+              <div class="ri-name">Margaret's birthday</div>
+              <div class="ri-date">June 3 · Born 1942</div>
+            </div>
+            <div class="ri-days">74 days</div>
+          </div>
+          <div class="reminder-item">
+            <div class="ri-icon">🕯</div>
+            <div>
+              <div class="ri-name">Robert's anniversary</div>
+              <div class="ri-date">July 2 · Passed 2019</div>
+            </div>
+            <div class="ri-days">103 days</div>
+          </div>
+          <div class="reminder-item">
+            <div class="ri-icon">🌿</div>
+            <div>
+              <div class="ri-name">Margaret's anniversary</div>
+              <div class="ri-date">Nov 12 · Passed 2024</div>
+            </div>
+            <div class="ri-days">236 days</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Followers -->
+    <div class="sidebar-card">
+      <div class="sc-header"><div class="sc-title">Followers (12)</div></div>
+      <div class="sc-body">
+        <div class="followers-grid">
+          <div class="follower-avatar" style="background:linear-gradient(135deg,#8A9E7E,#4E6245);">L</div>
+          <div class="follower-avatar" style="background:linear-gradient(135deg,#C4A882,#9E6B4A);">T</div>
+          <div class="follower-avatar" style="background:linear-gradient(135deg,#BDC4D4,#6B7A9E);">S</div>
+          <div class="follower-avatar" style="background:linear-gradient(135deg,#D4C4B2,#9E8070);">P</div>
+          <div class="follower-avatar" style="background:linear-gradient(135deg,#C4D4C0,#7A9E78);">D</div>
+          <div class="follower-avatar" style="background:linear-gradient(135deg,#D4C0C0,#9E7878);">A</div>
+          <div class="follower-avatar" style="background:linear-gradient(135deg,#C9B48A,#A08050);">M</div>
+          <div class="follower-avatar" style="background:linear-gradient(135deg,#B0C4B0,#7A9E7A);">R</div>
+          <div class="follower-avatar" style="background:var(--parchment);color:var(--sand);font-size:0.7rem;font-family:'DM Sans',sans-serif;">+4</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Activity -->
+    <div class="sidebar-card">
+      <div class="sc-header"><div class="sc-title">Recent activity</div></div>
+      <div class="sc-body" style="padding:0.5rem 1.25rem;">
+        <div class="activity-feed">
+          <div class="activity-item">
+            <div class="ai-icon">✍️</div>
+            <div>
+              <div class="ai-text"><strong>Sarah M.</strong> left a tribute on Margaret's memorial</div>
+              <div class="ai-time">2 days ago</div>
+            </div>
+          </div>
+          <div class="activity-item">
+            <div class="ai-icon">📷</div>
+            <div>
+              <div class="ai-text"><strong>Linda W.</strong> added 4 photos to Margaret's gallery</div>
+              <div class="ai-time">1 week ago</div>
+            </div>
+          </div>
+          <div class="activity-item">
+            <div class="ai-icon">🕯</div>
+            <div>
+              <div class="ai-text"><strong>Thomas W.</strong> lit a candle for Robert</div>
+              <div class="ai-time">3 weeks ago</div>
+            </div>
+          </div>
+          <div class="activity-item">
+            <div class="ai-icon">👤</div>
+            <div>
+              <div class="ai-text"><strong>Patricia O.</strong> started following this profile</div>
+              <div class="ai-time">1 month ago</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- AI tools promo -->
+    <div class="sidebar-card" style="background:var(--dusk);border-color:var(--dusk);">
+      <div class="sc-body" style="padding:1.5rem;">
+        <div style="font-size:0.6rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--gold);margin-bottom:0.75rem;">✦ AI Tools</div>
+        <div style="font-family:'Cormorant Garamond',serif;font-size:1.15rem;color:var(--cream);margin-bottom:0.5rem;line-height:1.3;">Write tributes & life stories with AI</div>
+        <div style="font-size:0.78rem;color:rgba(247,243,238,0.5);line-height:1.6;margin-bottom:1.25rem;">Let Claude help you find the words when they don't come easily.</div>
+        <div style="display:flex;flex-direction:column;gap:0.5rem;">
+          <a href="kifo-ai-tribute.html" style="display:block;padding:0.65rem;background:rgba(247,243,238,0.08);border:1px solid rgba(247,243,238,0.12);border-radius:2px;font-size:0.75rem;color:var(--cream);text-decoration:none;transition:background 0.2s;" onmouseover="this.style.background='rgba(247,243,238,0.14)'" onmouseout="this.style.background='rgba(247,243,238,0.08)'">✍️ AI Tribute Writer →</a>
+          <a href="kifo-lifestory.html" style="display:block;padding:0.65rem;background:rgba(247,243,238,0.08);border:1px solid rgba(247,243,238,0.12);border-radius:2px;font-size:0.75rem;color:var(--cream);text-decoration:none;transition:background 0.2s;" onmouseover="this.style.background='rgba(247,243,246,0.14)'" onmouseout="this.style.background='rgba(247,243,238,0.08)'">📖 AI Life Story Generator →</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- MOBILE DRAWER -->
+<div class="mobile-drawer-overlay" id="mobile-overlay" onclick="closeMobileNav()"></div>
+<div class="mobile-drawer" id="mobile-drawer">
+  <div class="drawer-header">
+    <a href="index.html" class="drawer-logo">Ki<span>f</span>o</a>
+    <button class="drawer-close" onclick="closeMobileNav()">✕</button>
+  </div>
+  <nav class="drawer-nav">
+    <div class="drawer-section">Memorials</div>
+    <a href="index.html" class="drawer-link"><span class="drawer-link-icon">🏠</span>Home</a>
+    <a href="kifo-gallery.html" class="drawer-link"><span class="drawer-link-icon">🔍</span>Browse memorials</a>
+    <a href="kifo-wizard.html" class="drawer-link"><span class="drawer-link-icon">✦</span>Create a memorial</a>
+    <div class="drawer-section">AI Tools</div>
+    <a href="kifo-ai-tribute.html" class="drawer-link"><span class="drawer-link-icon">✍️</span>AI Tribute Writer</a>
+    <a href="kifo-lifestory.html" class="drawer-link"><span class="drawer-link-icon">📖</span>AI Life Story</a>
+    <div class="drawer-section">Account</div>
+    <a href="kifo-dashboard.html" class="drawer-link"><span class="drawer-link-icon">📋</span>Dashboard</a>
+    <a href="kifo-settings.html" class="drawer-link"><span class="drawer-link-icon">⚙️</span>Settings</a>
+  </nav>
+  <div class="drawer-footer">
+    <a href="kifo-wizard.html" class="drawer-cta">+ Create a memorial — free</a>
+  </div>
+</div>
+
+<div class="toast" id="toast">🔗 Profile link copied!</div>
+
+<script>
+function switchTab(name, el) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('tab-' + name).classList.add('active');
+}
+
+let following = false;
+function toggleFollow() {
+  following = !following;
+  const btn = document.getElementById('follow-btn');
+  btn.textContent = following ? 'Following' : 'Follow';
+  btn.classList.toggle('following', following);
+}
+
+function copyProfileLink() {
+  navigator.clipboard.writeText('https://kifo.com/u/james-williams').catch(() => {});
+  const toast = document.getElementById('toast');
+  toast.classList.add('show');
+  setTimeout(() => toast.classList.remove('show'), 2500);
+}
+
+function openMobileNav() {
+  document.getElementById('mobile-drawer').classList.add('open');
+  document.getElementById('mobile-overlay').classList.add('open');
+  document.getElementById('mobile-hamburger').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeMobileNav() {
+  document.getElementById('mobile-drawer').classList.remove('open');
+  document.getElementById('mobile-overlay').classList.remove('open');
+  document.getElementById('mobile-hamburger').classList.remove('open');
+  document.body.style.overflow = '';
+}
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeMobileNav(); });
+</script>
+</body>
+</html>

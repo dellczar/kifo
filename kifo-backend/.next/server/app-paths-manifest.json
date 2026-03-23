@@ -1,0 +1,5 @@
+{
+  "/_not-found/page": "app/_not-found/page.js",
+  "/api/memorials/[slug]/route": "app/api/memorials/[slug]/route.js",
+  "/(app)/memorial/[slug]/page": "app/(app)/memorial/[slug]/page.js"
+}

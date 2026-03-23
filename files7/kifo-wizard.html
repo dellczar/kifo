@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Create a Memorial — Kifo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --cream:#F7F3EE;--parchment:#EDE5D8;--sand:#D9C9B0;--sienna:#9E6B4A;
+  --terracotta:#C4714F;--rust:#A8432A;--sage:#7A8C6E;--dusk:#2C2420;
+  --ash:#6B5F58;--gold:#C9994A;--warm-white:#FDFAF6;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html,body{height:100%;}
+body{background:var(--cream);color:var(--dusk);font-family:'DM Sans',sans-serif;font-weight:300;display:flex;flex-direction:column;min-height:100vh;}
+
+/* TOP BAR */
+.top-bar{display:flex;align-items:center;justify-content:space-between;padding:1.1rem 2.5rem;background:var(--warm-white);border-bottom:1px solid var(--sand);}
+.top-logo{font-family:'Cormorant Garamond',serif;font-size:1.6rem;font-weight:500;letter-spacing:0.08em;color:var(--dusk);text-decoration:none;}
+.top-logo span{color:var(--terracotta);}
+.top-exit{font-size:0.75rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--ash);text-decoration:none;display:flex;align-items:center;gap:0.4rem;transition:color 0.2s;}
+.top-exit:hover{color:var(--dusk);}
+
+/* STEPS INDICATOR */
+.steps-bar{background:var(--warm-white);border-bottom:1px solid var(--parchment);padding:1.5rem 2.5rem;}
+.steps-inner{display:flex;align-items:center;justify-content:center;gap:0;max-width:600px;margin:0 auto;}
+.step-indicator{display:flex;flex-direction:column;align-items:center;gap:0.4rem;flex:1;position:relative;}
+.step-indicator+.step-indicator::before{content:'';position:absolute;top:14px;left:-50%;right:50%;height:2px;background:var(--sand);z-index:0;}
+.step-indicator.done+.step-indicator::before{background:var(--sage);}
+.step-dot{width:28px;height:28px;border-radius:50%;border:2px solid var(--sand);background:var(--cream);display:flex;align-items:center;justify-content:center;font-size:0.72rem;font-weight:500;color:var(--sand);transition:all 0.3s;position:relative;z-index:1;}
+.step-indicator.active .step-dot{border-color:var(--terracotta);background:var(--terracotta);color:white;}
+.step-indicator.done .step-dot{border-color:var(--sage);background:var(--sage);color:white;}
+.step-label{font-size:0.65rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--sand);text-align:center;white-space:nowrap;}
+.step-indicator.active .step-label{color:var(--terracotta);}
+.step-indicator.done .step-label{color:var(--sage);}
+
+/* MAIN WIZARD */
+.wizard{flex:1;display:flex;align-items:flex-start;justify-content:center;padding:3rem 2rem 6rem;}
+.wizard-card{background:var(--warm-white);border-radius:6px;box-shadow:0 4px 40px rgba(44,36,32,0.08);width:100%;max-width:680px;overflow:hidden;}
+.wizard-header{padding:2.5rem 3rem 1.5rem;border-bottom:1px solid var(--parchment);}
+.wizard-step-label{font-size:0.68rem;letter-spacing:0.22em;text-transform:uppercase;color:var(--sienna);margin-bottom:0.6rem;display:flex;align-items:center;gap:0.6rem;}
+.wizard-step-label::before{content:'';width:1.5rem;height:1px;background:var(--sienna);}
+.wizard-title{font-family:'Cormorant Garamond',serif;font-size:2rem;font-weight:400;color:var(--dusk);line-height:1.15;}
+.wizard-title em{font-style:italic;color:var(--terracotta);}
+.wizard-sub{font-size:0.9rem;color:var(--ash);margin-top:0.5rem;line-height:1.6;}
+
+.wizard-body{padding:2.5rem 3rem;}
+
+/* FORM ELEMENTS */
+.form-group{margin-bottom:1.75rem;}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:1.25rem;margin-bottom:1.75rem;}
+.form-row-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1rem;margin-bottom:1.75rem;}
+label{display:block;font-size:0.7rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--ash);margin-bottom:0.5rem;}
+label span{color:var(--sand);font-size:0.65rem;letter-spacing:0.1em;margin-left:0.3rem;text-transform:none;}
+input[type=text],input[type=email],input[type=date],select,textarea{width:100%;padding:0.8rem 1rem;border:1.5px solid var(--sand);border-radius:3px;background:var(--cream);color:var(--dusk);font-family:'DM Sans',sans-serif;font-size:0.9rem;font-weight:300;outline:none;transition:border-color 0.2s,background 0.2s;appearance:none;}
+input[type=text]:focus,input[type=email]:focus,input[type=date]:focus,select:focus,textarea:focus{border-color:var(--sienna);background:var(--warm-white);}
+input[type=text]::placeholder,textarea::placeholder{color:var(--sand);}
+select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%236B5F58' stroke-width='1.2' fill='none'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 1rem center;padding-right:2.5rem;}
+textarea{min-height:120px;resize:vertical;line-height:1.6;}
+
+/* PHOTO UPLOAD */
+.photo-upload{border:2px dashed var(--sand);border-radius:4px;padding:2.5rem;text-align:center;cursor:pointer;transition:border-color 0.2s,background 0.2s;}
+.photo-upload:hover{border-color:var(--sienna);background:var(--parchment);}
+.photo-upload-icon{font-size:2.5rem;margin-bottom:0.75rem;display:block;}
+.photo-upload-title{font-family:'Cormorant Garamond',serif;font-size:1.2rem;color:var(--dusk);margin-bottom:0.3rem;}
+.photo-upload-sub{font-size:0.8rem;color:var(--ash);}
+.photo-upload-sub span{color:var(--sienna);text-decoration:underline;cursor:pointer;}
+
+/* THEME GRID */
+.theme-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:0.75rem;margin-bottom:1.75rem;}
+.theme-card{border-radius:4px;overflow:hidden;cursor:pointer;position:relative;border:2.5px solid transparent;transition:border-color 0.2s,transform 0.2s;}
+.theme-card:hover{transform:translateY(-2px);}
+.theme-card.selected{border-color:var(--terracotta);}
+.theme-card.selected::after{content:'✓';position:absolute;top:6px;right:6px;width:20px;height:20px;border-radius:50%;background:var(--terracotta);color:white;font-size:0.7rem;display:flex;align-items:center;justify-content:center;}
+.theme-preview{height:80px;width:100%;}
+.theme-name{font-size:0.68rem;text-align:center;padding:0.4rem;color:var(--ash);background:var(--warm-white);}
+
+/* PLAN CARDS */
+.plan-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-bottom:2rem;}
+.plan-card{border:2px solid var(--sand);border-radius:4px;padding:1.5rem;cursor:pointer;transition:all 0.2s;position:relative;}
+.plan-card:hover{border-color:var(--sienna);}
+.plan-card.selected{border-color:var(--terracotta);background:rgba(196,113,79,0.04);}
+.plan-card.selected .plan-check{opacity:1;}
+.plan-check{position:absolute;top:0.75rem;right:0.75rem;width:18px;height:18px;border-radius:50%;background:var(--terracotta);color:white;font-size:0.65rem;display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity 0.2s;}
+.plan-badge{font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;background:var(--terracotta);color:white;padding:0.18rem 0.5rem;border-radius:2px;display:inline-block;margin-bottom:0.75rem;}
+.plan-name{font-family:'Cormorant Garamond',serif;font-size:1.1rem;color:var(--dusk);margin-bottom:0.25rem;}
+.plan-price{font-family:'Cormorant Garamond',serif;font-size:1.8rem;font-weight:400;color:var(--dusk);line-height:1;}
+.plan-period{font-size:0.72rem;color:var(--ash);margin-bottom:0.75rem;}
+.plan-features{list-style:none;display:flex;flex-direction:column;gap:0.35rem;}
+.plan-features li{font-size:0.75rem;color:var(--ash);display:flex;align-items:flex-start;gap:0.4rem;}
+.plan-features li::before{content:'✓';color:var(--sage);flex-shrink:0;margin-top:0.05rem;}
+
+/* PRIVACY RADIO */
+.privacy-options{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:2rem;}
+.privacy-card{border:2px solid var(--sand);border-radius:4px;padding:1.25rem;cursor:pointer;transition:all 0.2s;display:flex;gap:1rem;align-items:flex-start;}
+.privacy-card:hover{border-color:var(--sienna);}
+.privacy-card.selected{border-color:var(--terracotta);}
+.privacy-icon{font-size:1.5rem;flex-shrink:0;}
+.privacy-name{font-size:0.88rem;font-weight:500;color:var(--dusk);margin-bottom:0.2rem;}
+.privacy-desc{font-size:0.78rem;color:var(--ash);line-height:1.5;}
+
+/* URL PREVIEW */
+.url-preview{background:var(--parchment);border-radius:3px;padding:0.9rem 1rem;display:flex;align-items:center;gap:0.5rem;margin-bottom:1.75rem;}
+.url-prefix{font-size:0.82rem;color:var(--sand);}
+.url-slug{font-size:0.82rem;color:var(--dusk);font-weight:500;border-bottom:1px solid var(--sienna);}
+.url-suffix{font-size:0.82rem;color:var(--sand);}
+
+/* FOOTER ACTIONS */
+.wizard-footer{padding:1.5rem 3rem;background:var(--parchment);border-top:1px solid var(--sand);display:flex;align-items:center;justify-content:space-between;}
+.btn-back{font-size:0.78rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--ash);background:none;border:1px solid var(--sand);padding:0.7rem 1.5rem;border-radius:2px;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all 0.2s;}
+.btn-back:hover{border-color:var(--sienna);color:var(--sienna);}
+.btn-next{font-size:0.78rem;letter-spacing:0.1em;text-transform:uppercase;color:white;background:var(--terracotta);border:none;padding:0.7rem 2rem;border-radius:2px;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all 0.2s;display:flex;align-items:center;gap:0.5rem;}
+.btn-next:hover{background:var(--rust);}
+.btn-next svg{transition:transform 0.2s;}
+.btn-next:hover svg{transform:translateX(2px);}
+.step-hint{font-size:0.75rem;color:var(--ash);}
+
+/* STEP PANELS */
+.step-panel{display:none;}
+.step-panel.active{display:block;}
+
+/* ANIMATIONS */
+@keyframes slideIn{from{opacity:0;transform:translateX(20px);}to{opacity:1;transform:translateX(0);}}
+.step-panel.active{animation:slideIn 0.3s ease forwards;}
+
+/* SUCCESS STATE */
+.success-panel{text-align:center;padding:4rem 3rem;}
+.success-icon{font-size:4rem;margin-bottom:1.5rem;}
+.success-title{font-family:'Cormorant Garamond',serif;font-size:2.2rem;font-weight:400;color:var(--dusk);margin-bottom:0.75rem;}
+.success-sub{font-size:0.95rem;color:var(--ash);line-height:1.75;max-width:400px;margin:0 auto 2.5rem;}
+.success-btns{display:flex;flex-direction:column;gap:0.75rem;max-width:280px;margin:0 auto;}
+.success-btn-primary{background:var(--terracotta);color:white;border:none;padding:0.9rem;border-radius:2px;font-size:0.82rem;letter-spacing:0.12em;text-transform:uppercase;cursor:pointer;font-family:'DM Sans',sans-serif;transition:background 0.2s;}
+.success-btn-primary:hover{background:var(--rust);}
+.success-btn-ghost{background:transparent;color:var(--ash);border:1px solid var(--sand);padding:0.9rem;border-radius:2px;font-size:0.82rem;letter-spacing:0.12em;text-transform:uppercase;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all 0.2s;}
+.success-btn-ghost:hover{border-color:var(--sienna);color:var(--sienna);}
+
+@media(max-width:640px){
+  .form-row,.form-row-3{grid-template-columns:1fr;}
+  .theme-grid{grid-template-columns:repeat(2,1fr);}
+  .plan-grid{grid-template-columns:1fr;}
+  .privacy-options{grid-template-columns:1fr;}
+  .wizard-header,.wizard-body,.wizard-footer{padding-left:1.5rem;padding-right:1.5rem;}
+}
+
+/* ── MOBILE NAV ─────────────────────────────────────────────── */
+.mobile-hamburger {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  width: 36px;
+  height: 36px;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 3px;
+  transition: background 0.2s;
+  flex-shrink: 0;
+  border: none;
+  background: transparent;
+}
+.mobile-hamburger:hover { background: var(--parchment, #EDE5D8); }
+.mobile-hamburger span {
+  display: block;
+  height: 1.5px;
+  background: var(--dusk, #2C2420);
+  border-radius: 2px;
+  transition: transform 0.3s ease, opacity 0.3s ease, width 0.3s ease;
+  transform-origin: center;
+}
+.mobile-hamburger.open span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+.mobile-hamburger.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+.mobile-hamburger.open span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
+
+/* DRAWER OVERLAY */
+.mobile-drawer-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(44,36,32,0.45);
+  z-index: 998;
+  backdrop-filter: blur(3px);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+.mobile-drawer-overlay.open { opacity: 1; }
+
+/* DRAWER */
+.mobile-drawer {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 280px;
+  background: var(--warm-white, #FDFAF6);
+  z-index: 999;
+  transform: translateX(100%);
+  transition: transform 0.32s cubic-bezier(0.4,0,0.2,1);
+  box-shadow: -8px 0 32px rgba(44,36,32,0.15);
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+}
+.mobile-drawer.open { transform: translateX(0); }
+
+.drawer-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.25rem 1.5rem;
+  border-bottom: 1px solid var(--parchment, #EDE5D8);
+}
+.drawer-logo {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.5rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  color: var(--dusk, #2C2420);
+  text-decoration: none;
+}
+.drawer-logo span { color: var(--terracotta, #C4714F); }
+.drawer-close {
+  width: 32px;
+  height: 32px;
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-size: 1.2rem;
+  color: var(--ash, #6B5F58);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 3px;
+  transition: background 0.2s;
+}
+.drawer-close:hover { background: var(--parchment, #EDE5D8); }
+
+.drawer-nav {
+  flex: 1;
+  padding: 1.25rem 0;
+}
+.drawer-section {
+  font-size: 0.58rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--sand, #D9C9B0);
+  padding: 0 1.5rem;
+  margin: 1rem 0 0.4rem;
+}
+.drawer-link {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.8rem 1.5rem;
+  font-size: 0.88rem;
+  color: var(--ash, #6B5F58);
+  text-decoration: none;
+  transition: background 0.15s, color 0.15s;
+  border-left: 2px solid transparent;
+}
+.drawer-link:hover {
+  background: var(--parchment, #EDE5D8);
+  color: var(--dusk, #2C2420);
+}
+.drawer-link.active {
+  color: var(--terracotta, #C4714F);
+  border-left-color: var(--terracotta, #C4714F);
+  background: rgba(196,113,79,0.06);
+}
+.drawer-link-icon { font-size: 1rem; width: 20px; text-align: center; flex-shrink: 0; }
+
+.drawer-footer {
+  padding: 1.25rem 1.5rem;
+  border-top: 1px solid var(--parchment, #EDE5D8);
+}
+.drawer-cta {
+  display: block;
+  width: 100%;
+  padding: 0.85rem;
+  background: var(--terracotta, #C4714F);
+  color: white;
+  text-align: center;
+  border-radius: 3px;
+  font-size: 0.78rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  text-decoration: none;
+  font-family: 'DM Sans', sans-serif;
+  transition: background 0.2s;
+}
+.drawer-cta:hover { background: var(--rust, #A8432A); }
+
+@media (max-width: 768px) {
+  .mobile-hamburger { display: flex !important; }
+  .mobile-drawer-overlay { display: block; }
+}
+
+
+@media (max-width: 768px) {
+  .nav-links { display: none !important; }
+  .nav-actions .btn-ghost, .nav-actions .btn-primary,
+  .nav-right .nav-link { display: none !important; }
+  .nav-right .nav-btn, .nav-actions > a:not(.mobile-hamburger) { display: none !important; }
+}
+
+</style>
+</head>
+<body>
+
+<!-- TOP BAR -->
+<div class="top-bar">
+  <a href="kifo.html" class="top-logo">Ki<span>f</span>o</a>
+  <a href="kifo.html" class="top-exit">
+    <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M1 1l8 8M9 1L1 9" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+    Exit
+  </a>
+
+  <button class="mobile-hamburger" id="mobile-hamburger" onclick="openMobileNav()" aria-label="Open menu"><span></span><span></span><span></span></button>
+</div>
+
+<!-- STEPS INDICATOR -->
+<div class="steps-bar">
+  <div class="steps-inner">
+    <div class="step-indicator active" id="si-1">
+      <div class="step-dot">1</div>
+      <div class="step-label">Their story</div>
+    </div>
+    <div class="step-indicator" id="si-2">
+      <div class="step-dot">2</div>
+      <div class="step-label">Look & feel</div>
+    </div>
+    <div class="step-indicator" id="si-3">
+      <div class="step-dot">3</div>
+      <div class="step-label">Your plan</div>
+    </div>
+    <div class="step-indicator" id="si-4">
+      <div class="step-dot">4</div>
+      <div class="step-label">Privacy</div>
+    </div>
+  </div>
+</div>
+
+<!-- WIZARD CARD -->
+<div class="wizard">
+  <div class="wizard-card">
+
+    <!-- STEP 1: About -->
+    <div class="step-panel active" id="step-1">
+      <div class="wizard-header">
+        <div class="wizard-step-label">Step 1 of 4</div>
+        <div class="wizard-title">Tell us about your <em>loved one</em></div>
+        <div class="wizard-sub">Start with the basics — you can always add more later.</div>
+      </div>
+      <div class="wizard-body">
+        <div class="form-row">
+          <div><label>First name <span>*</span></label><input type="text" placeholder="e.g. Margaret"></div>
+          <div><label>Middle name <span>optional</span></label><input type="text" placeholder="e.g. Rose"></div>
+        </div>
+        <div class="form-group">
+          <label>Last name <span>*</span></label>
+          <input type="text" placeholder="e.g. Williams">
+        </div>
+        <div class="form-row">
+          <div>
+            <label>Relationship to you <span>*</span></label>
+            <select><option value="">Select relationship</option><option>Mother</option><option>Father</option><option>Spouse / Partner</option><option>Child</option><option>Sibling</option><option>Grandparent</option><option>Friend</option><option>Colleague</option><option>Other</option></select>
+          </div>
+          <div>
+            <label>Special designation <span>optional</span></label>
+            <select><option value="">None</option><option>War veteran</option><option>First responder</option><option>Cancer victim</option><option>COVID-19 victim</option><option>Child loss</option><option>Other</option></select>
+          </div>
+        </div>
+        <div class="form-row">
+          <div><label>Date of birth</label><input type="date"></div>
+          <div><label>Date of passing</label><input type="date"></div>
+        </div>
+        <div class="form-row">
+          <div><label>Hometown / birthplace</label><input type="text" placeholder="e.g. Chicago, Illinois"></div>
+          <div><label>Place of passing</label><input type="text" placeholder="e.g. Chicago, Illinois"></div>
+        </div>
+        <div class="form-group">
+          <label>Memorial web address</label>
+          <div class="url-preview">
+            <span class="url-prefix">kifo.com/</span>
+            <span class="url-slug">margaret-rose-williams</span>
+          </div>
+          <input type="text" placeholder="margaret-rose-williams" style="margin-top:-0.5rem;">
+        </div>
+        <div class="form-group">
+          <label>Biography <span>optional — you can write this later</span></label>
+          <textarea placeholder="Share their story — who they were, what they loved, how they lived, what they meant to you and to the world..."></textarea>
+        </div>
+        <div class="form-group">
+          <label>Profile photo <span>optional</span></label>
+          <div class="photo-upload">
+            <span class="photo-upload-icon">🌿</span>
+            <div class="photo-upload-title">Add a photo of your loved one</div>
+            <div class="photo-upload-sub">Drag & drop, or <span>browse to upload</span> · JPG, PNG up to 20MB</div>
+          </div>
+        </div>
+      </div>
+      <div class="wizard-footer">
+        <div class="step-hint">All fields marked * are required</div>
+        <button class="btn-next" onclick="goToStep(2)">Continue <svg width="14" height="10" viewBox="0 0 14 10" fill="none"><path d="M1 5h12M9 1l4 4-4 4" stroke="white" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      </div>
+    </div>
+
+    <!-- STEP 2: Theme -->
+    <div class="step-panel" id="step-2">
+      <div class="wizard-header">
+        <div class="wizard-step-label">Step 2 of 4</div>
+        <div class="wizard-title">Choose a <em>theme</em></div>
+        <div class="wizard-sub">Pick a look that feels right for this memorial. You can change it anytime.</div>
+      </div>
+      <div class="wizard-body">
+        <div class="theme-grid" id="themeGrid">
+          <div class="theme-card selected" onclick="selectTheme(this)"><div class="theme-preview" style="background:linear-gradient(135deg,#8A9E7E,#4E6245);"></div><div class="theme-name">Forest</div></div>
+          <div class="theme-card" onclick="selectTheme(this)"><div class="theme-preview" style="background:linear-gradient(135deg,#D4C4B2,#9E6B4A);"></div><div class="theme-name">Parchment</div></div>
+          <div class="theme-card" onclick="selectTheme(this)"><div class="theme-preview" style="background:linear-gradient(135deg,#BDC4D4,#6B7A9E);"></div><div class="theme-name">Slate</div></div>
+          <div class="theme-card" onclick="selectTheme(this)"><div class="theme-preview" style="background:linear-gradient(135deg,#2C2420,#5C3820);"></div><div class="theme-name">Dusk</div></div>
+          <div class="theme-card" onclick="selectTheme(this)"><div class="theme-preview" style="background:linear-gradient(135deg,#C4D4C0,#7A9E78);"></div><div class="theme-name">Meadow</div></div>
+          <div class="theme-card" onclick="selectTheme(this)"><div class="theme-preview" style="background:linear-gradient(135deg,#D4C0C0,#9E7878);"></div><div class="theme-name">Rose</div></div>
+          <div class="theme-card" onclick="selectTheme(this)"><div class="theme-preview" style="background:linear-gradient(135deg,#C0C4D4,#6B7A9E);"></div><div class="theme-name">Twilight</div></div>
+          <div class="theme-card" onclick="selectTheme(this)"><div class="theme-preview" style="background:linear-gradient(135deg,#C9994A,#8A5C20);"></div><div class="theme-name">Golden</div></div>
+        </div>
+        <div class="form-group">
+          <label>Header photo <span>optional — shows behind their name</span></label>
+          <div class="photo-upload">
+            <span class="photo-upload-icon">🏔</span>
+            <div class="photo-upload-title">Add a cover photo</div>
+            <div class="photo-upload-sub">Landscape photo works best · min 1200px wide</div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Background music <span>optional</span></label>
+          <select><option value="">No background music</option><option>Add songs from YouTube</option><option>Upload audio files</option></select>
+        </div>
+      </div>
+      <div class="wizard-footer">
+        <button class="btn-back" onclick="goToStep(1)">Back</button>
+        <button class="btn-next" onclick="goToStep(3)">Continue <svg width="14" height="10" viewBox="0 0 14 10" fill="none"><path d="M1 5h12M9 1l4 4-4 4" stroke="white" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      </div>
+    </div>
+
+    <!-- STEP 3: Plan -->
+    <div class="step-panel" id="step-3">
+      <div class="wizard-header">
+        <div class="wizard-step-label">Step 3 of 4</div>
+        <div class="wizard-title">Choose your <em>plan</em></div>
+        <div class="wizard-sub">Start free — upgrade whenever you're ready. 30-day money-back guarantee on all paid plans.</div>
+      </div>
+      <div class="wizard-body">
+        <div class="plan-grid">
+          <div class="plan-card" onclick="selectPlan(this)">
+            <div class="plan-check">✓</div>
+            <div class="plan-name">Free</div>
+            <div class="plan-price">$0</div>
+            <div class="plan-period">Forever, no card needed</div>
+            <ul class="plan-features">
+              <li>Beautiful memorial page</li>
+              <li>Up to 10 photos</li>
+              <li>Unlimited tributes</li>
+              <li>Privacy controls</li>
+              <li>Custom URL</li>
+            </ul>
+          </div>
+          <div class="plan-card selected" onclick="selectPlan(this)">
+            <div class="plan-badge">Most popular</div>
+            <div class="plan-check">✓</div>
+            <div class="plan-name">Premium</div>
+            <div class="plan-price">$8<span style="font-size:1rem;opacity:0.6;">.99</span></div>
+            <div class="plan-period">/ month · or $79.99/yr</div>
+            <ul class="plan-features">
+              <li>Unlimited photos & video</li>
+              <li>Background music</li>
+              <li>Enhanced stories</li>
+              <li>Event planning & RSVPs</li>
+              <li>Multiple admins</li>
+              <li>QR code</li>
+            </ul>
+          </div>
+          <div class="plan-card" onclick="selectPlan(this)">
+            <div class="plan-check">✓</div>
+            <div class="plan-name">Lifetime</div>
+            <div class="plan-price">$149<span style="font-size:1rem;opacity:0.5;">.95</span></div>
+            <div class="plan-period">One-time payment</div>
+            <ul class="plan-features">
+              <li>All premium features</li>
+              <li>Permanent hosting</li>
+              <li>No future bills</li>
+              <li>Priority support</li>
+            </ul>
+          </div>
+        </div>
+        <div style="background:var(--parchment);border-radius:3px;padding:1rem 1.25rem;font-size:0.8rem;color:var(--ash);line-height:1.6;">
+          🔒 Your memorial is created immediately after this step. You can upgrade or downgrade your plan at any time from your account settings.
+        </div>
+      </div>
+      <div class="wizard-footer">
+        <button class="btn-back" onclick="goToStep(2)">Back</button>
+        <button class="btn-next" onclick="goToStep(4)">Continue <svg width="14" height="10" viewBox="0 0 14 10" fill="none"><path d="M1 5h12M9 1l4 4-4 4" stroke="white" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      </div>
+    </div>
+
+    <!-- STEP 4: Privacy -->
+    <div class="step-panel" id="step-4">
+      <div class="wizard-header">
+        <div class="wizard-step-label">Step 4 of 4</div>
+        <div class="wizard-title">Who can <em>see</em> this memorial?</div>
+        <div class="wizard-sub">You control access. You can change this any time from your memorial settings.</div>
+      </div>
+      <div class="wizard-body">
+        <div class="privacy-options">
+          <div class="privacy-card selected" onclick="selectPrivacy(this)">
+            <div class="privacy-icon">🌍</div>
+            <div>
+              <div class="privacy-name">Public</div>
+              <div class="privacy-desc">Anyone can find and view this memorial. Visitors can leave tributes. Best for gathering wide community support.</div>
+            </div>
+          </div>
+          <div class="privacy-card" onclick="selectPrivacy(this)">
+            <div class="privacy-icon">🔒</div>
+            <div>
+              <div class="privacy-name">Private — invite only</div>
+              <div class="privacy-desc">Only people you personally invite can see or contribute. Ideal for keeping memories within the family.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Invite people now <span>optional — you can invite later</span></label>
+          <textarea placeholder="Enter email addresses separated by commas&#10;e.g. james@email.com, patricia@email.com, sarah.m@email.com" style="min-height:80px;"></textarea>
+        </div>
+        <div class="form-row">
+          <div>
+            <label>Your name</label>
+            <input type="text" placeholder="e.g. James Williams">
+          </div>
+          <div>
+            <label>Your email <span>*</span></label>
+            <input type="email" placeholder="e.g. james@email.com">
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Create a password <span>*</span></label>
+          <input type="text" placeholder="Create a secure password">
+        </div>
+        <div style="font-size:0.75rem;color:var(--ash);line-height:1.65;margin-top:-0.75rem;">
+          By creating this memorial you agree to Kifo's <a href="#" style="color:var(--sienna);">Terms of Use</a> and <a href="#" style="color:var(--sienna);">Privacy Policy</a>.
+        </div>
+      </div>
+      <div class="wizard-footer">
+        <button class="btn-back" onclick="goToStep(3)">Back</button>
+        <button class="btn-next" onclick="goToStep(5)" style="background:var(--moss);">Create memorial 🌿 <svg width="14" height="10" viewBox="0 0 14 10" fill="none"><path d="M1 5h12M9 1l4 4-4 4" stroke="white" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      </div>
+    </div>
+
+    <!-- SUCCESS -->
+    <div class="step-panel" id="step-5">
+      <div class="success-panel">
+        <div class="success-icon">🌿</div>
+        <div class="success-title">Margaret's memorial<br>is ready</div>
+        <div class="success-sub">Your memorial has been created. Share the link below with family and friends so they can add their memories and tributes.</div>
+        <div style="background:var(--parchment);border-radius:3px;padding:0.9rem 1.25rem;font-size:0.85rem;color:var(--dusk);margin-bottom:2rem;word-break:break-all;cursor:pointer;" onclick="navigator.clipboard?.writeText('kifo.com/margaret-rose-williams')">
+          kifo.com/margaret-rose-williams
+          <span style="font-size:0.7rem;color:var(--sienna);margin-left:0.5rem;">copy</span>
+        </div>
+        <div class="success-btns">
+          <a href="kifo-memorial.html" class="success-btn-primary" style="display:block;text-decoration:none;text-align:center;">View memorial →</a>
+          <button class="success-btn-ghost">Share with family</button>
+          <a href="kifo-dashboard.html" class="success-btn-ghost" style="display:block;text-align:center;text-decoration:none;">Go to dashboard</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+let currentStep = 1;
+function goToStep(n) {
+  document.getElementById('step-' + currentStep).classList.remove('active');
+  document.getElementById('step-' + n).classList.add('active');
+  // Update indicators
+  for (let i = 1; i <= 4; i++) {
+    const si = document.getElementById('si-' + i);
+    if (!si) continue;
+    si.classList.remove('active','done');
+    if (i < n) si.classList.add('done');
+    else if (i === n) si.classList.add('active');
+  }
+  currentStep = n;
+  window.scrollTo({top: 0, behavior: 'smooth'});
+}
+function selectTheme(el) {
+  document.querySelectorAll('.theme-card').forEach(c => c.classList.remove('selected'));
+  el.classList.add('selected');
+}
+function selectPlan(el) {
+  document.querySelectorAll('.plan-card').forEach(c => c.classList.remove('selected'));
+  el.classList.add('selected');
+}
+function selectPrivacy(el) {
+  document.querySelectorAll('.privacy-card').forEach(c => c.classList.remove('selected'));
+  el.classList.add('selected');
+}
+// Live URL slug from name input
+const nameInputs = document.querySelectorAll('input[type=text]');
+if (nameInputs[0]) {
+  nameInputs[0].addEventListener('input', () => {
+    const slug = nameInputs[0].value.toLowerCase().replace(/\s+/g,'-').replace(/[^a-z0-9-]/g,'');
+    const slugEl = document.querySelector('.url-slug');
+    if (slugEl) slugEl.textContent = slug || 'your-loved-one';
+  });
+}
+</script>
+<script>
+function openMobileNav() {
+  document.getElementById('mobile-drawer').classList.add('open');
+  document.getElementById('mobile-overlay').classList.add('open');
+  document.getElementById('mobile-hamburger').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeMobileNav() {
+  document.getElementById('mobile-drawer').classList.remove('open');
+  document.getElementById('mobile-overlay').classList.remove('open');
+  const ham = document.getElementById('mobile-hamburger');
+  if (ham) ham.classList.remove('open');
+  document.body.style.overflow = '';
+}
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeMobileNav(); });
+(function() {
+  const path = window.location.pathname.split('/').pop() || 'index.html';
+  document.querySelectorAll('.drawer-link').forEach(a => {
+    if (a.getAttribute('href') === path) a.classList.add('active');
+  });
+})();
+</script>
+
+<!-- MOBILE DRAWER -->
+<div class="mobile-drawer-overlay" id="mobile-overlay" onclick="closeMobileNav()"></div>
+<div class="mobile-drawer" id="mobile-drawer">
+  <div class="drawer-header">
+    <a href="index.html" class="drawer-logo">Ki<span>f</span>o</a>
+    <button class="drawer-close" onclick="closeMobileNav()">✕</button>
+  </div>
+  <nav class="drawer-nav">
+    <div class="drawer-section">Memorials</div>
+    <a href="index.html" class="drawer-link"><span class="drawer-link-icon">🏠</span>Home</a>
+    <a href="kifo-gallery.html" class="drawer-link"><span class="drawer-link-icon">🔍</span>Browse memorials</a>
+    <a href="kifo-memorial.html" class="drawer-link"><span class="drawer-link-icon">🕯</span>Example memorial</a>
+    <a href="kifo-wizard.html" class="drawer-link"><span class="drawer-link-icon">✦</span>Create a memorial</a>
+    <div class="drawer-section">AI Tools</div>
+    <a href="kifo-ai-tribute.html" class="drawer-link"><span class="drawer-link-icon">✍️</span>AI Tribute Writer</a>
+    <a href="kifo-lifestory.html" class="drawer-link"><span class="drawer-link-icon">📖</span>AI Life Story</a>
+    <div class="drawer-section">Account</div>
+    <a href="kifo-dashboard.html" class="drawer-link"><span class="drawer-link-icon">📋</span>Dashboard</a>
+    <a href="kifo-events.html" class="drawer-link"><span class="drawer-link-icon">📅</span>Events</a>
+    <a href="kifo-settings.html" class="drawer-link"><span class="drawer-link-icon">⚙️</span>Settings</a>
+    <a href="kifo-signin.html" class="drawer-link"><span class="drawer-link-icon">🔑</span>Sign in</a>
+  </nav>
+  <div class="drawer-footer">
+    <a href="kifo-wizard.html" class="drawer-cta">+ Create a memorial — free</a>
+  </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,869 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Account Settings — Kifo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet">
+<style>
+:root{--cream:#F7F3EE;--parchment:#EDE5D8;--sand:#D9C9B0;--sienna:#9E6B4A;--terracotta:#C4714F;--rust:#A8432A;--sage:#7A8C6E;--moss:#4E6245;--dusk:#2C2420;--ash:#6B5F58;--gold:#C9994A;--warm-white:#FDFAF6;}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{background:var(--cream);color:var(--dusk);font-family:'DM Sans',sans-serif;font-weight:300;min-height:100vh;}
+
+/* TOP NAV */
+.top-nav{display:flex;align-items:center;justify-content:space-between;padding:1rem 2rem;background:var(--warm-white);border-bottom:1px solid var(--sand);position:sticky;top:0;z-index:50;}
+.nav-logo{font-family:'Cormorant Garamond',serif;font-size:1.6rem;font-weight:500;letter-spacing:0.08em;color:var(--dusk);text-decoration:none;}
+.nav-logo span{color:var(--terracotta);}
+.nav-right{display:flex;align-items:center;gap:1rem;}
+.nav-back{font-size:0.72rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--ash);text-decoration:none;display:flex;align-items:center;gap:0.4rem;transition:color 0.2s;}
+.nav-back:hover{color:var(--sienna);}
+.nav-avatar{width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,var(--sienna),var(--terracotta));display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-size:0.9rem;color:white;font-weight:500;cursor:pointer;}
+
+/* LAYOUT */
+.layout{display:grid;grid-template-columns:260px 1fr;min-height:calc(100vh - 58px);}
+
+/* SIDEBAR */
+.sidebar{background:var(--warm-white);border-right:1px solid var(--sand);padding:2rem 0;}
+.sidebar-user{padding:0 1.5rem 2rem;border-bottom:1px solid var(--parchment);}
+.su-avatar{width:64px;height:64px;border-radius:50%;background:linear-gradient(135deg,#9E6B4A,#C4714F);display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-size:1.6rem;color:white;font-weight:500;margin-bottom:0.75rem;}
+.su-name{font-family:'Cormorant Garamond',serif;font-size:1.15rem;font-weight:500;color:var(--dusk);margin-bottom:0.15rem;}
+.su-email{font-size:0.75rem;color:var(--ash);}
+.su-plan{display:inline-flex;align-items:center;gap:0.35rem;font-size:0.62rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold);background:rgba(201,153,74,0.1);border:1px solid rgba(201,153,74,0.25);padding:0.2rem 0.6rem;border-radius:2px;margin-top:0.5rem;}
+
+.sidebar-nav{padding:1.5rem 0;}
+.snav-section{font-size:0.6rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--sand);padding:0 1.5rem;margin-bottom:0.5rem;margin-top:1.25rem;}
+.snav-section:first-child{margin-top:0;}
+.snav-item{display:flex;align-items:center;gap:0.75rem;padding:0.7rem 1.5rem;font-size:0.82rem;color:var(--ash);cursor:pointer;transition:all 0.15s;border-left:2px solid transparent;text-decoration:none;}
+.snav-item:hover{background:var(--parchment);color:var(--dusk);}
+.snav-item.active{background:var(--parchment);color:var(--terracotta);border-left-color:var(--terracotta);font-weight:500;}
+.snav-icon{font-size:1rem;width:20px;text-align:center;flex-shrink:0;}
+
+/* MAIN */
+.main{padding:2.5rem 3rem;max-width:860px;}
+
+.page-header{margin-bottom:2.5rem;}
+.page-eyebrow{font-size:0.65rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--sienna);margin-bottom:0.5rem;display:flex;align-items:center;gap:0.5rem;}
+.page-eyebrow::before{content:'';width:1.5rem;height:1px;background:var(--sienna);}
+.page-title{font-family:'Cormorant Garamond',serif;font-size:2rem;font-weight:400;color:var(--dusk);}
+
+/* SECTION CARDS */
+.settings-section{background:var(--warm-white);border-radius:4px;border:1px solid var(--parchment);overflow:hidden;margin-bottom:1.5rem;}
+.ss-header{display:flex;align-items:center;justify-content:space-between;padding:1.25rem 1.75rem;border-bottom:1px solid var(--parchment);}
+.ss-title{font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-weight:500;color:var(--dusk);}
+.ss-subtitle{font-size:0.75rem;color:var(--ash);margin-top:0.1rem;}
+.ss-body{padding:1.75rem;}
+
+/* FORM ELEMENTS */
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:1.25rem;margin-bottom:1.25rem;}
+.form-group{margin-bottom:1.25rem;}
+.form-group:last-child{margin-bottom:0;}
+label{display:block;font-size:0.67rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--ash);margin-bottom:0.45rem;}
+input[type=text],input[type=email],input[type=password],input[type=url],select,textarea{width:100%;padding:0.8rem 1rem;border:1.5px solid var(--sand);border-radius:3px;background:var(--cream);color:var(--dusk);font-family:'DM Sans',sans-serif;font-size:0.88rem;font-weight:300;outline:none;transition:border-color 0.2s,background 0.2s;}
+input:focus,select:focus,textarea:focus{border-color:var(--sienna);background:var(--warm-white);}
+input::placeholder,textarea::placeholder{color:var(--sand);}
+textarea{resize:vertical;min-height:80px;line-height:1.6;}
+select{cursor:pointer;}
+
+/* INPUT GROUPS */
+.input-group{display:flex;align-items:stretch;border:1.5px solid var(--sand);border-radius:3px;overflow:hidden;transition:border-color 0.2s;}
+.input-group:focus-within{border-color:var(--sienna);}
+.input-prefix{padding:0 0.9rem;background:var(--parchment);color:var(--ash);font-size:0.82rem;display:flex;align-items:center;white-space:nowrap;border-right:1.5px solid var(--sand);}
+.input-group input{border:none;border-radius:0;background:var(--cream);}
+.input-group input:focus{background:var(--warm-white);}
+
+/* AVATAR UPLOAD */
+.avatar-section{display:flex;align-items:center;gap:1.5rem;margin-bottom:1.75rem;padding-bottom:1.75rem;border-bottom:1px solid var(--parchment);}
+.avatar-large{width:80px;height:80px;border-radius:50%;background:linear-gradient(135deg,#9E6B4A,#C4714F);display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-size:2rem;color:white;font-weight:500;flex-shrink:0;position:relative;cursor:pointer;overflow:hidden;}
+.avatar-overlay{position:absolute;inset:0;background:rgba(44,36,32,0.5);display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity 0.2s;font-size:1.2rem;}
+.avatar-large:hover .avatar-overlay{opacity:1;}
+.avatar-info{flex:1;}
+.avatar-name{font-size:0.9rem;font-weight:500;color:var(--dusk);margin-bottom:0.25rem;}
+.avatar-hint{font-size:0.75rem;color:var(--ash);line-height:1.6;}
+.avatar-btns{display:flex;gap:0.5rem;margin-top:0.6rem;}
+.btn-sm{font-size:0.68rem;letter-spacing:0.1em;text-transform:uppercase;padding:0.35rem 0.85rem;border-radius:2px;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all 0.2s;border:none;}
+.btn-sm-outline{background:transparent;border:1px solid var(--sand);color:var(--ash);}
+.btn-sm-outline:hover{border-color:var(--sienna);color:var(--sienna);}
+.btn-sm-danger{background:transparent;border:1px solid rgba(200,60,60,0.3);color:#A03030;}
+.btn-sm-danger:hover{background:rgba(200,60,60,0.06);}
+
+/* TOGGLE */
+.toggle-row{display:flex;align-items:center;justify-content:space-between;padding:1rem 0;border-bottom:1px solid var(--parchment);}
+.toggle-row:last-child{border-bottom:none;padding-bottom:0;}
+.toggle-row:first-child{padding-top:0;}
+.toggle-info{flex:1;padding-right:2rem;}
+.toggle-label{font-size:0.85rem;font-weight:500;color:var(--dusk);margin-bottom:0.2rem;}
+.toggle-desc{font-size:0.75rem;color:var(--ash);line-height:1.55;}
+.toggle{position:relative;width:44px;height:24px;flex-shrink:0;}
+.toggle input{opacity:0;width:0;height:0;}
+.toggle-slider{position:absolute;inset:0;background:var(--sand);border-radius:24px;cursor:pointer;transition:background 0.2s;}
+.toggle-slider::before{content:'';position:absolute;width:18px;height:18px;background:white;border-radius:50%;left:3px;top:3px;transition:transform 0.2s;box-shadow:0 1px 3px rgba(0,0,0,0.15);}
+.toggle input:checked ~ .toggle-slider{background:var(--sage);}
+.toggle input:checked ~ .toggle-slider::before{transform:translateX(20px);}
+
+/* PLAN CARD */
+.plan-card{background:var(--dusk);border-radius:3px;padding:1.5rem;display:flex;align-items:center;justify-content:space-between;margin-bottom:1.25rem;}
+.plan-info{display:flex;align-items:center;gap:1rem;}
+.plan-icon{font-size:1.5rem;}
+.plan-name{font-family:'Cormorant Garamond',serif;font-size:1.15rem;font-weight:500;color:var(--cream);margin-bottom:0.15rem;}
+.plan-detail{font-size:0.75rem;color:rgba(247,243,238,0.5);}
+.plan-badge{font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;background:rgba(201,153,74,0.2);border:1px solid rgba(201,153,74,0.4);color:var(--gold);padding:0.2rem 0.6rem;border-radius:2px;margin-left:0.5rem;}
+.btn-upgrade{background:var(--terracotta);color:white;border:none;padding:0.65rem 1.5rem;border-radius:2px;font-size:0.72rem;letter-spacing:0.12em;text-transform:uppercase;cursor:pointer;font-family:'DM Sans',sans-serif;transition:background 0.2s;white-space:nowrap;}
+.btn-upgrade:hover{background:var(--rust);}
+
+/* BILLING TABLE */
+.billing-table{width:100%;border-collapse:collapse;}
+.billing-table th{font-size:0.62rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--sand);text-align:left;padding:0.6rem 1rem;background:var(--parchment);}
+.billing-table td{font-size:0.82rem;color:var(--ash);padding:0.9rem 1rem;border-bottom:1px solid var(--parchment);}
+.billing-table tr:last-child td{border-bottom:none;}
+.billing-table .amount{font-weight:500;color:var(--dusk);}
+.badge{font-size:0.6rem;letter-spacing:0.1em;text-transform:uppercase;padding:0.15rem 0.5rem;border-radius:2px;}
+.badge-success{background:rgba(122,140,110,0.15);color:var(--moss);}
+.badge-pending{background:rgba(201,153,74,0.1);color:var(--gold);}
+
+/* DANGER ZONE */
+.danger-section{border-color:rgba(200,60,60,0.2);}
+.danger-section .ss-header{background:rgba(200,60,60,0.04);}
+.danger-section .ss-title{color:#A03030;}
+.danger-item{display:flex;align-items:center;justify-content:space-between;padding:1rem 0;border-bottom:1px solid rgba(200,60,60,0.1);}
+.danger-item:last-child{border-bottom:none;padding-bottom:0;}
+.danger-item:first-child{padding-top:0;}
+.danger-label{font-size:0.85rem;font-weight:500;color:var(--dusk);margin-bottom:0.2rem;}
+.danger-desc{font-size:0.75rem;color:var(--ash);}
+.btn-danger{background:transparent;border:1px solid rgba(200,60,60,0.4);color:#A03030;padding:0.5rem 1.1rem;border-radius:2px;font-size:0.72rem;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all 0.2s;white-space:nowrap;}
+.btn-danger:hover{background:rgba(200,60,60,0.08);}
+
+/* SAVE BAR */
+.save-bar{position:sticky;bottom:0;left:0;right:0;background:var(--dusk);padding:1rem 3rem;display:flex;align-items:center;justify-content:space-between;transform:translateY(100%);transition:transform 0.3s ease;z-index:40;}
+.save-bar.visible{transform:translateY(0);}
+.save-hint{font-size:0.78rem;color:rgba(247,243,238,0.5);}
+.save-actions{display:flex;gap:0.75rem;}
+.btn-save{background:var(--terracotta);color:white;border:none;padding:0.65rem 1.75rem;border-radius:2px;font-size:0.78rem;letter-spacing:0.12em;text-transform:uppercase;cursor:pointer;font-family:'DM Sans',sans-serif;transition:background 0.2s;}
+.btn-save:hover{background:var(--rust);}
+.btn-cancel{background:transparent;color:rgba(247,243,238,0.5);border:1px solid rgba(247,243,238,0.15);padding:0.65rem 1.25rem;border-radius:2px;font-size:0.78rem;letter-spacing:0.12em;text-transform:uppercase;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all 0.2s;}
+.btn-cancel:hover{color:rgba(247,243,238,0.8);}
+
+/* SUCCESS TOAST */
+.toast{position:fixed;bottom:5rem;right:2rem;background:var(--moss);color:white;padding:0.8rem 1.25rem;border-radius:3px;font-size:0.82rem;display:flex;align-items:center;gap:0.5rem;box-shadow:0 8px 24px rgba(44,36,32,0.2);transform:translateY(100px);opacity:0;transition:all 0.3s ease;z-index:200;}
+.toast.show{transform:translateY(0);opacity:1;}
+
+/* CONNECTED ACCOUNTS */
+.connected-account{display:flex;align-items:center;justify-content:space-between;padding:1rem 0;border-bottom:1px solid var(--parchment);}
+.connected-account:last-child{border-bottom:none;padding-bottom:0;}
+.connected-account:first-child{padding-top:0;}
+.ca-info{display:flex;align-items:center;gap:0.75rem;}
+.ca-logo{width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:1rem;background:var(--parchment);}
+.ca-name{font-size:0.85rem;font-weight:500;color:var(--dusk);}
+.ca-status{font-size:0.72rem;color:var(--ash);}
+.ca-connected{font-size:0.72rem;color:var(--sage);}
+
+@media(max-width:900px){.layout{grid-template-columns:1fr;}.sidebar{display:none;}.main{padding:2rem 1.5rem;}.form-row{grid-template-columns:1fr;}}
+
+/* ── MOBILE NAV ─────────────────────────────────────────────── */
+.mobile-hamburger {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  width: 36px;
+  height: 36px;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 3px;
+  transition: background 0.2s;
+  flex-shrink: 0;
+  border: none;
+  background: transparent;
+}
+.mobile-hamburger:hover { background: var(--parchment, #EDE5D8); }
+.mobile-hamburger span {
+  display: block;
+  height: 1.5px;
+  background: var(--dusk, #2C2420);
+  border-radius: 2px;
+  transition: transform 0.3s ease, opacity 0.3s ease, width 0.3s ease;
+  transform-origin: center;
+}
+.mobile-hamburger.open span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+.mobile-hamburger.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+.mobile-hamburger.open span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
+
+/* DRAWER OVERLAY */
+.mobile-drawer-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(44,36,32,0.45);
+  z-index: 998;
+  backdrop-filter: blur(3px);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+.mobile-drawer-overlay.open { opacity: 1; }
+
+/* DRAWER */
+.mobile-drawer {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 280px;
+  background: var(--warm-white, #FDFAF6);
+  z-index: 999;
+  transform: translateX(100%);
+  transition: transform 0.32s cubic-bezier(0.4,0,0.2,1);
+  box-shadow: -8px 0 32px rgba(44,36,32,0.15);
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+}
+.mobile-drawer.open { transform: translateX(0); }
+
+.drawer-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.25rem 1.5rem;
+  border-bottom: 1px solid var(--parchment, #EDE5D8);
+}
+.drawer-logo {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.5rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  color: var(--dusk, #2C2420);
+  text-decoration: none;
+}
+.drawer-logo span { color: var(--terracotta, #C4714F); }
+.drawer-close {
+  width: 32px;
+  height: 32px;
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-size: 1.2rem;
+  color: var(--ash, #6B5F58);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 3px;
+  transition: background 0.2s;
+}
+.drawer-close:hover { background: var(--parchment, #EDE5D8); }
+
+.drawer-nav {
+  flex: 1;
+  padding: 1.25rem 0;
+}
+.drawer-section {
+  font-size: 0.58rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--sand, #D9C9B0);
+  padding: 0 1.5rem;
+  margin: 1rem 0 0.4rem;
+}
+.drawer-link {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.8rem 1.5rem;
+  font-size: 0.88rem;
+  color: var(--ash, #6B5F58);
+  text-decoration: none;
+  transition: background 0.15s, color 0.15s;
+  border-left: 2px solid transparent;
+}
+.drawer-link:hover {
+  background: var(--parchment, #EDE5D8);
+  color: var(--dusk, #2C2420);
+}
+.drawer-link.active {
+  color: var(--terracotta, #C4714F);
+  border-left-color: var(--terracotta, #C4714F);
+  background: rgba(196,113,79,0.06);
+}
+.drawer-link-icon { font-size: 1rem; width: 20px; text-align: center; flex-shrink: 0; }
+
+.drawer-footer {
+  padding: 1.25rem 1.5rem;
+  border-top: 1px solid var(--parchment, #EDE5D8);
+}
+.drawer-cta {
+  display: block;
+  width: 100%;
+  padding: 0.85rem;
+  background: var(--terracotta, #C4714F);
+  color: white;
+  text-align: center;
+  border-radius: 3px;
+  font-size: 0.78rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  text-decoration: none;
+  font-family: 'DM Sans', sans-serif;
+  transition: background 0.2s;
+}
+.drawer-cta:hover { background: var(--rust, #A8432A); }
+
+@media (max-width: 768px) {
+  .mobile-hamburger { display: flex !important; }
+  .mobile-drawer-overlay { display: block; }
+}
+
+
+@media (max-width: 768px) {
+  .nav-links { display: none !important; }
+  .nav-actions .btn-ghost, .nav-actions .btn-primary,
+  .nav-right .nav-link { display: none !important; }
+  .nav-right .nav-btn, .nav-actions > a:not(.mobile-hamburger) { display: none !important; }
+}
+
+</style>
+</head>
+<body>
+
+<!-- TOP NAV -->
+<div class="top-nav">
+  <a href="index.html" class="nav-logo">Ki<span>f</span>o</a>
+  <div class="nav-right">
+        <a href="kifo-dashboard.html" class="nav-back">
+      <svg width="12" height="10" viewBox="0 0 12 10" fill="none"><path d="M11 5H1M5 1L1 5l4 4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Dashboard
+    </a>
+    <div class="nav-avatar">J</div>
+  
+    <button class="mobile-hamburger" id="mobile-hamburger" onclick="openMobileNav()" aria-label="Open menu"><span></span><span></span><span></span></button>
+  </div>
+</div>
+
+<div class="layout">
+
+  <!-- SIDEBAR -->
+  <div class="sidebar">
+    <div class="sidebar-user">
+      <div class="su-avatar">J</div>
+      <div class="su-name">James Williams</div>
+      <div class="su-email">dellczar@gmail.com</div>
+      <div class="su-plan">✦ Premium plan</div>
+    </div>
+    <div class="sidebar-nav">
+      <div class="snav-section">Account</div>
+      <a href="#profile" class="snav-item active" onclick="setActive(this,'#profile')">
+        <span class="snav-icon">👤</span> Profile
+      </a>
+      <a href="#security" class="snav-item" onclick="setActive(this,'#security')">
+        <span class="snav-icon">🔒</span> Password & security
+      </a>
+      <a href="#notifications" class="snav-item" onclick="setActive(this,'#notifications')">
+        <span class="snav-icon">🔔</span> Notifications
+      </a>
+      <a href="#connected" class="snav-item" onclick="setActive(this,'#connected')">
+        <span class="snav-icon">🔗</span> Connected accounts
+      </a>
+
+      <div class="snav-section">Billing</div>
+      <a href="#billing" class="snav-item" onclick="setActive(this,'#billing')">
+        <span class="snav-icon">💳</span> Plan & billing
+      </a>
+      <a href="#invoices" class="snav-item" onclick="setActive(this,'#invoices')">
+        <span class="snav-icon">🧾</span> Invoices
+      </a>
+
+      <div class="snav-section">Memorials</div>
+      <a href="kifo-dashboard.html" class="snav-item">
+        <span class="snav-icon">🌿</span> My memorials
+      </a>
+      <a href="#privacy" class="snav-item" onclick="setActive(this,'#privacy')">
+        <span class="snav-icon">👁</span> Privacy defaults
+      </a>
+
+      <div class="snav-section">Danger zone</div>
+      <a href="#danger" class="snav-item" onclick="setActive(this,'#danger')" style="color:#A03030;">
+        <span class="snav-icon">⚠️</span> Account & data
+      </a>
+    </div>
+  </div>
+
+  <!-- MAIN CONTENT -->
+  <div class="main">
+    <div class="page-header">
+      <div class="page-eyebrow">Settings</div>
+      <h1 class="page-title">Account settings</h1>
+    </div>
+
+    <!-- PROFILE -->
+    <div class="settings-section" id="profile">
+      <div class="ss-header">
+        <div>
+          <div class="ss-title">Profile</div>
+          <div class="ss-subtitle">Your public information and display preferences</div>
+        </div>
+      </div>
+      <div class="ss-body">
+        <div class="avatar-section">
+          <div class="avatar-large" title="Change photo">
+            J
+            <div class="avatar-overlay">📷</div>
+          </div>
+          <div class="avatar-info">
+            <div class="avatar-name">James Williams</div>
+            <div class="avatar-hint">Upload a profile photo. JPG, PNG or GIF, max 5MB. This appears on memorials you administer.</div>
+            <div class="avatar-btns">
+              <button class="btn-sm btn-sm-outline">Upload photo</button>
+              <button class="btn-sm btn-sm-danger">Remove</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>First name</label>
+            <input type="text" value="James" oninput="showSaveBar()">
+          </div>
+          <div class="form-group">
+            <label>Last name</label>
+            <input type="text" value="Williams" oninput="showSaveBar()">
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Display name</label>
+          <input type="text" value="James Williams" oninput="showSaveBar()" placeholder="How you appear on memorials">
+        </div>
+        <div class="form-group">
+          <label>Email address</label>
+          <input type="email" value="dellczar@gmail.com" oninput="showSaveBar()">
+        </div>
+        <div class="form-group">
+          <label>Location (optional)</label>
+          <input type="text" value="Glen Burnie, MD" placeholder="City, Country" oninput="showSaveBar()">
+        </div>
+        <div class="form-group">
+          <label>Bio (optional)</label>
+          <textarea placeholder="A brief bio shown on memorials you manage…" oninput="showSaveBar()">Family historian and keeper of memories.</textarea>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECURITY -->
+    <div class="settings-section" id="security">
+      <div class="ss-header">
+        <div>
+          <div class="ss-title">Password & security</div>
+          <div class="ss-subtitle">Manage how you sign in to Kifo</div>
+        </div>
+      </div>
+      <div class="ss-body">
+        <div class="form-group">
+          <label>Current password</label>
+          <input type="password" placeholder="Enter current password" oninput="showSaveBar()">
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>New password</label>
+            <input type="password" placeholder="New password" oninput="showSaveBar()">
+          </div>
+          <div class="form-group">
+            <label>Confirm new password</label>
+            <input type="password" placeholder="Repeat new password" oninput="showSaveBar()">
+          </div>
+        </div>
+
+        <div style="padding-top:1.25rem;border-top:1px solid var(--parchment);margin-top:0.75rem;">
+          <div class="toggle-row">
+            <div class="toggle-info">
+              <div class="toggle-label">Two-factor authentication</div>
+              <div class="toggle-desc">Require a code from your phone when signing in. Strongly recommended for memorial administrators.</div>
+            </div>
+            <label class="toggle">
+              <input type="checkbox">
+              <span class="toggle-slider"></span>
+            </label>
+          </div>
+          <div class="toggle-row">
+            <div class="toggle-info">
+              <div class="toggle-label">Sign in with Google</div>
+              <div class="toggle-desc">Allow signing in with your connected Google account (dellczar@gmail.com).</div>
+            </div>
+            <label class="toggle">
+              <input type="checkbox" checked>
+              <span class="toggle-slider"></span>
+            </label>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- NOTIFICATIONS -->
+    <div class="settings-section" id="notifications">
+      <div class="ss-header">
+        <div>
+          <div class="ss-title">Notification preferences</div>
+          <div class="ss-subtitle">Choose what Kifo sends you and when</div>
+        </div>
+      </div>
+      <div class="ss-body">
+        <div class="toggle-row">
+          <div class="toggle-info">
+            <div class="toggle-label">New tributes & comments</div>
+            <div class="toggle-desc">Get notified when someone leaves a tribute on a memorial you manage.</div>
+          </div>
+          <label class="toggle"><input type="checkbox" checked onchange="showSaveBar()"><span class="toggle-slider"></span></label>
+        </div>
+        <div class="toggle-row">
+          <div class="toggle-info">
+            <div class="toggle-label">Birthday reminders</div>
+            <div class="toggle-desc">Receive an email on the birthday of each person you've memorialized.</div>
+          </div>
+          <label class="toggle"><input type="checkbox" checked onchange="showSaveBar()"><span class="toggle-slider"></span></label>
+        </div>
+        <div class="toggle-row">
+          <div class="toggle-info">
+            <div class="toggle-label">Anniversary of passing</div>
+            <div class="toggle-desc">A gentle reminder each year on the anniversary of a loved one's passing.</div>
+          </div>
+          <label class="toggle"><input type="checkbox" checked onchange="showSaveBar()"><span class="toggle-slider"></span></label>
+        </div>
+        <div class="toggle-row">
+          <div class="toggle-info">
+            <div class="toggle-label">Event reminders</div>
+            <div class="toggle-desc">Reminders about upcoming memorial events (24 hours and 1 hour before).</div>
+          </div>
+          <label class="toggle"><input type="checkbox" checked onchange="showSaveBar()"><span class="toggle-slider"></span></label>
+        </div>
+        <div class="toggle-row">
+          <div class="toggle-info">
+            <div class="toggle-label">New photos & stories added</div>
+            <div class="toggle-desc">Know when collaborators upload new content to your memorials.</div>
+          </div>
+          <label class="toggle"><input type="checkbox" onchange="showSaveBar()"><span class="toggle-slider"></span></label>
+        </div>
+        <div class="toggle-row">
+          <div class="toggle-info">
+            <div class="toggle-label">Candles lit</div>
+            <div class="toggle-desc">A daily digest when visitors light candles on your memorials.</div>
+          </div>
+          <label class="toggle"><input type="checkbox" onchange="showSaveBar()"><span class="toggle-slider"></span></label>
+        </div>
+        <div class="toggle-row">
+          <div class="toggle-info">
+            <div class="toggle-label">Product updates & news</div>
+            <div class="toggle-desc">Occasional emails about new Kifo features and improvements.</div>
+          </div>
+          <label class="toggle"><input type="checkbox" onchange="showSaveBar()"><span class="toggle-slider"></span></label>
+        </div>
+      </div>
+    </div>
+
+    <!-- CONNECTED ACCOUNTS -->
+    <div class="settings-section" id="connected">
+      <div class="ss-header">
+        <div>
+          <div class="ss-title">Connected accounts</div>
+          <div class="ss-subtitle">Services linked to your Kifo account for sign-in and media import</div>
+        </div>
+      </div>
+      <div class="ss-body">
+        <div class="connected-account">
+          <div class="ca-info">
+            <div class="ca-logo">G</div>
+            <div>
+              <div class="ca-name">Google</div>
+              <div class="ca-connected">✓ Connected · dellczar@gmail.com</div>
+            </div>
+          </div>
+          <button class="btn-sm btn-sm-danger">Disconnect</button>
+        </div>
+        <div class="connected-account">
+          <div class="ca-info">
+            <div class="ca-logo">f</div>
+            <div>
+              <div class="ca-name">Facebook</div>
+              <div class="ca-status">Not connected · Import photos from Facebook albums</div>
+            </div>
+          </div>
+          <button class="btn-sm btn-sm-outline">Connect</button>
+        </div>
+        <div class="connected-account">
+          <div class="ca-info">
+            <div class="ca-logo">📷</div>
+            <div>
+              <div class="ca-name">Google Photos</div>
+              <div class="ca-status">Not connected · Import directly from your Google Photos library</div>
+            </div>
+          </div>
+          <button class="btn-sm btn-sm-outline">Connect</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- BILLING -->
+    <div class="settings-section" id="billing">
+      <div class="ss-header">
+        <div>
+          <div class="ss-title">Plan & billing</div>
+          <div class="ss-subtitle">Manage your subscription and payment method</div>
+        </div>
+      </div>
+      <div class="ss-body">
+        <div class="plan-card">
+          <div class="plan-info">
+            <div class="plan-icon">🌿</div>
+            <div>
+              <div class="plan-name">Premium Monthly <span class="plan-badge">Active</span></div>
+              <div class="plan-detail">$8.99 / month · Renews April 20, 2026 · Billed to Visa ···6411</div>
+            </div>
+          </div>
+          <button class="btn-upgrade" onclick="location.href='kifo-wizard.html'">Upgrade to Lifetime</button>
+        </div>
+
+        <div class="form-group">
+          <label>Payment method</label>
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:0.9rem 1rem;border:1.5px solid var(--sand);border-radius:3px;background:var(--cream);">
+            <div style="display:flex;align-items:center;gap:0.75rem;font-size:0.85rem;color:var(--dusk);">
+              <span style="font-size:1.2rem;">💳</span>
+              Visa ending in 6411 · Expires 09/28
+            </div>
+            <button class="btn-sm btn-sm-outline">Update</button>
+          </div>
+        </div>
+
+        <div style="display:flex;gap:0.75rem;flex-wrap:wrap;">
+          <button class="btn-sm btn-sm-outline">Cancel subscription</button>
+          <button class="btn-sm btn-sm-outline">Pause billing</button>
+          <button class="btn-sm btn-sm-outline">Download tax invoice</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- INVOICES -->
+    <div class="settings-section" id="invoices">
+      <div class="ss-header">
+        <div>
+          <div class="ss-title">Invoices</div>
+          <div class="ss-subtitle">Your billing history</div>
+        </div>
+      </div>
+      <div class="ss-body" style="padding:0;">
+        <table class="billing-table">
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Description</th>
+              <th>Amount</th>
+              <th>Status</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Mar 20, 2026</td>
+              <td>Premium Monthly — March 2026</td>
+              <td class="amount">$8.99</td>
+              <td><span class="badge badge-success">Paid</span></td>
+              <td style="text-align:right;"><a href="#" style="font-size:0.72rem;color:var(--sienna);text-decoration:none;">PDF</a></td>
+            </tr>
+            <tr>
+              <td>Feb 20, 2026</td>
+              <td>Premium Monthly — February 2026</td>
+              <td class="amount">$8.99</td>
+              <td><span class="badge badge-success">Paid</span></td>
+              <td style="text-align:right;"><a href="#" style="font-size:0.72rem;color:var(--sienna);text-decoration:none;">PDF</a></td>
+            </tr>
+            <tr>
+              <td>Jan 20, 2026</td>
+              <td>Premium Monthly — January 2026</td>
+              <td class="amount">$8.99</td>
+              <td><span class="badge badge-success">Paid</span></td>
+              <td style="text-align:right;"><a href="#" style="font-size:0.72rem;color:var(--sienna);text-decoration:none;">PDF</a></td>
+            </tr>
+            <tr>
+              <td>Dec 20, 2025</td>
+              <td>Premium Monthly — December 2025</td>
+              <td class="amount">$8.99</td>
+              <td><span class="badge badge-success">Paid</span></td>
+              <td style="text-align:right;"><a href="#" style="font-size:0.72rem;color:var(--sienna);text-decoration:none;">PDF</a></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- PRIVACY DEFAULTS -->
+    <div class="settings-section" id="privacy">
+      <div class="ss-header">
+        <div>
+          <div class="ss-title">Privacy defaults</div>
+          <div class="ss-subtitle">Default settings applied to new memorials you create</div>
+        </div>
+      </div>
+      <div class="ss-body">
+        <div class="form-group">
+          <label>Default memorial visibility</label>
+          <select onchange="showSaveBar()">
+            <option value="public">Public — anyone can find and visit</option>
+            <option value="invite" selected>Invite-only — guests need an invitation</option>
+            <option value="private">Private — only you can see</option>
+          </select>
+        </div>
+        <div class="toggle-row">
+          <div class="toggle-info">
+            <div class="toggle-label">Allow guest tributes by default</div>
+            <div class="toggle-desc">Let visitors leave tributes without needing to create an account.</div>
+          </div>
+          <label class="toggle"><input type="checkbox" checked onchange="showSaveBar()"><span class="toggle-slider"></span></label>
+        </div>
+        <div class="toggle-row">
+          <div class="toggle-info">
+            <div class="toggle-label">Show memorial in public gallery</div>
+            <div class="toggle-desc">Allow public memorials to appear in the Kifo memorial gallery and search.</div>
+          </div>
+          <label class="toggle"><input type="checkbox" checked onchange="showSaveBar()"><span class="toggle-slider"></span></label>
+        </div>
+      </div>
+    </div>
+
+    <!-- DANGER ZONE -->
+    <div class="settings-section danger-section" id="danger">
+      <div class="ss-header">
+        <div>
+          <div class="ss-title">Account & data</div>
+          <div class="ss-subtitle">Irreversible actions — proceed with care</div>
+        </div>
+      </div>
+      <div class="ss-body">
+        <div class="danger-item">
+          <div>
+            <div class="danger-label">Export my data</div>
+            <div class="danger-desc">Download all your memorial content, tributes, and photos as a ZIP archive.</div>
+          </div>
+          <button class="btn-danger">Export data</button>
+        </div>
+        <div class="danger-item">
+          <div>
+            <div class="danger-label">Transfer a memorial</div>
+            <div class="danger-desc">Transfer ownership of a memorial to another Kifo account holder.</div>
+          </div>
+          <button class="btn-danger">Transfer</button>
+        </div>
+        <div class="danger-item">
+          <div>
+            <div class="danger-label">Delete account</div>
+            <div class="danger-desc">Permanently delete your account and all memorials you own. This cannot be undone.</div>
+          </div>
+          <button class="btn-danger" onclick="confirmDelete()">Delete account</button>
+        </div>
+      </div>
+    </div>
+
+    <div style="height:5rem;"></div>
+  </div>
+</div>
+
+<!-- SAVE BAR -->
+<div class="save-bar" id="save-bar">
+  <span class="save-hint">You have unsaved changes</span>
+  <div class="save-actions">
+    <button class="btn-cancel" onclick="hideSaveBar()">Discard</button>
+    <button class="btn-save" onclick="saveChanges()">Save changes</button>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast">✓ Changes saved successfully</div>
+
+<script>
+function setActive(el, hash) {
+  document.querySelectorAll('.snav-item').forEach(i => i.classList.remove('active'));
+  el.classList.add('active');
+  // Smooth scroll to section
+  const target = document.querySelector(hash);
+  if (target) { setTimeout(() => target.scrollIntoView({behavior:'smooth',block:'start'}), 10); }
+}
+
+function showSaveBar() {
+  document.getElementById('save-bar').classList.add('visible');
+}
+function hideSaveBar() {
+  document.getElementById('save-bar').classList.remove('visible');
+}
+function saveChanges() {
+  hideSaveBar();
+  const toast = document.getElementById('toast');
+  toast.classList.add('show');
+  setTimeout(() => toast.classList.remove('show'), 3000);
+}
+function confirmDelete() {
+  if (confirm('Are you absolutely sure? This will permanently delete your account and all your memorials. This action cannot be undone.')) {
+    alert('Your account deletion request has been submitted. You will receive a confirmation email within 24 hours.');
+  }
+}
+
+// Highlight sidebar item on scroll
+const sections = document.querySelectorAll('.settings-section');
+const navItems = document.querySelectorAll('.snav-item[href^="#"]');
+window.addEventListener('scroll', () => {
+  let current = '';
+  sections.forEach(s => {
+    if (window.scrollY >= s.offsetTop - 120) current = s.id;
+  });
+  navItems.forEach(item => {
+    item.classList.remove('active');
+    if (item.getAttribute('href') === `#${current}`) item.classList.add('active');
+  });
+});
+</script>
+
+<!-- MOBILE DRAWER -->
+<div class="mobile-drawer-overlay" id="mobile-overlay" onclick="closeMobileNav()"></div>
+<div class="mobile-drawer" id="mobile-drawer">
+  <div class="drawer-header">
+    <a href="index.html" class="drawer-logo">Ki<span>f</span>o</a>
+    <button class="drawer-close" onclick="closeMobileNav()">✕</button>
+  </div>
+  <nav class="drawer-nav">
+    <div class="drawer-section">Memorials</div>
+    <a href="index.html" class="drawer-link"><span class="drawer-link-icon">🏠</span>Home</a>
+    <a href="kifo-gallery.html" class="drawer-link"><span class="drawer-link-icon">🔍</span>Browse memorials</a>
+    <a href="kifo-memorial.html" class="drawer-link"><span class="drawer-link-icon">🕯</span>Example memorial</a>
+    <a href="kifo-wizard.html" class="drawer-link"><span class="drawer-link-icon">✦</span>Create a memorial</a>
+    <div class="drawer-section">AI Tools</div>
+    <a href="kifo-ai-tribute.html" class="drawer-link"><span class="drawer-link-icon">✍️</span>AI Tribute Writer</a>
+    <a href="kifo-lifestory.html" class="drawer-link"><span class="drawer-link-icon">📖</span>AI Life Story</a>
+    <div class="drawer-section">Account</div>
+    <a href="kifo-dashboard.html" class="drawer-link"><span class="drawer-link-icon">📋</span>Dashboard</a>
+    <a href="kifo-events.html" class="drawer-link"><span class="drawer-link-icon">📅</span>Events</a>
+    <a href="kifo-settings.html" class="drawer-link"><span class="drawer-link-icon">⚙️</span>Settings</a>
+    <a href="kifo-signin.html" class="drawer-link"><span class="drawer-link-icon">🔑</span>Sign in</a>
+  </nav>
+  <div class="drawer-footer">
+    <a href="kifo-wizard.html" class="drawer-cta">+ Create a memorial — free</a>
+  </div>
+</div>
+
+<script>
+function openMobileNav() {
+  document.getElementById('mobile-drawer').classList.add('open');
+  document.getElementById('mobile-overlay').classList.add('open');
+  const ham = document.getElementById('mobile-hamburger');
+  if (ham) ham.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeMobileNav() {
+  document.getElementById('mobile-drawer').classList.remove('open');
+  document.getElementById('mobile-overlay').classList.remove('open');
+  const ham = document.getElementById('mobile-hamburger');
+  if (ham) ham.classList.remove('open');
+  document.body.style.overflow = '';
+}
+document.addEventListener('keydown', function(e) { if (e.key === 'Escape') closeMobileNav(); });
+(function() {
+  var path = window.location.pathname.split('/').pop() || 'index.html';
+  document.querySelectorAll('.drawer-link').forEach(function(a) {
+    if (a.getAttribute('href') === path) a.classList.add('active');
+  });
+})();
+</script>
+</body>
+</html>

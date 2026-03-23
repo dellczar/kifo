@@ -1,0 +1,837 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kifo — Honor Every Life</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+<style>
+/* ── NEUMORPHIC KIFO DESIGN SYSTEM ────────────────────────── */
+:root {
+  --bg:        #F0EBE3;
+  --bg-dark:   #E8E2D9;
+  --bg-light:  #F8F4EE;
+  --surface:   #F0EBE3;
+
+  /* Neumorphic shadows */
+  --neu-out:   6px 6px 14px #d4cfc7, -6px -6px 14px #ffffff;
+  --neu-out-lg:12px 12px 28px #ccc7be, -12px -12px 28px #ffffff;
+  --neu-in:    inset 4px 4px 10px #d4cfc7, inset -4px -4px 10px #ffffff;
+  --neu-in-sm: inset 2px 2px 6px #d4cfc7, inset -2px -2px 6px #ffffff;
+  --neu-btn:   4px 4px 10px #ccc7be, -2px -2px 8px #ffffff;
+  --neu-card:  8px 8px 20px #ccc7be, -8px -8px 20px #ffffff;
+
+  /* Colors */
+  --terracotta:#C4714F;
+  --terra-dark:#A55A38;
+  --terra-light:#D4896A;
+  --gold:      #C8973A;
+  --sage:      #5C7A62;
+  --ink:       #2A1F16;
+  --ink-soft:  #4A3828;
+  --text:      #3D2D20;
+  --text-mid:  #6B5540;
+  --text-light:#9E8C7A;
+  --white:     #FFFFFF;
+
+  /* Legacy aliases */
+  --cream:     #F0EBE3;
+  --parchment: #E8E2D9;
+  --sand:      #C8BFB0;
+  --sienna:    #A55A38;
+  --rust:      #A55A38;
+  --dusk:      #2A1F16;
+  --ash:       #6B5540;
+  --warm-white:#F8F4EE;
+  --sage-accent:#5C7A62;
+  --sage-light:#E8F2EC;
+  --sage-mid:  #5C7A62;
+  --moss:      #3D5C42;
+  --amber:     #C8973A;
+  --amber-dark:#A57828;
+  --amber-light:#E0B870;
+  --forest:    #2A4035;
+  --forest-mid:#3D6050;
+  --ink-mid:   #3D2D20;
+  --off-white: #F0EBE3;
+  --light:     #E8E2D9;
+  --mid:       #C8BFB0;
+  --muted:     #9E8C7A;
+}
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--text);font-family:'Lato',sans-serif;font-weight:300;overflow-x:hidden;}
+
+/* ── NAV ─────────────────────────────────────────────────── */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:1.25rem 3rem;background:rgba(240,235,227,0.88);backdrop-filter:blur(20px);border-bottom:1px solid rgba(255,255,255,0.6);transition:all 0.3s;}
+.nav-logo{font-family:'Cormorant Garamond',serif;font-size:1.9rem;font-weight:600;letter-spacing:0.06em;color:var(--ink);text-decoration:none;}
+.nav-logo span{color:var(--terracotta);}
+.nav-links{display:flex;gap:2.5rem;list-style:none;align-items:center;}
+.nav-links a{font-size:0.92rem;letter-spacing:0.02em;text-transform:none;text-decoration:none;color:var(--text-mid);transition:color 0.2s;font-weight:400;}
+.nav-links a:hover{color:var(--terracotta);}
+.btn-nav{background:var(--terracotta);color:white;padding:0.6rem 1.4rem;border-radius:30px;font-size:0.88rem;letter-spacing:0.02em;font-weight:700;white-space:nowrap;box-shadow:var(--neu-btn);}
+.btn-nav:hover{background:var(--terra-dark);}
+.nav-sign-in{color:var(--ink) !important;font-weight:600 !important;}
+
+/* Dropdown */
+.nav-links li{position:relative;}
+.nav-links li.has-dropdown > a::after{content:'▾';font-size:0.55rem;margin-left:0.3rem;opacity:0.5;vertical-align:middle;}
+.nav-dropdown{position:absolute;top:calc(100% + 0.75rem);left:50%;transform:translateX(-50%) translateY(-6px);background:var(--bg-light);border-radius:16px;box-shadow:var(--neu-card);padding:1rem 0;min-width:220px;opacity:0;pointer-events:none;transition:opacity 0.2s ease,transform 0.2s ease;z-index:100;}
+.nav-links li.has-dropdown:hover .nav-dropdown{opacity:1;pointer-events:all;transform:translateX(-50%) translateY(0);}
+.dropdown-label{font-size:0.58rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--text-light);padding:0.25rem 1.1rem 0.5rem;}
+.nav-dropdown a{display:flex;align-items:center;gap:0.6rem;padding:0.55rem 1.1rem;font-size:0.85rem;color:var(--text-mid);text-decoration:none;transition:background 0.15s,color 0.15s;}
+.nav-dropdown a:hover{background:var(--bg-dark);color:var(--ink);}
+.nav-dropdown a .dd-badge{font-size:0.55rem;letter-spacing:0.1em;background:var(--terracotta);color:white;padding:0.1rem 0.4rem;border-radius:8px;margin-left:auto;text-transform:uppercase;}
+.dropdown-section{padding:0.25rem 0;}
+.dropdown-section+.dropdown-section{border-top:1px solid rgba(0,0,0,0.06);margin-top:0.25rem;padding-top:0.5rem;}
+.dd-icon{font-size:0.95rem;width:18px;text-align:center;flex-shrink:0;}
+
+/* ── HERO ─────────────────────────────────────────────────── */
+.hero{min-height:100vh;position:relative;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding:7rem 1.5rem 4rem;text-align:center;overflow:hidden;}
+
+/* Full-bleed background image using CSS */
+.hero-bg{position:absolute;inset:0;z-index:0;}
+.hero-bg-img{width:100%;height:100%;object-fit:cover;object-position:center 30%;}
+.hero-bg-overlay{position:absolute;inset:0;background:linear-gradient(180deg, rgba(240,235,227,0.72) 0%, rgba(240,235,227,0.60) 35%, rgba(240,235,227,0.82) 70%, rgba(240,235,227,0.97) 100%);}
+
+.hero-content{position:relative;z-index:2;max-width:560px;margin:0 auto;}
+
+/* Pill eyebrow */
+.hero-eyebrow{display:inline-flex;align-items:center;gap:0.5rem;background:rgba(248,244,238,0.92);border:1px solid rgba(255,255,255,0.9);border-radius:30px;padding:0.4rem 1.1rem;font-size:0.7rem;letter-spacing:0.16em;text-transform:uppercase;color:var(--text-mid);margin-bottom:1.5rem;box-shadow:var(--neu-btn);backdrop-filter:blur(10px);}
+.hero-eyebrow-icon{color:var(--terracotta);font-size:0.9rem;}
+
+.hero-title{font-family:'Cormorant Garamond',serif;font-size:clamp(3rem,8vw,5.5rem);font-weight:600;line-height:1.05;letter-spacing:-0.02em;color:var(--ink);margin-bottom:1.25rem;text-shadow:0 2px 20px rgba(240,235,227,0.8);}
+.hero-title em{font-style:italic;color:var(--terracotta);display:block;}
+
+.hero-sub{font-size:1.05rem;line-height:1.75;color:var(--text-mid);max-width:480px;margin:0 auto 2.5rem;font-weight:300;}
+
+/* ── NEUMORPHIC CTA BUTTON ───────────────────────────────── */
+.hero-cta-wrap{display:flex;flex-direction:column;align-items:center;gap:1.25rem;width:100%;max-width:480px;margin:0 auto;}
+
+.btn-hero-primary{
+  display:flex;align-items:center;justify-content:space-between;
+  width:100%;padding:1.1rem 1.5rem 1.1rem 2rem;
+  background:linear-gradient(135deg,var(--terracotta),var(--terra-dark));
+  color:white;border-radius:20px;text-decoration:none;
+  box-shadow:6px 6px 16px rgba(165,90,56,0.35), -3px -3px 10px rgba(255,255,255,0.4), inset 0 1px 0 rgba(255,255,255,0.2);
+  transition:all 0.25s;
+  position:relative;overflow:hidden;
+}
+.btn-hero-primary::before{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(135deg,rgba(255,255,255,0.12),transparent);
+  pointer-events:none;
+}
+.btn-hero-primary:hover{
+  box-shadow:4px 4px 12px rgba(165,90,56,0.4), -2px -2px 8px rgba(255,255,255,0.5), inset 0 1px 0 rgba(255,255,255,0.2);
+  transform:translateY(-1px);
+}
+.btn-hero-primary-left{display:flex;align-items:center;gap:0.75rem;}
+.btn-hero-primary-icon{font-size:1.2rem;}
+.btn-hero-primary-text{text-align:left;}
+.btn-hero-primary-label{display:block;font-size:1.1rem;font-weight:700;letter-spacing:0.01em;}
+.btn-hero-primary-sub{display:block;font-size:0.65rem;letter-spacing:0.15em;text-transform:uppercase;opacity:0.8;margin-top:0.1rem;}
+.btn-hero-primary-arrow{width:36px;height:36px;background:rgba(255,255,255,0.2);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0;box-shadow:inset 1px 1px 3px rgba(0,0,0,0.1);}
+
+/* Trust row */
+.hero-trust{display:flex;align-items:center;justify-content:center;gap:1.25rem;font-size:0.78rem;color:var(--text-light);flex-wrap:wrap;}
+.hero-trust-item{display:flex;align-items:center;gap:0.3rem;}
+.hero-trust-dot{width:3px;height:3px;border-radius:50%;background:var(--text-light);}
+
+/* Secondary CTA */
+.btn-hero-secondary{
+  display:flex;align-items:center;justify-content:center;gap:0.6rem;
+  width:100%;padding:0.9rem 1.5rem;
+  background:transparent;color:var(--ink);
+  border:1.5px solid rgba(42,31,22,0.2);border-radius:30px;
+  font-size:0.92rem;font-weight:400;text-decoration:none;
+  box-shadow:var(--neu-out);transition:all 0.2s;
+}
+.btn-hero-secondary:hover{box-shadow:var(--neu-in);color:var(--terracotta);}
+
+/* ── TESTIMONIAL CARD (hero) ─────────────────────────────── */
+.hero-testimonial{
+  position:relative;z-index:2;
+  max-width:520px;margin:2.5rem auto 0;
+  background:rgba(248,244,238,0.9);
+  border-radius:20px;
+  padding:1.75rem;
+  box-shadow:var(--neu-card);
+  backdrop-filter:blur(10px);
+  border:1px solid rgba(255,255,255,0.7);
+}
+.testimonial-stars{color:var(--gold);font-size:1.1rem;letter-spacing:0.1em;margin-bottom:0.75rem;}
+.testimonial-quote{font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-style:italic;line-height:1.7;color:var(--ink-soft);margin-bottom:0.75rem;}
+.testimonial-attr{font-size:0.82rem;color:var(--text-mid);font-weight:700;}
+
+/* ── BOTTOM TRUST BAR ────────────────────────────────────── */
+.trust-bar{background:var(--bg-dark);padding:1.1rem 3rem;display:flex;align-items:center;justify-content:center;gap:1rem;flex-wrap:wrap;border-top:1px solid rgba(255,255,255,0.5);border-bottom:1px solid rgba(0,0,0,0.05);}
+.trust-bar-inner{display:flex;align-items:center;gap:0.5rem;font-size:0.7rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--text-light);font-weight:700;}
+.trust-bar-icon{font-size:0.85rem;color:var(--terracotta);}
+
+/* ── HOW IT WORKS ────────────────────────────────────────── */
+.how-section{padding:6rem 3rem;background:var(--bg);}
+.how-inner{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:center;}
+.section-eyebrow{font-size:0.68rem;letter-spacing:0.22em;text-transform:uppercase;color:var(--terracotta);margin-bottom:0.75rem;display:flex;align-items:center;gap:0.6rem;font-weight:700;}
+.section-eyebrow::before{content:'';width:1.5rem;height:2px;background:var(--terracotta);}
+.section-title{font-family:'Cormorant Garamond',serif;font-size:clamp(2rem,3.5vw,3.2rem);font-weight:500;line-height:1.15;color:var(--ink);max-width:680px;margin-bottom:1rem;}
+.section-title em{font-style:italic;color:var(--terracotta);}
+.section-lead{font-size:0.95rem;color:var(--text-mid);line-height:1.75;max-width:500px;margin-bottom:2.5rem;}
+.how-steps{display:flex;flex-direction:column;gap:0;}
+.how-step{display:flex;gap:1.5rem;padding:1.5rem 0;border-bottom:1px solid rgba(0,0,0,0.06);cursor:pointer;transition:all 0.2s;border-radius:0;}
+.how-step:last-child{border-bottom:none;}
+.how-step.active,.how-step:hover{padding-left:0.5rem;}
+.step-num{font-size:0.7rem;color:var(--terracotta);letter-spacing:0.05em;min-width:28px;margin-top:0.3rem;font-weight:700;}
+.step-icon{width:44px;height:44px;border-radius:14px;background:var(--bg);display:flex;align-items:center;justify-content:center;font-size:1.1rem;transition:all 0.3s;flex-shrink:0;box-shadow:var(--neu-out);}
+.how-step.active .step-icon{background:var(--terracotta);color:white;box-shadow:3px 3px 8px rgba(165,90,56,0.3);}
+.step-body{flex:1;}
+.step-title{font-family:'Cormorant Garamond',serif;font-size:1.35rem;font-weight:600;color:var(--ink);margin-bottom:0.35rem;}
+.step-desc{font-size:0.88rem;color:var(--text-mid);line-height:1.65;}
+
+/* How visual panel */
+.how-visual{border-radius:24px;overflow:hidden;box-shadow:var(--neu-out-lg);background:var(--bg-dark);aspect-ratio:4/5;position:relative;}
+.how-visual-inner{width:100%;height:100%;display:flex;align-items:center;justify-content:center;padding:2rem;}
+
+/* Mock memorial preview card */
+.memorial-preview-card{background:var(--bg-light);border-radius:20px;padding:1.5rem;box-shadow:var(--neu-card);width:100%;}
+.mpc-cover{height:160px;border-radius:14px;background:linear-gradient(135deg,#8A9E7E,#4E6245,#2C2420);margin-bottom:1.25rem;position:relative;overflow:hidden;display:flex;align-items:flex-end;padding:1rem;}
+.mpc-name{font-family:'Cormorant Garamond',serif;font-size:1.25rem;font-weight:500;color:white;}
+.mpc-dates{font-size:0.72rem;color:rgba(255,255,255,0.7);}
+.mpc-stats{display:flex;gap:1rem;margin-top:0.75rem;}
+.mpc-stat{font-size:0.75rem;color:var(--text-mid);display:flex;align-items:center;gap:0.3rem;}
+.mpc-tributes{margin-top:1rem;display:flex;flex-direction:column;gap:0.6rem;}
+.mpc-tribute{background:var(--bg);border-radius:12px;padding:0.75rem;font-size:0.78rem;color:var(--text-mid);font-style:italic;box-shadow:var(--neu-in-sm);}
+
+/* ── FEATURES ─────────────────────────────────────────────── */
+.features-section{padding:6rem 3rem;background:var(--bg-dark);}
+.features-inner{max-width:1100px;margin:0 auto;}
+.features-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;margin-top:3.5rem;}
+.feature-card{background:var(--bg-dark);border-radius:20px;padding:2rem;box-shadow:var(--neu-out);transition:all 0.25s;}
+.feature-card:hover{box-shadow:var(--neu-in);transform:scale(0.99);}
+.feature-icon{font-size:1.8rem;margin-bottom:1rem;display:block;}
+.feature-name{font-family:'Cormorant Garamond',serif;font-size:1.25rem;font-weight:600;color:var(--ink);margin-bottom:0.5rem;}
+.feature-desc{font-size:0.85rem;line-height:1.7;color:var(--text-mid);}
+
+/* ── EVENTS ───────────────────────────────────────────────── */
+.events-section{padding:6rem 3rem;background:var(--bg);}
+.events-inner{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:center;}
+.events-cards{display:flex;flex-direction:column;gap:1rem;}
+.event-card{background:var(--bg);border-radius:18px;padding:1.25rem 1.5rem;box-shadow:var(--neu-out);display:flex;gap:1rem;align-items:center;transition:all 0.2s;}
+.event-card:hover{box-shadow:var(--neu-in);}
+.event-date-box{background:var(--terracotta);color:white;border-radius:12px;width:52px;height:52px;display:flex;flex-direction:column;align-items:center;justify-content:center;flex-shrink:0;box-shadow:3px 3px 8px rgba(165,90,56,0.3);}
+.event-month{font-size:0.55rem;letter-spacing:0.1em;text-transform:uppercase;font-weight:700;}
+.event-day{font-family:'Cormorant Garamond',serif;font-size:1.4rem;font-weight:600;line-height:1;}
+.event-info-title{font-size:0.92rem;font-weight:700;color:var(--ink);margin-bottom:0.2rem;}
+.event-info-sub{font-size:0.78rem;color:var(--text-light);}
+.event-rsvp{margin-left:auto;font-size:0.7rem;letter-spacing:0.08em;text-transform:uppercase;color:var(--terracotta);font-weight:700;white-space:nowrap;}
+
+/* ── TESTIMONIALS ─────────────────────────────────────────── */
+.testimonials-section{padding:6rem 3rem;background:var(--bg-dark);}
+.testimonials-inner{max-width:1100px;margin:0 auto;}
+.testimonials-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;margin-top:3.5rem;}
+.t-card{background:var(--bg-dark);border-radius:20px;padding:2rem;box-shadow:var(--neu-out);}
+.t-stars{color:var(--gold);font-size:0.9rem;letter-spacing:0.1em;margin-bottom:1rem;}
+.t-text{font-family:'Cormorant Garamond',serif;font-size:1.05rem;font-style:italic;line-height:1.75;color:var(--ink-soft);margin-bottom:1.25rem;}
+.t-author{display:flex;align-items:center;gap:0.75rem;}
+.t-avatar{width:36px;height:36px;border-radius:50%;box-shadow:var(--neu-out);display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-size:0.9rem;font-weight:600;color:white;flex-shrink:0;}
+.t-name{font-size:0.85rem;font-weight:700;color:var(--ink);}
+.t-rel{font-size:0.72rem;color:var(--text-light);}
+
+/* ── PRICING ──────────────────────────────────────────────── */
+.pricing-section{padding:6rem 3rem;background:var(--bg);}
+.pricing-inner{max-width:1100px;margin:0 auto;}
+.pricing-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;margin-top:3.5rem;align-items:start;}
+.plan-card{background:var(--bg);border-radius:24px;padding:2.5rem;box-shadow:var(--neu-out);transition:all 0.3s;position:relative;}
+.plan-card:hover{box-shadow:var(--neu-out-lg);}
+.plan-card.plan-popular{background:linear-gradient(145deg,var(--ink),var(--ink-soft));color:white;box-shadow:8px 8px 20px rgba(42,31,22,0.35), -4px -4px 12px rgba(255,255,255,0.7);}
+.plan-popular-badge{position:absolute;top:-13px;left:50%;transform:translateX(-50%);background:var(--terracotta);color:white;font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;padding:0.25rem 1rem;border-radius:30px;font-weight:700;box-shadow:3px 3px 8px rgba(165,90,56,0.3);white-space:nowrap;}
+.plan-label{font-size:0.68rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--terracotta);margin-bottom:1.25rem;font-weight:700;}
+.plan-popular .plan-label{color:var(--amber-light);}
+.plan-price{font-family:'Cormorant Garamond',serif;font-size:3.5rem;font-weight:500;color:var(--ink);line-height:1;}
+.plan-popular .plan-price{color:white;}
+.plan-price sup{font-size:1.4rem;vertical-align:super;margin-right:2px;}
+.plan-price sub{font-size:1rem;opacity:0.5;}
+.plan-period{font-size:0.78rem;color:var(--text-light);margin:0.4rem 0 0.5rem;}
+.plan-popular .plan-period{color:rgba(255,255,255,0.5);}
+.plan-annual-note{font-size:0.72rem;color:var(--sage);margin-bottom:1.5rem;min-height:1.1rem;}
+.plan-popular .plan-annual-note{color:var(--amber-light);}
+.plan-desc{font-size:0.85rem;color:var(--text-mid);line-height:1.65;margin-bottom:1.75rem;padding-bottom:1.75rem;border-bottom:1px solid rgba(0,0,0,0.08);}
+.plan-popular .plan-desc{color:rgba(255,255,255,0.55);border-color:rgba(255,255,255,0.1);}
+.plan-features{list-style:none;display:flex;flex-direction:column;gap:0.7rem;margin-bottom:2rem;}
+.plan-features li{font-size:0.83rem;color:var(--text-mid);display:flex;align-items:flex-start;gap:0.6rem;line-height:1.45;}
+.plan-popular .plan-features li{color:rgba(255,255,255,0.65);}
+.plan-check{flex-shrink:0;color:var(--terracotta);font-size:0.85rem;}
+.plan-popular .plan-check{color:var(--amber-light);}
+.plan-x{flex-shrink:0;color:var(--text-light);font-size:0.85rem;}
+.plan-cta{display:block;width:100%;padding:0.95rem;border-radius:30px;font-size:0.82rem;letter-spacing:0.06em;text-transform:uppercase;cursor:pointer;transition:all 0.2s;text-align:center;font-weight:700;text-decoration:none;border:none;}
+.plan-cta-primary{background:var(--terracotta);color:white;box-shadow:4px 4px 10px rgba(165,90,56,0.3),-2px -2px 8px rgba(255,255,255,0.5);}
+.plan-cta-primary:hover{background:var(--terra-dark);}
+.plan-cta-ghost{background:var(--bg);color:var(--text-mid);box-shadow:var(--neu-out);}
+.plan-cta-ghost:hover{box-shadow:var(--neu-in);}
+.plan-popular .plan-cta-ghost{background:rgba(255,255,255,0.1);color:rgba(255,255,255,0.8);box-shadow:none;border:1px solid rgba(255,255,255,0.2);}
+.plan-guarantee{font-size:0.68rem;color:var(--text-light);text-align:center;margin-top:0.75rem;}
+.plan-popular .plan-guarantee{color:rgba(255,255,255,0.3);}
+.plan-popular-free-tag{display:inline-flex;align-items:center;gap:0.35rem;background:var(--sage-light);color:var(--sage-accent);font-size:0.72rem;padding:0.2rem 0.6rem;border-radius:12px;font-weight:600;}
+
+/* ── CTA SECTION ──────────────────────────────────────────── */
+.cta-section{padding:7rem 3rem;background:var(--bg-dark);text-align:center;}
+.cta-section .section-eyebrow{justify-content:center;}
+.cta-section .section-title{margin:0 auto 2.5rem;text-align:center;}
+.cta-btn{display:inline-flex;align-items:center;gap:0.75rem;background:var(--terracotta);color:white;padding:1.1rem 3rem;border-radius:30px;font-size:0.92rem;letter-spacing:0.06em;text-transform:uppercase;font-weight:700;text-decoration:none;transition:all 0.2s;box-shadow:6px 6px 14px rgba(165,90,56,0.35),-3px -3px 8px rgba(255,255,255,0.6);}
+.cta-btn:hover{background:var(--terra-dark);transform:translateY(-2px);}
+.cta-sub{font-size:0.88rem;color:var(--text-light);margin-top:1.25rem;}
+
+/* ── FOOTER ───────────────────────────────────────────────── */
+footer{background:var(--ink);color:white;padding:5rem 5rem 3rem;}
+.footer-top{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:4rem;padding-bottom:4rem;border-bottom:1px solid rgba(255,255,255,0.08);margin-bottom:2.5rem;}
+.footer-brand{font-family:'Cormorant Garamond',serif;font-size:1.8rem;font-weight:600;letter-spacing:0.06em;color:white;margin-bottom:1rem;}
+.footer-brand span{color:var(--terracotta);}
+.footer-tagline{font-size:0.85rem;line-height:1.75;color:rgba(255,255,255,0.4);max-width:260px;}
+.footer-col-title{font-size:0.65rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--terracotta);margin-bottom:1.5rem;font-weight:700;}
+.footer-links{list-style:none;display:flex;flex-direction:column;gap:0.7rem;}
+.footer-links a{font-size:0.83rem;color:rgba(255,255,255,0.4);text-decoration:none;transition:color 0.2s;}
+.footer-links a:hover{color:white;}
+.footer-bottom{display:flex;justify-content:space-between;align-items:center;}
+.footer-copy{font-size:0.75rem;color:rgba(255,255,255,0.25);}
+.footer-legal{display:flex;gap:2rem;}
+.footer-legal a{font-size:0.75rem;color:rgba(255,255,255,0.25);text-decoration:none;transition:color 0.2s;}
+.footer-legal a:hover{color:rgba(255,255,255,0.6);}
+
+/* ── MOBILE NAV ───────────────────────────────────────────── */
+.mobile-hamburger{display:none;flex-direction:column;justify-content:center;gap:5px;width:36px;height:36px;cursor:pointer;padding:4px;border-radius:12px;border:none;background:transparent;box-shadow:var(--neu-out);transition:all 0.2s;}
+.mobile-hamburger:hover{box-shadow:var(--neu-in);}
+.mobile-hamburger span{display:block;height:1.5px;background:var(--ink);border-radius:2px;transition:transform 0.3s ease,opacity 0.3s ease;transform-origin:center;}
+.mobile-hamburger.open span:nth-child(1){transform:translateY(6.5px) rotate(45deg);}
+.mobile-hamburger.open span:nth-child(2){opacity:0;}
+.mobile-hamburger.open span:nth-child(3){transform:translateY(-6.5px) rotate(-45deg);}
+.mobile-drawer-overlay{display:none;position:fixed;inset:0;background:rgba(42,31,22,0.45);z-index:998;backdrop-filter:blur(6px);opacity:0;transition:opacity 0.3s ease;}
+.mobile-drawer-overlay.open{opacity:1;}
+.mobile-drawer{position:fixed;top:0;right:0;bottom:0;width:290px;background:var(--bg-light);z-index:999;transform:translateX(100%);transition:transform 0.32s cubic-bezier(0.4,0,0.2,1);box-shadow:-8px 0 40px rgba(42,31,22,0.15);display:flex;flex-direction:column;overflow-y:auto;border-radius:24px 0 0 24px;}
+.mobile-drawer.open{transform:translateX(0);}
+.drawer-header{display:flex;align-items:center;justify-content:space-between;padding:1.5rem 1.5rem 1.25rem;border-bottom:1px solid rgba(0,0,0,0.06);}
+.drawer-logo{font-family:'Cormorant Garamond',serif;font-size:1.5rem;font-weight:600;color:var(--ink);text-decoration:none;}
+.drawer-logo span{color:var(--terracotta);}
+.drawer-close{width:36px;height:36px;border:none;background:var(--bg);cursor:pointer;font-size:1rem;color:var(--text-mid);display:flex;align-items:center;justify-content:center;border-radius:12px;box-shadow:var(--neu-out);}
+.drawer-nav{flex:1;padding:1.25rem 0;}
+.drawer-section{font-size:0.58rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--text-light);padding:0 1.5rem;margin:1rem 0 0.4rem;font-weight:700;}
+.drawer-link{display:flex;align-items:center;gap:0.75rem;padding:0.8rem 1.5rem;font-size:0.9rem;color:var(--text-mid);text-decoration:none;transition:all 0.15s;border-left:2px solid transparent;}
+.drawer-link:hover,.drawer-link.active{background:var(--bg-dark);color:var(--ink);}
+.drawer-link.active{color:var(--terracotta);border-left-color:var(--terracotta);}
+.drawer-link-icon{font-size:1rem;width:20px;text-align:center;flex-shrink:0;}
+.drawer-footer{padding:1.25rem 1.5rem;border-top:1px solid rgba(0,0,0,0.06);}
+.drawer-cta{display:block;width:100%;padding:0.9rem;background:var(--terracotta);color:white;text-align:center;border-radius:30px;font-size:0.82rem;letter-spacing:0.08em;text-transform:uppercase;font-weight:700;text-decoration:none;box-shadow:4px 4px 10px rgba(165,90,56,0.3);}
+.drawer-cta:hover{background:var(--terra-dark);}
+
+/* Neumorphic free-tag badge */
+.free-tag{display:inline-flex;align-items:center;gap:0.35rem;background:var(--bg);color:var(--sage);font-size:0.72rem;letter-spacing:0.08em;padding:0.25rem 0.7rem;border-radius:12px;font-weight:700;box-shadow:var(--neu-out);}
+.btn-primary-hero,.btn-text-hero{} /* no-op classes */
+
+/* ── RESPONSIVE ───────────────────────────────────────────── */
+@media(max-width:1000px){
+  .how-inner,.events-inner{grid-template-columns:1fr;}
+  .how-visual{display:none;}
+  .features-grid,.testimonials-grid,.pricing-grid{grid-template-columns:1fr 1fr;}
+  .footer-top{grid-template-columns:1fr 1fr;gap:2.5rem;}
+  footer{padding:4rem 2rem 2.5rem;}
+}
+@media(max-width:768px){
+  nav{padding:1rem 1.5rem;}
+  .nav-links,.nav-sign-in{display:none;}
+  .mobile-hamburger{display:flex !important;}
+  .mobile-drawer-overlay{display:block;}
+  .hero{padding:6rem 1.25rem 3rem;}
+  .how-section,.features-section,.events-section,.testimonials-section,.pricing-section,.cta-section{padding:4rem 1.25rem;}
+  .features-grid,.testimonials-grid,.pricing-grid{grid-template-columns:1fr;}
+  .trust-bar{padding:1rem 1.5rem;}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="index.html" class="nav-logo">Ki<span>f</span>o</a>
+  <ul class="nav-links">
+    <li class="has-dropdown"><a href="kifo-gallery.html">Memorials</a>
+      <div class="nav-dropdown">
+        <div class="dropdown-section">
+          <div class="dropdown-label">Browse & create</div>
+          <a href="kifo-gallery.html"><span class="dd-icon">🔍</span>Browse memorials</a>
+          <a href="kifo-memorial.html"><span class="dd-icon">🕯</span>Example memorial</a>
+          <a href="kifo-wizard.html"><span class="dd-icon">✦</span>Create a memorial</a>
+        </div>
+      </div>
+    </li>
+    <li class="has-dropdown"><a href="kifo-ai-tribute.html">AI Tools</a>
+      <div class="nav-dropdown">
+        <div class="dropdown-section">
+          <div class="dropdown-label">Powered by Claude</div>
+          <a href="kifo-ai-tribute.html"><span class="dd-icon">✍️</span>AI Tribute Writer <span class="dd-badge">New</span></a>
+          <a href="kifo-lifestory.html"><span class="dd-icon">📖</span>AI Life Story <span class="dd-badge">New</span></a>
+        </div>
+      </div>
+    </li>
+    <li><a href="kifo-pricing.html">Pricing</a></li>
+    <li class="has-dropdown"><a href="kifo-about.html">Company</a>
+      <div class="nav-dropdown">
+        <div class="dropdown-section">
+          <a href="kifo-about.html"><span class="dd-icon">💛</span>About Kifo</a>
+          <a href="kifo-about.html#contact"><span class="dd-icon">✉️</span>Contact us</a>
+        </div>
+      </div>
+    </li>
+    <li><a href="kifo-signin.html" class="nav-sign-in">Sign in</a></li>
+    <li><a href="kifo-wizard.html" class="btn-nav">Create a Memorial</a></li>
+  </ul>
+  <button class="mobile-hamburger" id="mobile-hamburger" onclick="openMobileNav()" aria-label="Open menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-bg">
+    <img class="hero-bg-img" src="kifo-hero.png" alt="Memorial scene with candle and framed photo at sunset" onerror="this.parentElement.style.background='linear-gradient(180deg,#F5E8D8 0%,#E8D5BE 50%,#F0EBE3 100%)'">
+    <div class="hero-bg-overlay"></div>
+  </div>
+
+  <div class="hero-content">
+    <div class="hero-eyebrow">
+      <span class="hero-eyebrow-icon">♥</span>
+      A Place to Remember &amp; Celebrate
+    </div>
+
+    <h1 class="hero-title">
+      Honor every life<em>beautifully</em>
+    </h1>
+
+    <p class="hero-sub">Kifo helps families create lasting online memorials, share cherished memories, and bring loved ones together — near and far.</p>
+
+    <div class="hero-cta-wrap">
+      <a href="kifo-wizard.html" class="btn-hero-primary">
+        <div class="btn-hero-primary-left">
+          <span class="btn-hero-primary-icon">♥</span>
+          <div class="btn-hero-primary-text">
+            <span class="btn-hero-primary-label">Create a Memorial</span>
+            <span class="btn-hero-primary-sub">Free · Takes 2 minutes</span>
+          </div>
+        </div>
+        <div class="btn-hero-primary-arrow">→</div>
+      </a>
+
+      <div class="hero-trust">
+        <span class="hero-trust-item">✓ No signup required</span>
+        <span class="hero-trust-dot"></span>
+        <span class="hero-trust-item">⏱ Takes 2 minutes</span>
+        <span class="hero-trust-dot"></span>
+        <span class="hero-trust-item">🔒 Private &amp; secure</span>
+      </div>
+
+      <a href="#how" class="btn-hero-secondary">
+        <span>▶</span> See How It Works
+      </a>
+    </div>
+
+    <!-- Testimonial card -->
+    <div class="hero-testimonial">
+      <div class="testimonial-stars">★★★★★</div>
+      <p class="testimonial-quote">"Creating my father's memorial brought our family so much closer together during a difficult time."</p>
+      <div class="testimonial-attr">— Sarah M., California</div>
+    </div>
+  </div>
+</div>
+
+<!-- TRUST BAR -->
+<div class="trust-bar">
+  <div class="trust-bar-inner">
+    <span class="trust-bar-icon">🛡</span>
+    Trusted by 50,000+ Families Worldwide
+  </div>
+</div>
+
+<!-- HOW IT WORKS -->
+<section class="how-section" id="how">
+  <div class="how-inner">
+    <div>
+      <div class="section-eyebrow">The process</div>
+      <h2 class="section-title">Creating a memorial is <em>simple</em></h2>
+      <p class="section-lead">In a few steps, you'll have a beautiful, lasting tribute ready to share with everyone who loved them.</p>
+
+      <div class="how-steps">
+        <div class="how-step active" onclick="this.classList.toggle('active')">
+          <div class="step-num">01</div>
+          <div class="step-icon">👤</div>
+          <div class="step-body">
+            <div class="step-title">Tell us about your loved one</div>
+            <div class="step-desc">Name, dates, hometown. Add a biography, their story, and the special moments that defined them.</div>
+          </div>
+        </div>
+        <div class="how-step" onclick="this.classList.toggle('active')">
+          <div class="step-num">02</div>
+          <div class="step-icon">🎨</div>
+          <div class="step-body">
+            <div class="step-title">Choose a theme &amp; personalize</div>
+            <div class="step-desc">Pick from 60+ beautiful memorial themes. Upload photos, add music, and make it truly theirs.</div>
+          </div>
+        </div>
+        <div class="how-step" onclick="this.classList.toggle('active')">
+          <div class="step-num">03</div>
+          <div class="step-icon">🔗</div>
+          <div class="step-body">
+            <div class="step-title">Invite family &amp; friends</div>
+            <div class="step-desc">Share via link or email. Everyone can contribute tributes, stories, and photos from anywhere.</div>
+          </div>
+        </div>
+        <div class="how-step" onclick="this.classList.toggle('active')">
+          <div class="step-num">04</div>
+          <div class="step-icon">📅</div>
+          <div class="step-body">
+            <div class="step-title">Plan &amp; announce events</div>
+            <div class="step-desc">Create service listings, memorial gatherings, or anniversary events — and collect RSVPs with ease.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="how-visual">
+      <div class="how-visual-inner">
+        <div class="memorial-preview-card">
+          <div class="mpc-cover">
+            <div>
+              <div class="mpc-name">Margaret Rose Williams</div>
+              <div class="mpc-dates">June 3, 1942 — November 12, 2024</div>
+            </div>
+          </div>
+          <div class="mpc-stats">
+            <div class="mpc-stat">🕯 48 candles</div>
+            <div class="mpc-stat">💬 47 tributes</div>
+            <div class="mpc-stat">📷 134 photos</div>
+          </div>
+          <div class="mpc-tributes">
+            <div class="mpc-tribute">"Margaret had a laugh that filled every room…"</div>
+            <div class="mpc-tribute">"Her garden still blooms every spring."</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section class="features-section" id="features">
+  <div class="features-inner">
+    <div class="section-eyebrow">What's included</div>
+    <h2 class="section-title">Everything a memorial <em>deserves</em></h2>
+    <div class="features-grid">
+      <div class="feature-card">
+        <span class="feature-icon">🕯</span>
+        <div class="feature-name">Beautiful memorial pages</div>
+        <div class="feature-desc">60+ handcrafted themes, custom headers, and personalized layouts that honor a life with dignity.</div>
+      </div>
+      <div class="feature-card">
+        <span class="feature-icon">📷</span>
+        <div class="feature-name">Photo &amp; video gallery</div>
+        <div class="feature-desc">Unlimited photos and videos. Import from Google Photos or Facebook. Build a visual life story.</div>
+      </div>
+      <div class="feature-card">
+        <span class="feature-icon">✍️</span>
+        <div class="feature-name">Stories &amp; tributes</div>
+        <div class="feature-desc">Friends and family contribute illustrated stories with photos, audio, and heartfelt words.</div>
+      </div>
+      <div class="feature-card">
+        <span class="feature-icon">🎵</span>
+        <div class="feature-name">Background music</div>
+        <div class="feature-desc">A custom playlist of your loved one's favorite songs that plays gently as visitors browse.</div>
+      </div>
+      <div class="feature-card">
+        <span class="feature-icon">🔔</span>
+        <div class="feature-name">Anniversary reminders</div>
+        <div class="feature-desc">Gentle reminders on birthdays and anniversaries, so your loved one is never forgotten.</div>
+      </div>
+      <div class="feature-card">
+        <span class="feature-icon">🌍</span>
+        <div class="feature-name">Global collaboration</div>
+        <div class="feature-desc">Invite unlimited family members from anywhere. No account required to contribute.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EVENTS -->
+<section class="events-section" id="events">
+  <div class="events-inner">
+    <div>
+      <div class="section-eyebrow">Event planning</div>
+      <h2 class="section-title">Gather everyone <em>together</em></h2>
+      <p class="section-lead">Create services, memorial gatherings, and anniversary events. Collect RSVPs and keep the whole family informed — wherever they are in the world.</p>
+      <a href="kifo-events.html" class="cta-btn" style="display:inline-flex;margin-top:2rem;">View events →</a>
+    </div>
+    <div class="events-cards">
+      <div class="event-card">
+        <div class="event-date-box"><div class="event-month">Nov</div><div class="event-day">30</div></div>
+        <div><div class="event-info-title">Celebration of Life</div><div class="event-info-sub">Chicago, Illinois · 2:00 PM</div></div>
+        <div class="event-rsvp">12 RSVPs</div>
+      </div>
+      <div class="event-card">
+        <div class="event-date-box"><div class="event-month">Jun</div><div class="event-day">3</div></div>
+        <div><div class="event-info-title">Margaret's Birthday</div><div class="event-info-sub">Annual remembrance · Family gathering</div></div>
+        <div class="event-rsvp">8 RSVPs</div>
+      </div>
+      <div class="event-card">
+        <div class="event-date-box"><div class="event-month">Nov</div><div class="event-day">12</div></div>
+        <div><div class="event-info-title">1-Year Anniversary</div><div class="event-info-sub">Virtual gathering · All welcome</div></div>
+        <div class="event-rsvp">34 RSVPs</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="testimonials-section">
+  <div class="testimonials-inner">
+    <div class="section-eyebrow">What families say</div>
+    <h2 class="section-title">Stories of <em>comfort &amp; connection</em></h2>
+    <div class="testimonials-grid">
+      <div class="t-card">
+        <div class="t-stars">★★★★★</div>
+        <p class="t-text">"Kifo gave our family a place to gather around Dad's memory. The tributes people left still make us cry and laugh."</p>
+        <div class="t-author">
+          <div class="t-avatar" style="background:linear-gradient(135deg,#8A9E7E,#4E6245);">J</div>
+          <div><div class="t-name">James W.</div><div class="t-rel">Son · Chicago</div></div>
+        </div>
+      </div>
+      <div class="t-card">
+        <div class="t-stars">★★★★★</div>
+        <p class="t-text">"I wasn't sure I could write anything. The AI tribute writer helped me find words when grief made them impossible."</p>
+        <div class="t-author">
+          <div class="t-avatar" style="background:linear-gradient(135deg,#C4A882,#9E6B4A);">S</div>
+          <div><div class="t-name">Sarah M.</div><div class="t-rel">Daughter · California</div></div>
+        </div>
+      </div>
+      <div class="t-card">
+        <div class="t-stars">★★★★★</div>
+        <p class="t-text">"Family from four countries contributed to my mother's memorial. It brought us closer than we'd been in years."</p>
+        <div class="t-author">
+          <div class="t-avatar" style="background:linear-gradient(135deg,#6B7A9E,#4A5870);">A</div>
+          <div><div class="t-name">Amara D.</div><div class="t-rel">Daughter · France</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section class="pricing-section" id="pricing">
+  <div class="pricing-inner">
+    <div class="section-eyebrow">Simple pricing</div>
+    <h2 class="section-title">Start free. <em>Upgrade</em> when you're ready.</h2>
+    <div class="pricing-grid">
+      <div class="plan-card">
+        <div class="plan-label">Free</div>
+        <div class="plan-price"><sup>$</sup>0</div>
+        <div class="plan-period">Forever — no credit card</div>
+        <div class="plan-annual-note">&nbsp;</div>
+        <div class="plan-desc">Everything you need to create a meaningful tribute at no cost.</div>
+        <ul class="plan-features">
+          <li><span class="plan-check">✓</span>Beautiful memorial page</li>
+          <li><span class="plan-check">✓</span>Up to 10 photos</li>
+          <li><span class="plan-check">✓</span>Unlimited tributes &amp; candles</li>
+          <li><span class="plan-check">✓</span>Privacy controls</li>
+          <li><span class="plan-x">✗</span><span style="color:var(--text-light)">Background music</span></li>
+          <li><span class="plan-x">✗</span><span style="color:var(--text-light)">AI writing tools</span></li>
+        </ul>
+        <a href="kifo-wizard.html" class="plan-cta plan-cta-ghost">Create free memorial</a>
+        <div class="plan-guarantee">&nbsp;</div>
+      </div>
+      <div class="plan-card plan-popular">
+        <div class="plan-popular-badge">Most popular</div>
+        <div class="plan-label">Premium</div>
+        <div class="plan-price"><sup>$</sup>8<sub>.99</sub></div>
+        <div class="plan-period">per month</div>
+        <div class="plan-annual-note">&nbsp;</div>
+        <div class="plan-desc">Unlimited everything. For families who want to create something truly lasting.</div>
+        <ul class="plan-features">
+          <li><span class="plan-check">✓</span>Everything in Free</li>
+          <li><span class="plan-check">✓</span>Unlimited photos &amp; videos</li>
+          <li><span class="plan-check">✓</span>Background music</li>
+          <li><span class="plan-check">✓</span>Event planning &amp; RSVPs</li>
+          <li><span class="plan-check">✓</span>AI Tribute Writer</li>
+          <li><span class="plan-check">✓</span>Anniversary reminders</li>
+        </ul>
+        <a href="kifo-pricing.html" class="plan-cta plan-cta-primary">Start 30-day free trial</a>
+        <div class="plan-guarantee">30-day money-back guarantee</div>
+      </div>
+      <div class="plan-card">
+        <div class="plan-label">Lifetime</div>
+        <div class="plan-price"><sup>$</sup>149<sub>.95</sub></div>
+        <div class="plan-period">One-time payment</div>
+        <div class="plan-annual-note" style="color:var(--sage);">No renewals. Ever.</div>
+        <div class="plan-desc">Pay once. The memorial stays online forever with every premium feature.</div>
+        <ul class="plan-features">
+          <li><span class="plan-check">✓</span>Everything in Premium</li>
+          <li><span class="plan-check">✓</span>Permanent hosting guarantee</li>
+          <li><span class="plan-check">✓</span>AI Life Story Generator</li>
+          <li><span class="plan-check">✓</span>Unlimited AI tributes</li>
+          <li><span class="plan-check">✓</span>Export &amp; download content</li>
+          <li><span class="plan-check">✓</span>Dedicated account manager</li>
+        </ul>
+        <a href="kifo-pricing.html" class="plan-cta plan-cta-ghost">Get lifetime access</a>
+        <div class="plan-guarantee">30-day money-back guarantee</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section">
+  <div class="section-eyebrow">Ready to begin?</div>
+  <h2 class="section-title">Every life deserves to be <em>beautifully remembered.</em></h2>
+  <a href="kifo-wizard.html" class="cta-btn">♥ Create a memorial — free</a>
+  <p class="cta-sub">No signup required · Memorial stays online permanently</p>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-top">
+    <div>
+      <div class="footer-brand">Ki<span>f</span>o</div>
+      <p class="footer-tagline">A dignified, beautiful place for the memories that matter most. Every life deserves to be remembered.</p>
+    </div>
+    <div>
+      <div class="footer-col-title">Product</div>
+      <ul class="footer-links"><li><a href="kifo-wizard.html">Create a memorial</a></li><li><a href="#features">Features</a></li><li><a href="#events">Event planning</a></li><li><a href="kifo-pricing.html">Pricing</a></li><li><a href="kifo-memorial.html">Memorial gallery</a></li></ul>
+    </div>
+    <div>
+      <div class="footer-col-title">Company</div>
+      <ul class="footer-links"><li><a href="kifo-about.html">About Kifo</a></li><li><a href="kifo-about.html#story">Blog</a></li><li><a href="kifo-about.html#contact">Partners</a></li><li><a href="kifo-about.html#contact">Press</a></li><li><a href="kifo-about.html#contact">Contact</a></li></ul>
+    </div>
+    <div>
+      <div class="footer-col-title">Support</div>
+      <ul class="footer-links"><li><a href="kifo-about.html#contact">Help center</a></li><li><a href="kifo-about.html">Grief resources</a></li><li><a href="kifo-about.html#contact">Privacy policy</a></li><li><a href="kifo-about.html">Terms of use</a></li><li><a href="kifo-about.html">Cookie settings</a></li></ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div class="footer-copy">© 2026 Kifo. All rights reserved.</div>
+    <div class="footer-legal"><a href="kifo-about.html">Privacy</a><a href="kifo-about.html">Terms</a><a href="kifo-about.html">Cookies</a></div>
+  </div>
+</footer>
+
+<script>
+// Scroll reveal
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.05, rootMargin: '0px 0px -50px 0px' });
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+// Step toggling
+document.querySelectorAll('.how-step').forEach(step => {
+  step.addEventListener('click', () => {
+    document.querySelectorAll('.how-step').forEach(s => s.classList.remove('active'));
+    step.classList.add('active');
+  });
+});
+
+// Sticky nav
+window.addEventListener('scroll', () => {
+  const nav = document.querySelector('nav');
+  if (window.scrollY > 60) { nav.style.padding = '0.85rem 3rem'; nav.style.boxShadow = '0 2px 20px rgba(44,36,32,0.08)'; }
+  else { nav.style.padding = '1.25rem 3rem'; nav.style.boxShadow = 'none'; }
+});
+</script>
+
+
+
+<!-- MOBILE DRAWER -->
+<div class="mobile-drawer-overlay" id="mobile-overlay" onclick="closeMobileNav()"></div>
+<div class="mobile-drawer" id="mobile-drawer">
+  <div class="drawer-header">
+    <a href="index.html" class="drawer-logo">Ki<span>f</span>o</a>
+    <button class="drawer-close" onclick="closeMobileNav()">✕</button>
+  </div>
+  <nav class="drawer-nav">
+    <div class="drawer-section">Memorials</div>
+    <a href="index.html" class="drawer-link active"><span class="drawer-link-icon">🏠</span>Home</a>
+    <a href="kifo-gallery.html" class="drawer-link"><span class="drawer-link-icon">🔍</span>Browse memorials</a>
+    <a href="kifo-memorial.html" class="drawer-link"><span class="drawer-link-icon">🕯</span>Example memorial</a>
+    <a href="kifo-wizard.html" class="drawer-link"><span class="drawer-link-icon">✦</span>Create a memorial</a>
+    <div class="drawer-section">AI Tools</div>
+    <a href="kifo-ai-tribute.html" class="drawer-link"><span class="drawer-link-icon">✍️</span>AI Tribute Writer</a>
+    <a href="kifo-lifestory.html" class="drawer-link"><span class="drawer-link-icon">📖</span>AI Life Story Generator</a>
+    <div class="drawer-section">Account</div>
+    <a href="kifo-dashboard.html" class="drawer-link"><span class="drawer-link-icon">📋</span>Dashboard</a>
+    <a href="kifo-events.html" class="drawer-link"><span class="drawer-link-icon">📅</span>Events</a>
+    <a href="kifo-settings.html" class="drawer-link"><span class="drawer-link-icon">⚙️</span>Settings</a>
+    <a href="kifo-profile.html" class="drawer-link"><span class="drawer-link-icon">👤</span>My profile</a>
+    <a href="kifo-signin.html" class="drawer-link"><span class="drawer-link-icon">🔑</span>Sign in</a>
+    <div class="drawer-section">Company</div>
+    <a href="kifo-about.html" class="drawer-link"><span class="drawer-link-icon">💛</span>About & Contact</a>
+    <a href="kifo-pricing.html" class="drawer-link"><span class="drawer-link-icon">💳</span>Pricing</a>
+  </nav>
+  <div class="drawer-footer">
+    <a href="kifo-wizard.html" class="drawer-cta">+ Create a memorial — free</a>
+  </div>
+</div>
+
+<script>
+function openMobileNav() {
+  document.getElementById('mobile-drawer').classList.add('open');
+  document.getElementById('mobile-overlay').classList.add('open');
+  const ham = document.getElementById('mobile-hamburger');
+  if (ham) ham.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeMobileNav() {
+  document.getElementById('mobile-drawer').classList.remove('open');
+  document.getElementById('mobile-overlay').classList.remove('open');
+  const ham = document.getElementById('mobile-hamburger');
+  if (ham) ham.classList.remove('open');
+  document.body.style.overflow = '';
+}
+document.addEventListener('keydown', function(e) { if (e.key === 'Escape') closeMobileNav(); });
+(function() {
+  var path = window.location.pathname.split('/').pop() || 'index.html';
+  document.querySelectorAll('.drawer-link').forEach(function(a) {
+    if (a.getAttribute('href') === path) a.classList.add('active');
+  });
+})();
+</script>
+
+
+<script>
+function openMobileNav() {
+  document.getElementById('mobile-drawer').classList.add('open');
+  document.getElementById('mobile-overlay').classList.add('open');
+  document.getElementById('mobile-hamburger').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeMobileNav() {
+  document.getElementById('mobile-drawer').classList.remove('open');
+  document.getElementById('mobile-overlay').classList.remove('open');
+  const ham = document.getElementById('mobile-hamburger');
+  if (ham) ham.classList.remove('open');
+  document.body.style.overflow = '';
+}
+document.addEventListener('keydown', function(e) { if (e.key === 'Escape') closeMobileNav(); });
+// Active drawer link
+(function() {
+  var path = window.location.pathname.split('/').pop() || 'index.html';
+  document.querySelectorAll('.drawer-link').forEach(function(a) {
+    if (a.getAttribute('href') === path) a.classList.add('active');
+  });
+})();
+// Sticky nav
+window.addEventListener('scroll', function() {
+  var nav = document.querySelector('nav');
+  if (window.scrollY > 60) {
+    nav.style.padding = '0.85rem 3rem';
+    nav.style.boxShadow = '0 4px 20px rgba(42,31,22,0.08)';
+  } else {
+    nav.style.padding = '1.25rem 3rem';
+    nav.style.boxShadow = 'none';
+  }
+});
+</script>
+</body>
+</html>
