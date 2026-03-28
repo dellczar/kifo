@@ -50,14 +50,14 @@ export async function POST(req: NextRequest) {
 
   // Check plan limits (free = 1 memorial)
   const { data: profile } = await supabase.from("profiles").select("plan").eq("id", user.id).single()
-  if (profile?.plan === "free") {
+  if ((profile as any)?.plan === "free") {
     const { count } = await supabase.from("memorials").select("id", { count: "exact" }).eq("owner_id", user.id)
     if ((count || 0) >= 1) {
       return NextResponse.json({ error: "Free plan limited to 1 memorial. Upgrade to Premium." }, { status: 403 })
     }
   }
 
-  const { data, error } = await supabase
+  const { data, error } = await (supabase as any)
     .from("memorials")
     .insert({ ...parsed.data, owner_id: user.id })
     .select()

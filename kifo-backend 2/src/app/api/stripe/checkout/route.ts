@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server"
 import { createServerSupabaseClient } from "@/lib/supabase"
-import { stripe, PLANS, PlanKey } from "@/lib/stripe"
+import { getStripe, PLANS, PlanKey } from "@/lib/stripe"
 
 export async function POST(req: NextRequest) {
   const supabase = await createServerSupabaseClient()
@@ -15,7 +15,7 @@ export async function POST(req: NextRequest) {
   // Get or create Stripe customer
   let customerId = profile?.stripe_customer_id
   if (!customerId) {
-    const customer = await stripe.customers.create({
+    const customer = await getStripe().customers.create({
       email: profile?.email || user.email,
       metadata: { supabase_user_id: user.id },
     })
@@ -49,6 +49,6 @@ export async function POST(req: NextRequest) {
     }
   }
 
-  const session = await stripe.checkout.sessions.create(sessionConfig)
+  const session = await getStripe().checkout.sessions.create(sessionConfig)
   return NextResponse.json({ url: session.url })
 }

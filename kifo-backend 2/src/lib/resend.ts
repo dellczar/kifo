@@ -1,10 +1,14 @@
 import { Resend } from 'resend'
 
-export const resend = new Resend(process.env.RESEND_API_KEY!)
+let _resend: Resend | null = null
+function getResend() {
+  if (!_resend) _resend = new Resend(process.env.RESEND_API_KEY!)
+  return _resend
+}
 export const FROM = process.env.RESEND_FROM_EMAIL || 'hello@kifo.com'
 
 export async function sendWelcomeEmail(email: string, name: string) {
-  return resend.emails.send({
+  return getResend().emails.send({
     from: FROM,
     to: email,
     subject: 'Welcome to Kifo',
@@ -27,7 +31,7 @@ export async function sendAnniversaryReminder(opts: {
     ? `It's ${opts.memorialName}'s birthday`
     : `Remembering ${opts.memorialName}`
 
-  return resend.emails.send({
+  return getResend().emails.send({
     from: FROM,
     to: opts.email,
     subject,
@@ -49,7 +53,7 @@ export async function sendTributeNotification(opts: {
   memorialSlug: string
   authorName: string
 }) {
-  return resend.emails.send({
+  return getResend().emails.send({
     from: FROM,
     to: opts.email,
     subject: `${opts.authorName} left a tribute for ${opts.memorialName}`,

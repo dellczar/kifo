@@ -6,18 +6,14 @@ export async function GET(req: NextRequest) {
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
 
-  const { data: profile } = await supabase
-    .from("profiles")
-    .select("*")
-    .eq("id", user.id)
-    .single()
+  const { data: profileData } = await supabase.from("profiles").select("*").eq("id", user.id).single()
+  const profile = profileData as any
 
-  // AI usage this month
-  const startOfMonth = new Date(); startOfMonth.setDate(1); startOfMonth.setHours(0,0,0,0)
   const { count: tributeCount } = await supabase.from("ai_usage")
-    .select("id", { count: "exact" })
-    .eq("user_id", user.id).eq("tool", "tribute_writer")
-    .gte("created_at", startOfMonth.toISOString())
+    .select("*", { count: "exact", head: true })
+    .eq("user_id", user.id)
+    .eq("tool", "tribute")
+    .gte("created_at", new Date(new Date().getFullYear(), new Date().getMonth(), 1).toISOString())
 
   return NextResponse.json({
     user: { ...user, ...profile },

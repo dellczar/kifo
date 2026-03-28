@@ -1,51 +1,38 @@
 import { NextRequest, NextResponse } from "next/server"
 import { createServerSupabaseClient } from "@/lib/supabase"
-import { anthropic, buildLifeStoryPrompt, AI_LIMITS } from "@/lib/anthropic"
-import { z } from "zod"
-
-const Schema = z.object({
-  name: z.string(),
-  born: z.string().optional(),
-  died: z.string().optional(),
-  birthplace: z.string().optional(),
-  occupation: z.string().optional(),
-  style: z.string().default("warm"),
-  chapter: z.string(),
-  bullets: z.string().optional(),
-  memorial_id: z.string().uuid().optional(),
-})
+import Anthropic from "@anthropic-ai/sdk"
 
 export async function POST(req: NextRequest) {
   const supabase = await createServerSupabaseClient()
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
 
-  const { data: profile } = await supabase.from("profiles").select("plan").eq("id", user.id).single()
-  const plan = (profile?.plan || "free") as keyof typeof AI_LIMITS
-  if (AI_LIMITS[plan].life_story === 0) {
-    return NextResponse.json({ error: "AI Life Story Generator requires Lifetime plan." }, { status: 403 })
+  const { data: profileData } = await supabase.from("profiles").select("plan").eq("id", user.id).single()
+  const profile = profileData as any
+  const plan = profile?.plan || "free"
+
+  if (plan === "free") {
+    return NextResponse.json({ error: "AI Life Story requires a Premium or Lifetime plan." }, { status: 403 })
   }
 
   const body = await req.json()
-  const parsed = Schema.safeParse(body)
-  if (!parsed.success) return NextResponse.json({ error: parsed.error.flatten() }, { status: 400 })
+  const { name, birthYear, deathYear, details, memorial_id } = body
 
-  const prompt = buildLifeStoryPrompt(parsed.data)
-
-  const message = await anthropic.messages.create({
+  const client = new Anthropic()
+  const message = await client.messages.create({
     model: "claude-sonnet-4-20250514",
-    max_tokens: 900,
-    messages: [{ role: "user", content: prompt }],
+    max_tokens: 1000,
+    messages: [{ role: "user", content: `Write a beautiful life story biography for ${name} (${birthYear}-${deathYear}). Details: ${details}. Write in a warm, celebratory tone. 3-4 paragraphs.` }]
   })
 
   const text = message.content[0].type === "text" ? message.content[0].text : ""
 
   await supabase.from("ai_usage").insert({
     user_id: user.id,
-    memorial_id: parsed.data.memorial_id || null,
+    memorial_id: memorial_id || null,
     tool: "life_story",
     tokens_used: message.usage.input_tokens + message.usage.output_tokens,
-  })
+  } as any)
 
-  return NextResponse.json({ text })
+  return NextResponse.json({ story: text })
 }
