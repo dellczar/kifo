@@ -1041,7 +1041,7 @@ footer{background:var(--ink);color:white;padding:5rem 5rem 3rem;}
         </div>
       </div>
     </li>
-    <li><a href="/signin" class="nav-sign-in">Sign in</a></li>
+    <li><span class="nav-sign-in" style="display:flex;align-items:center;gap:0.35rem;cursor:default;font-weight:600;">✓ Signed in as <a href="/dashboard" id="nav-username" style="color:var(--terracotta);font-weight:700;text-decoration:none;"></a></span></li>
     <li><a href="kifo-wizard.html" class="btn-nav">Create a Memorial</a></li>
   </ul>
   <button class="mobile-hamburger" id="mobile-hamburger" onclick="openMobileNav()" aria-label="Open menu">
@@ -1918,7 +1918,7 @@ window.addEventListener('scroll', () => {
     <a href="kifo-events.html" class="drawer-link"><span class="drawer-link-icon">📅</span>Events</a>
     <a href="kifo-settings.html" class="drawer-link"><span class="drawer-link-icon">⚙️</span>Settings</a>
     <a href="kifo-profile.html" class="drawer-link"><span class="drawer-link-icon">👤</span>My profile</a>
-    <a href="/signin" class="drawer-link"><span class="drawer-link-icon">🔑</span>Sign in</a>
+    <a href="/dashboard" class="drawer-link"><span class="drawer-link-icon">✓</span><span id="drawer-username">My account</span></a>
     <div class="drawer-section">Company</div>
     <a href="kifo-about.html" class="drawer-link"><span class="drawer-link-icon">💛</span>About & Contact</a>
     <a href="kifo-pricing.html" class="drawer-link"><span class="drawer-link-icon">💳</span>Pricing</a>
@@ -2062,7 +2062,7 @@ window.addEventListener('scroll', function() {
 </script>
 
 <script>
-/* Auth nav — show user name when signed in */
+/* Auth nav — populate username for signed-in page */
 (function(){
   try {
     var key = Object.keys(localStorage).find(function(k){ return k.startsWith('sb-') && k.endsWith('-auth-token'); });
@@ -2073,14 +2073,10 @@ window.addEventListener('scroll', function() {
     var meta = user.user_metadata || {};
     var full = meta.full_name || meta.name || '';
     var firstName = full.split(' ')[0] || (user.email||'').split('@')[0] || 'Account';
-    document.querySelectorAll('a[href="/signin"]').forEach(function(a){
-      a.href = '/dashboard';
-      if (a.querySelector('.drawer-link-icon')) {
-        a.innerHTML = '<span class="drawer-link-icon">👤</span>' + firstName;
-      } else {
-        a.textContent = '👤 ' + firstName;
-      }
-    });
+    var navEl = document.getElementById('nav-username');
+    if (navEl) navEl.textContent = firstName;
+    var drawerEl = document.getElementById('drawer-username');
+    if (drawerEl) drawerEl.textContent = 'Signed in as ' + firstName;
   } catch(e){}
 })();
 </script>
