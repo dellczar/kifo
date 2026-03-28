@@ -78,10 +78,8 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:cen
 /* Dropdown */
 .nav-links li{position:relative;}
 .nav-links li.has-dropdown > a::after{content:'▾';font-size:0.55rem;margin-left:0.3rem;opacity:0.5;vertical-align:middle;}
-/* Invisible bridge fills the gap between nav link and dropdown so hover stays active */
-.nav-links li.has-dropdown::after{content:'';position:absolute;bottom:-0.75rem;left:-1rem;right:-1rem;height:0.75rem;}
 .nav-dropdown{position:absolute;top:calc(100% + 0.75rem);left:50%;transform:translateX(-50%) translateY(-6px);background:var(--bg-light);border-radius:16px;box-shadow:var(--neu-card);padding:1rem 0;min-width:220px;opacity:0;pointer-events:none;transition:opacity 0.2s ease,transform 0.2s ease;z-index:200;}
-.nav-links li.has-dropdown:hover .nav-dropdown{opacity:1;pointer-events:all;transform:translateX(-50%) translateY(0);}
+.nav-links li.has-dropdown.open .nav-dropdown{opacity:1;pointer-events:all;transform:translateX(-50%) translateY(0);}
 .dropdown-label{font-size:0.58rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--text-light);padding:0.25rem 1.1rem 0.5rem;}
 .nav-dropdown a{display:flex;align-items:center;gap:0.6rem;padding:0.55rem 1.1rem;font-size:0.85rem;color:var(--text-mid);text-decoration:none;transition:background 0.15s,color 0.15s;}
 .nav-dropdown a:hover{background:var(--bg-dark);color:var(--ink);}
@@ -1850,6 +1848,21 @@ footer{background:var(--ink);color:white;padding:5rem 5rem 3rem;}
 </footer>
 
 <script>
+// Dropdown nav — mouseenter/leave with close delay so cursor can reach items
+(function(){
+  var closeTimers = new WeakMap();
+  document.querySelectorAll('.nav-links li.has-dropdown').forEach(function(li){
+    li.addEventListener('mouseenter', function(){
+      clearTimeout(closeTimers.get(li));
+      li.classList.add('open');
+    });
+    li.addEventListener('mouseleave', function(){
+      var t = setTimeout(function(){ li.classList.remove('open'); }, 200);
+      closeTimers.set(li, t);
+    });
+  });
+})();
+
 // Scroll reveal
 const observer = new IntersectionObserver(entries => {
   entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
