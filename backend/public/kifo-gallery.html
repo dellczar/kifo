@@ -743,5 +743,29 @@ document.addEventListener('keydown', function(e) { if (e.key === 'Escape') close
   });
 })();
 </script>
+
+<script>
+/* Auth nav — show user name when signed in */
+(function(){
+  try {
+    var key = Object.keys(localStorage).find(function(k){ return k.startsWith('sb-') && k.endsWith('-auth-token'); });
+    if (!key) return;
+    var data = JSON.parse(localStorage.getItem(key));
+    var user = data && (data.user || (data.session && data.session.user));
+    if (!user) return;
+    var meta = user.user_metadata || {};
+    var full = meta.full_name || meta.name || '';
+    var firstName = full.split(' ')[0] || (user.email||'').split('@')[0] || 'Account';
+    document.querySelectorAll('a[href="/signin"]').forEach(function(a){
+      a.href = '/dashboard';
+      if (a.querySelector('.drawer-link-icon')) {
+        a.innerHTML = '<span class="drawer-link-icon">👤</span>' + firstName;
+      } else {
+        a.textContent = '👤 ' + firstName;
+      }
+    });
+  } catch(e){}
+})();
+</script>
 </body>
 </html>
