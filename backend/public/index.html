@@ -1848,18 +1848,25 @@ footer{background:var(--ink);color:white;padding:5rem 5rem 3rem;}
 </footer>
 
 <script>
-// Dropdown nav — mouseenter/leave with close delay so cursor can reach items
+// Dropdown nav — track both li and dropdown panel so the menu stays
+// open while the cursor travels across the gap between them
 (function(){
   var closeTimers = new WeakMap();
   document.querySelectorAll('.nav-links li.has-dropdown').forEach(function(li){
-    li.addEventListener('mouseenter', function(){
-      clearTimeout(closeTimers.get(li));
-      li.classList.add('open');
-    });
-    li.addEventListener('mouseleave', function(){
-      var t = setTimeout(function(){ li.classList.remove('open'); }, 200);
+    var panel = li.querySelector('.nav-dropdown');
+    function cancelClose(){ clearTimeout(closeTimers.get(li)); }
+    function scheduleClose(){
+      var t = setTimeout(function(){ li.classList.remove('open'); }, 300);
       closeTimers.set(li, t);
-    });
+    }
+    // Open on li hover
+    li.addEventListener('mouseenter', function(){ cancelClose(); li.classList.add('open'); });
+    li.addEventListener('mouseleave', scheduleClose);
+    // Keep open when cursor is over the panel itself
+    if(panel){
+      panel.addEventListener('mouseenter', cancelClose);
+      panel.addEventListener('mouseleave', scheduleClose);
+    }
   });
 })();
 
