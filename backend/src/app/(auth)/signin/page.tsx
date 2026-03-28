@@ -7,7 +7,7 @@ import Link from "next/link"
 function SignInForm() {
   const router = useRouter()
   const searchParams = useSearchParams()
-  const redirect = searchParams.get("redirect") || "/dashboard"
+  const redirect = searchParams.get("redirect") || "/signed_in.html"
 
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
