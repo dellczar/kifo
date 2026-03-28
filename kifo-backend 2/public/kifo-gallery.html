@@ -1,0 +1,747 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Memorial Gallery — Kifo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet">
+<style>
+:root{--cream:#F7F3EE;--parchment:#EDE5D8;--sand:#D9C9B0;--sienna:#9E6B4A;--terracotta:#C4714F;--rust:#A8432A;--sage:#7A8C6E;--moss:#4E6245;--dusk:#2C2420;--ash:#6B5F58;--gold:#C9994A;--warm-white:#FDFAF6;}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{background:var(--cream);color:var(--dusk);font-family:'DM Sans',sans-serif;font-weight:300;}
+
+/* NAV */
+nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:1rem 3rem;background:rgba(247,243,238,0.92);backdrop-filter:blur(16px);border-bottom:1px solid var(--sand);}
+.nav-logo{font-family:'Cormorant Garamond',serif;font-size:1.6rem;font-weight:500;letter-spacing:0.08em;color:var(--dusk);text-decoration:none;}
+.nav-logo span{color:var(--terracotta);}
+.nav-actions{display:flex;gap:0.75rem;align-items:center;}
+.btn{font-size:0.75rem;letter-spacing:0.1em;text-transform:uppercase;padding:0.55rem 1.2rem;border-radius:2px;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all 0.2s;text-decoration:none;display:inline-flex;align-items:center;gap:0.4rem;border:none;}
+.btn-ghost{background:transparent;color:var(--ash);border:1px solid var(--sand);}
+.btn-ghost:hover{border-color:var(--sienna);color:var(--sienna);}
+.btn-primary{background:var(--terracotta);color:white;}
+.btn-primary:hover{background:var(--rust);}
+
+/* HERO SEARCH */
+.search-hero{background:var(--dusk);padding:5rem 3rem 4rem;text-align:center;position:relative;overflow:hidden;}
+.search-hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 30% 50%,rgba(196,113,79,0.18) 0%,transparent 55%),radial-gradient(ellipse at 75% 30%,rgba(122,140,110,0.15) 0%,transparent 50%);}
+.search-hero-pattern{position:absolute;inset:0;opacity:0.04;background-image:radial-gradient(circle,rgba(255,255,255,0.9) 1px,transparent 1px);background-size:32px 32px;}
+.sh-eyebrow{font-size:0.68rem;letter-spacing:0.22em;text-transform:uppercase;color:var(--gold);margin-bottom:1rem;position:relative;z-index:2;display:flex;align-items:center;justify-content:center;gap:0.6rem;}
+.sh-eyebrow::before,.sh-eyebrow::after{content:'';width:1.5rem;height:1px;background:var(--gold);}
+.sh-title{font-family:'Cormorant Garamond',serif;font-size:clamp(2.2rem,4vw,3.4rem);font-weight:300;color:var(--cream);line-height:1.15;margin-bottom:0.75rem;position:relative;z-index:2;}
+.sh-title em{font-style:italic;color:var(--gold);}
+.sh-sub{font-size:0.92rem;color:rgba(247,243,238,0.5);margin-bottom:2.5rem;position:relative;z-index:2;}
+
+/* SEARCH BAR */
+.search-bar-wrap{max-width:680px;margin:0 auto;position:relative;z-index:2;}
+.search-bar{display:flex;align-items:center;background:var(--warm-white);border-radius:3px;overflow:hidden;box-shadow:0 8px 40px rgba(44,36,32,0.3);}
+.search-icon{padding:0 1.25rem;color:var(--sand);font-size:1rem;flex-shrink:0;}
+#search-input{flex:1;padding:1.1rem 0;background:transparent;border:none;outline:none;font-family:'DM Sans',sans-serif;font-size:1rem;font-weight:300;color:var(--dusk);}
+#search-input::placeholder{color:var(--sand);}
+.search-btn{background:var(--terracotta);color:white;border:none;padding:1.1rem 1.75rem;font-size:0.78rem;letter-spacing:0.12em;text-transform:uppercase;cursor:pointer;font-family:'DM Sans',sans-serif;transition:background 0.2s;white-space:nowrap;flex-shrink:0;}
+.search-btn:hover{background:var(--rust);}
+
+.search-filters{display:flex;justify-content:center;gap:0.75rem;margin-top:1.25rem;flex-wrap:wrap;position:relative;z-index:2;}
+.filter-pill{font-size:0.7rem;letter-spacing:0.12em;text-transform:uppercase;padding:0.35rem 0.9rem;border-radius:20px;border:1px solid rgba(247,243,238,0.2);color:rgba(247,243,238,0.5);cursor:pointer;transition:all 0.2s;background:transparent;}
+.filter-pill:hover,.filter-pill.active{background:rgba(247,243,238,0.1);border-color:rgba(201,153,74,0.5);color:var(--gold);}
+
+/* SEARCH RESULTS HINT */
+.sh-stats{display:flex;justify-content:center;gap:3rem;margin-top:3rem;padding-top:2.5rem;border-top:1px solid rgba(247,243,238,0.08);position:relative;z-index:2;}
+.sh-stat-num{font-family:'Cormorant Garamond',serif;font-size:1.8rem;color:var(--cream);}
+.sh-stat-label{font-size:0.62rem;letter-spacing:0.15em;text-transform:uppercase;color:rgba(247,243,238,0.35);margin-top:0.1rem;}
+
+/* MAIN CONTENT */
+.main{max-width:1320px;margin:0 auto;padding:3rem 2.5rem 6rem;}
+
+/* TOOLBAR */
+.toolbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:2rem;flex-wrap:wrap;gap:1rem;}
+.toolbar-left{display:flex;align-items:center;gap:1.5rem;}
+.results-count{font-size:0.82rem;color:var(--ash);}
+.results-count strong{color:var(--dusk);font-weight:500;}
+.sort-select{font-size:0.75rem;color:var(--ash);border:1px solid var(--sand);border-radius:2px;padding:0.4rem 0.75rem;background:var(--cream);font-family:'DM Sans',sans-serif;outline:none;cursor:pointer;}
+.toolbar-right{display:flex;gap:0.5rem;}
+.view-btn{width:34px;height:34px;border-radius:2px;border:1px solid var(--sand);background:transparent;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.2s;font-size:0.85rem;}
+.view-btn.active,.view-btn:hover{background:var(--parchment);border-color:var(--sienna);}
+
+/* CATEGORY TABS */
+.cat-tabs{display:flex;gap:0.5rem;margin-bottom:2.5rem;flex-wrap:wrap;}
+.cat-tab{font-size:0.7rem;letter-spacing:0.12em;text-transform:uppercase;padding:0.45rem 1rem;border-radius:2px;border:1px solid var(--sand);color:var(--ash);cursor:pointer;transition:all 0.2s;background:transparent;}
+.cat-tab:hover{border-color:var(--sienna);color:var(--sienna);}
+.cat-tab.active{background:var(--dusk);border-color:var(--dusk);color:var(--cream);}
+
+/* MEMORIAL GRID */
+.memorial-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1.5rem;}
+.memorial-grid.list-view{grid-template-columns:1fr;}
+
+/* MEMORIAL CARD */
+.mem-card{background:var(--warm-white);border-radius:4px;overflow:hidden;box-shadow:0 2px 12px rgba(44,36,32,0.06);transition:box-shadow 0.25s,transform 0.25s;cursor:pointer;text-decoration:none;display:block;color:inherit;}
+.mem-card:hover{box-shadow:0 12px 40px rgba(44,36,32,0.12);transform:translateY(-3px);}
+
+.mem-cover{height:140px;position:relative;overflow:hidden;}
+.mem-cover-bg{position:absolute;inset:0;transition:transform 0.4s;}
+.mem-card:hover .mem-cover-bg{transform:scale(1.05);}
+.mem-privacy-badge{position:absolute;top:0.6rem;right:0.6rem;font-size:0.58rem;letter-spacing:0.12em;text-transform:uppercase;padding:0.18rem 0.5rem;border-radius:2px;background:rgba(44,36,32,0.6);color:rgba(247,243,238,0.8);}
+.mem-candle-count{position:absolute;bottom:0.6rem;left:0.6rem;font-size:0.7rem;color:rgba(247,243,238,0.85);background:rgba(44,36,32,0.4);padding:0.2rem 0.5rem;border-radius:2px;backdrop-filter:blur(4px);}
+
+.mem-avatar{width:52px;height:52px;border-radius:50%;border:3px solid white;position:absolute;bottom:-26px;left:1.25rem;box-shadow:0 2px 8px rgba(44,36,32,0.15);flex-shrink:0;}
+
+.mem-body{padding:2rem 1.25rem 1.5rem;}
+.mem-name{font-family:'Cormorant Garamond',serif;font-size:1.15rem;font-weight:500;color:var(--dusk);margin-bottom:0.25rem;line-height:1.2;}
+.mem-dates{font-size:0.72rem;color:var(--ash);margin-bottom:0.4rem;}
+.mem-location{font-size:0.7rem;color:var(--sand);display:flex;align-items:center;gap:0.3rem;margin-bottom:0.85rem;}
+.mem-tribute-preview{font-size:0.8rem;color:var(--ash);line-height:1.6;font-style:italic;border-top:1px solid var(--parchment);padding-top:0.75rem;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
+.mem-footer{display:flex;align-items:center;justify-content:space-between;margin-top:0.85rem;padding-top:0.75rem;border-top:1px solid var(--parchment);}
+.mem-stat{font-size:0.7rem;color:var(--ash);display:flex;align-items:center;gap:0.3rem;}
+.mem-stat strong{font-weight:500;color:var(--dusk);}
+.mem-visit-btn{font-size:0.65rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--sienna);border:1px solid var(--sand);padding:0.3rem 0.7rem;border-radius:2px;transition:all 0.2s;}
+.mem-card:hover .mem-visit-btn{border-color:var(--sienna);background:var(--parchment);}
+
+/* LIST VIEW CARD */
+.memorial-grid.list-view .mem-card{display:grid;grid-template-columns:200px 1fr auto;}
+.memorial-grid.list-view .mem-cover{height:100%;min-height:120px;}
+.memorial-grid.list-view .mem-avatar{display:none;}
+.memorial-grid.list-view .mem-body{padding:1.25rem 1.5rem;display:flex;align-items:center;gap:2rem;}
+.memorial-grid.list-view .mem-tribute-preview{display:none;}
+.memorial-grid.list-view .mem-footer{border:none;padding:0;margin:0;flex-direction:column;align-items:flex-end;justify-content:center;padding:1.25rem 1.25rem 1.25rem 0;gap:0.5rem;}
+
+/* FEATURED SECTION */
+.featured-section{margin-bottom:3rem;}
+.section-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem;}
+.section-title{font-family:'Cormorant Garamond',serif;font-size:1.5rem;font-weight:400;color:var(--dusk);}
+.section-link{font-size:0.72rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--sienna);text-decoration:none;}
+.section-link:hover{color:var(--rust);}
+
+/* FEATURED CARD (large) */
+.featured-card{background:var(--dusk);border-radius:4px;overflow:hidden;position:relative;min-height:320px;display:flex;align-items:flex-end;cursor:pointer;text-decoration:none;transition:box-shadow 0.25s;}
+.featured-card:hover{box-shadow:0 20px 60px rgba(44,36,32,0.25);}
+.fc-bg{position:absolute;inset:0;transition:transform 0.4s;}
+.featured-card:hover .fc-bg{transform:scale(1.03);}
+.fc-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(44,36,32,0.85) 0%,rgba(44,36,32,0.1) 60%);}
+.fc-body{position:relative;z-index:2;padding:2rem;}
+.fc-badge{font-size:0.6rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--gold);background:rgba(201,153,74,0.15);border:1px solid rgba(201,153,74,0.3);padding:0.2rem 0.6rem;border-radius:2px;display:inline-block;margin-bottom:0.75rem;}
+.fc-name{font-family:'Cormorant Garamond',serif;font-size:1.8rem;font-weight:400;color:white;margin-bottom:0.3rem;}
+.fc-meta{font-size:0.78rem;color:rgba(247,243,238,0.6);margin-bottom:1rem;}
+.fc-stats{display:flex;gap:1.5rem;}
+.fc-stat{font-size:0.72rem;color:rgba(247,243,238,0.5);display:flex;align-items:center;gap:0.35rem;}
+.fc-stat span{color:rgba(247,243,238,0.8);font-weight:500;}
+
+.featured-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1.5rem;}
+.featured-grid .featured-card{min-height:240px;}
+
+/* LOAD MORE */
+.load-more{text-align:center;padding:3rem 0 1rem;}
+.load-more-btn{font-size:0.78rem;letter-spacing:0.12em;text-transform:uppercase;padding:0.85rem 2.5rem;border-radius:2px;border:1.5px solid var(--sand);background:transparent;color:var(--ash);cursor:pointer;font-family:'DM Sans',sans-serif;transition:all 0.2s;}
+.load-more-btn:hover{border-color:var(--sienna);color:var(--sienna);background:var(--parchment);}
+
+/* NO RESULTS */
+.no-results{text-align:center;padding:5rem 2rem;display:none;}
+.no-results-icon{font-size:3rem;margin-bottom:1rem;}
+.no-results-title{font-family:'Cormorant Garamond',serif;font-size:1.5rem;color:var(--dusk);margin-bottom:0.5rem;}
+.no-results-sub{font-size:0.88rem;color:var(--ash);}
+
+/* SEARCH OVERLAY */
+.search-overlay{display:none;position:fixed;inset:0;background:rgba(44,36,32,0.5);z-index:200;backdrop-filter:blur(4px);}
+.search-overlay.open{display:flex;align-items:flex-start;justify-content:center;padding-top:15vh;}
+.search-modal{background:var(--warm-white);border-radius:4px;width:100%;max-width:620px;overflow:hidden;box-shadow:0 30px 80px rgba(44,36,32,0.3);}
+.search-modal-input{display:flex;align-items:center;padding:1.25rem 1.5rem;border-bottom:1px solid var(--sand);}
+.smi-icon{font-size:1.1rem;color:var(--sand);margin-right:0.75rem;}
+.smi-field{flex:1;border:none;outline:none;font-family:'DM Sans',sans-serif;font-size:1.05rem;background:transparent;color:var(--dusk);}
+.smi-field::placeholder{color:var(--sand);}
+.smi-close{font-size:1rem;color:var(--ash);cursor:pointer;padding:0.25rem;}
+.search-modal-results{padding:1rem 1.5rem;max-height:400px;overflow-y:auto;}
+.smr-item{display:flex;align-items:center;gap:0.75rem;padding:0.75rem;border-radius:3px;cursor:pointer;transition:background 0.15s;}
+.smr-item:hover{background:var(--parchment);}
+.smr-avatar{width:36px;height:36px;border-radius:50%;flex-shrink:0;}
+.smr-name{font-size:0.88rem;font-weight:500;color:var(--dusk);}
+.smr-meta{font-size:0.72rem;color:var(--ash);}
+.smr-candles{font-size:0.7rem;color:var(--gold);margin-left:auto;white-space:nowrap;}
+
+/* ANIMATIONS */
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
+.mem-card{animation:fadeUp 0.4s ease backwards;}
+.mem-card:nth-child(1){animation-delay:0.05s;}
+.mem-card:nth-child(2){animation-delay:0.1s;}
+.mem-card:nth-child(3){animation-delay:0.15s;}
+.mem-card:nth-child(4){animation-delay:0.2s;}
+.mem-card:nth-child(5){animation-delay:0.25s;}
+.mem-card:nth-child(6){animation-delay:0.3s;}
+.mem-card:nth-child(7){animation-delay:0.35s;}
+.mem-card:nth-child(8){animation-delay:0.4s;}
+
+@media(max-width:1100px){.memorial-grid{grid-template-columns:repeat(3,1fr);}}
+@media(max-width:800px){.memorial-grid{grid-template-columns:repeat(2,1fr);}.featured-grid{grid-template-columns:1fr;}.search-hero{padding:3.5rem 1.5rem 3rem;}.main{padding:2rem 1.5rem 4rem;}.nav{padding:1rem 1.5rem;}}
+@media(max-width:500px){.memorial-grid{grid-template-columns:1fr;}}
+
+/* ── MOBILE NAV ─────────────────────────────────────────────── */
+.mobile-hamburger {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  width: 36px;
+  height: 36px;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 3px;
+  transition: background 0.2s;
+  flex-shrink: 0;
+  border: none;
+  background: transparent;
+}
+.mobile-hamburger:hover { background: var(--parchment, #EDE5D8); }
+.mobile-hamburger span {
+  display: block;
+  height: 1.5px;
+  background: var(--dusk, #2C2420);
+  border-radius: 2px;
+  transition: transform 0.3s ease, opacity 0.3s ease, width 0.3s ease;
+  transform-origin: center;
+}
+.mobile-hamburger.open span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+.mobile-hamburger.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+.mobile-hamburger.open span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
+
+/* DRAWER OVERLAY */
+.mobile-drawer-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(44,36,32,0.45);
+  z-index: 998;
+  backdrop-filter: blur(3px);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+.mobile-drawer-overlay.open { opacity: 1; }
+
+/* DRAWER */
+.mobile-drawer {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 280px;
+  background: var(--warm-white, #FDFAF6);
+  z-index: 999;
+  transform: translateX(100%);
+  transition: transform 0.32s cubic-bezier(0.4,0,0.2,1);
+  box-shadow: -8px 0 32px rgba(44,36,32,0.15);
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+}
+.mobile-drawer.open { transform: translateX(0); }
+
+.drawer-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.25rem 1.5rem;
+  border-bottom: 1px solid var(--parchment, #EDE5D8);
+}
+.drawer-logo {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.5rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  color: var(--dusk, #2C2420);
+  text-decoration: none;
+}
+.drawer-logo span { color: var(--terracotta, #C4714F); }
+.drawer-close {
+  width: 32px;
+  height: 32px;
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-size: 1.2rem;
+  color: var(--ash, #6B5F58);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 3px;
+  transition: background 0.2s;
+}
+.drawer-close:hover { background: var(--parchment, #EDE5D8); }
+
+.drawer-nav {
+  flex: 1;
+  padding: 1.25rem 0;
+}
+.drawer-section {
+  font-size: 0.58rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--sand, #D9C9B0);
+  padding: 0 1.5rem;
+  margin: 1rem 0 0.4rem;
+}
+.drawer-link {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.8rem 1.5rem;
+  font-size: 0.88rem;
+  color: var(--ash, #6B5F58);
+  text-decoration: none;
+  transition: background 0.15s, color 0.15s;
+  border-left: 2px solid transparent;
+}
+.drawer-link:hover {
+  background: var(--parchment, #EDE5D8);
+  color: var(--dusk, #2C2420);
+}
+.drawer-link.active {
+  color: var(--terracotta, #C4714F);
+  border-left-color: var(--terracotta, #C4714F);
+  background: rgba(196,113,79,0.06);
+}
+.drawer-link-icon { font-size: 1rem; width: 20px; text-align: center; flex-shrink: 0; }
+
+.drawer-footer {
+  padding: 1.25rem 1.5rem;
+  border-top: 1px solid var(--parchment, #EDE5D8);
+}
+.drawer-cta {
+  display: block;
+  width: 100%;
+  padding: 0.85rem;
+  background: var(--terracotta, #C4714F);
+  color: white;
+  text-align: center;
+  border-radius: 3px;
+  font-size: 0.78rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  text-decoration: none;
+  font-family: 'DM Sans', sans-serif;
+  transition: background 0.2s;
+}
+.drawer-cta:hover { background: var(--rust, #A8432A); }
+
+@media (max-width: 768px) {
+  .mobile-hamburger { display: flex !important; }
+  .mobile-drawer-overlay { display: block; }
+}
+
+
+@media (max-width: 768px) {
+  .nav-links { display: none !important; }
+  .nav-actions .btn-ghost, .nav-actions .btn-primary,
+  .nav-right .nav-link { display: none !important; }
+  .nav-right .nav-btn, .nav-actions > a:not(.mobile-hamburger) { display: none !important; }
+}
+
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="index.html" class="nav-logo">Ki<span>f</span>o</a>
+  <div class="nav-actions">
+        <a href="/signin" class="btn btn-ghost">Sign in</a>
+    <a href="kifo-wizard.html" class="btn btn-primary">+ Create memorial</a>
+  </div>
+  <button class="mobile-hamburger" id="mobile-hamburger" onclick="openMobileNav()" aria-label="Open menu"><span></span><span></span><span></span></button>
+</nav>
+
+<!-- SEARCH HERO -->
+<div class="search-hero">
+  <div class="search-hero-pattern"></div>
+  <div class="sh-eyebrow">Memorial Gallery</div>
+  <h1 class="sh-title">Find a <em>memorial</em></h1>
+  <p class="sh-sub">Search for someone by name, location, or year</p>
+  <div class="search-bar-wrap">
+    <div class="search-bar">
+      <div class="search-icon">🔍</div>
+      <input type="text" id="search-input" placeholder="Search by name, location, or year..." oninput="handleSearch(this.value)" onclick="openSearchOverlay()">
+      <button class="search-btn">Search</button>
+    </div>
+    <div class="search-filters">
+      <div class="filter-pill active" onclick="setFilter(this,'all')">All memorials</div>
+      <div class="filter-pill" onclick="setFilter(this,'recent')">Recently added</div>
+      <div class="filter-pill" onclick="setFilter(this,'tributes')">Most tributes</div>
+      <div class="filter-pill" onclick="setFilter(this,'candles')">Most candles</div>
+      <div class="filter-pill" onclick="setFilter(this,'veterans')">Veterans</div>
+      <div class="filter-pill" onclick="setFilter(this,'children')">Children</div>
+    </div>
+  </div>
+  <div class="sh-stats">
+    <div><div class="sh-stat-num">50,241</div><div class="sh-stat-label">Public memorials</div></div>
+    <div><div class="sh-stat-num">1.2M+</div><div class="sh-stat-label">Tributes shared</div></div>
+    <div><div class="sh-stat-num">847K</div><div class="sh-stat-label">Candles lit</div></div>
+  </div>
+</div>
+
+<!-- MAIN -->
+<div class="main">
+
+  <!-- FEATURED -->
+  <div class="featured-section">
+    <div class="section-header">
+      <div class="section-title">Featured memorials</div>
+      <a href="kifo-gallery.html" class="section-link">View all →</a>
+    </div>
+    <div class="featured-grid">
+      <a href="kifo-memorial.html" class="featured-card">
+        <div class="fc-bg" style="background:linear-gradient(135deg,#8A9E7E 0%,#4E6245 50%,#2C2420 100%);"></div>
+        <div class="fc-overlay"></div>
+        <div class="fc-body">
+          <div class="fc-badge">✦ Featured</div>
+          <div class="fc-name">Margaret Rose Williams</div>
+          <div class="fc-meta">June 3, 1942 – November 12, 2024 · Chicago, IL</div>
+          <div class="fc-stats">
+            <div class="fc-stat"><span>47</span> tributes</div>
+            <div class="fc-stat"><span>134</span> photos</div>
+            <div class="fc-stat">🕯 <span>48</span> candles</div>
+          </div>
+        </div>
+      </a>
+      <a href="kifo-memorial.html" class="featured-card">
+        <div class="fc-bg" style="background:linear-gradient(135deg,#2C2420 0%,#5C3820 50%,#9E6B4A 100%);"></div>
+        <div class="fc-overlay"></div>
+        <div class="fc-body">
+          <div class="fc-badge">✦ Featured</div>
+          <div class="fc-name">Robert John Williams</div>
+          <div class="fc-meta">March 14, 1938 – July 2, 2019 · Chicago, IL</div>
+          <div class="fc-stats">
+            <div class="fc-stat"><span>31</span> tributes</div>
+            <div class="fc-stat"><span>87</span> photos</div>
+            <div class="fc-stat">🕯 <span>24</span> candles</div>
+          </div>
+        </div>
+      </a>
+      <a href="kifo-memorial.html" class="featured-card">
+        <div class="fc-bg" style="background:linear-gradient(135deg,#BDC4D4 0%,#6B7A9E 50%,#2C3060 100%);"></div>
+        <div class="fc-overlay"></div>
+        <div class="fc-body">
+          <div class="fc-badge">✦ Featured</div>
+          <div class="fc-name">Yusuf Kamara</div>
+          <div class="fc-meta">April 7, 1965 – February 14, 2024 · Freetown, SL</div>
+          <div class="fc-stats">
+            <div class="fc-stat"><span>62</span> tributes</div>
+            <div class="fc-stat"><span>210</span> photos</div>
+            <div class="fc-stat">🕯 <span>91</span> candles</div>
+          </div>
+        </div>
+      </a>
+    </div>
+  </div>
+
+  <!-- ALL MEMORIALS -->
+  <div class="toolbar">
+    <div class="toolbar-left">
+      <div class="results-count" id="results-count">Showing <strong>50,241</strong> public memorials</div>
+      <select class="sort-select" onchange="sortMemorials(this.value)">
+        <option value="recent">Recently added</option>
+        <option value="tributes">Most tributes</option>
+        <option value="candles">Most candles</option>
+        <option value="name">Name A–Z</option>
+        <option value="year">Year of passing</option>
+      </select>
+    </div>
+    <div class="toolbar-right">
+      <button class="view-btn active" id="grid-btn" onclick="setView('grid')" title="Grid view">⊞</button>
+      <button class="view-btn" id="list-btn" onclick="setView('list')" title="List view">☰</button>
+    </div>
+  </div>
+
+  <div class="cat-tabs">
+    <div class="cat-tab active" onclick="setCat(this)">All</div>
+    <div class="cat-tab" onclick="setCat(this)">Most visited</div>
+    <div class="cat-tab" onclick="setCat(this)">Veterans</div>
+    <div class="cat-tab" onclick="setCat(this)">Children & young</div>
+    <div class="cat-tab" onclick="setCat(this)">COVID-19</div>
+    <div class="cat-tab" onclick="setCat(this)">Centenarians</div>
+    <div class="cat-tab" onclick="setCat(this)">This week</div>
+  </div>
+
+  <div class="memorial-grid" id="memorial-grid">
+
+    <a href="kifo-memorial.html" class="mem-card">
+      <div class="mem-cover" style="position:relative;">
+        <div class="mem-cover-bg" style="background:linear-gradient(135deg,#8A9E7E,#4E6245);position:absolute;inset:0;"></div>
+        <div class="mem-candle-count">🕯 48 candles</div>
+      </div>
+      <div class="mem-avatar" style="background:linear-gradient(135deg,#D4C4B2,#B09070);display:flex;align-items:center;justify-content:center;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="4" stroke="white" stroke-width="1.5"/><path d="M3 21c0-4.97 4.03-9 9-9s9 4.03 9 9" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+      <div class="mem-body">
+        <div class="mem-name">Margaret Rose Williams</div>
+        <div class="mem-dates">June 3, 1942 — November 12, 2024 · Age 82</div>
+        <div class="mem-location">📍 Chicago, Illinois</div>
+        <div class="mem-tribute-preview">"Margaret had a laugh that could fill an entire room. She taught me that kindness isn't something you perform — it's something you simply are."</div>
+        <div class="mem-footer">
+          <div class="mem-stat"><strong>47</strong> tributes &nbsp;·&nbsp; <strong>134</strong> photos</div>
+          <div class="mem-visit-btn">Visit →</div>
+        </div>
+      </div>
+    </a>
+
+    <a href="kifo-memorial.html" class="mem-card">
+      <div class="mem-cover" style="position:relative;">
+        <div class="mem-cover-bg" style="background:linear-gradient(135deg,#C4A882,#9E6B4A);position:absolute;inset:0;"></div>
+        <div class="mem-candle-count">🕯 91 candles</div>
+      </div>
+      <div class="mem-avatar" style="background:linear-gradient(135deg,#C8B8A2,#A08060);display:flex;align-items:center;justify-content:center;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="4" stroke="white" stroke-width="1.5"/><path d="M3 21c0-4.97 4.03-9 9-9s9 4.03 9 9" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+      <div class="mem-body">
+        <div class="mem-name">Yusuf Kamara</div>
+        <div class="mem-dates">April 7, 1965 — February 14, 2024 · Age 58</div>
+        <div class="mem-location">📍 Freetown, Sierra Leone</div>
+        <div class="mem-tribute-preview">"A teacher, a father, a man who believed that education was the only way to change a country. He changed mine."</div>
+        <div class="mem-footer">
+          <div class="mem-stat"><strong>62</strong> tributes &nbsp;·&nbsp; <strong>210</strong> photos</div>
+          <div class="mem-visit-btn">Visit →</div>
+        </div>
+      </div>
+    </a>
+
+    <a href="kifo-memorial.html" class="mem-card">
+      <div class="mem-cover" style="position:relative;">
+        <div class="mem-cover-bg" style="background:linear-gradient(135deg,#BDC4D4,#6B7A9E);position:absolute;inset:0;"></div>
+        <div class="mem-candle-count">🕯 34 candles</div>
+      </div>
+      <div class="mem-avatar" style="background:linear-gradient(135deg,#BDC4D4,#8A9EB8);display:flex;align-items:center;justify-content:center;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="4" stroke="white" stroke-width="1.5"/><path d="M3 21c0-4.97 4.03-9 9-9s9 4.03 9 9" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+      <div class="mem-body">
+        <div class="mem-name">Amara Diallo</div>
+        <div class="mem-dates">September 12, 1971 — March 3, 2025 · Age 53</div>
+        <div class="mem-location">📍 Lyon, France</div>
+        <div class="mem-tribute-preview">"She cooked for an entire neighbourhood, never asked for anything, and smiled every single day."</div>
+        <div class="mem-footer">
+          <div class="mem-stat"><strong>28</strong> tributes &nbsp;·&nbsp; <strong>76</strong> photos</div>
+          <div class="mem-visit-btn">Visit →</div>
+        </div>
+      </div>
+    </a>
+
+    <a href="kifo-memorial.html" class="mem-card">
+      <div class="mem-cover" style="position:relative;">
+        <div class="mem-cover-bg" style="background:linear-gradient(135deg,#D4C4B2,#9E8070);position:absolute;inset:0;"></div>
+        <div class="mem-candle-count">🕯 17 candles</div>
+      </div>
+      <div class="mem-avatar" style="background:linear-gradient(135deg,#D4C4B2,#B09080);display:flex;align-items:center;justify-content:center;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="4" stroke="white" stroke-width="1.5"/><path d="M3 21c0-4.97 4.03-9 9-9s9 4.03 9 9" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+      <div class="mem-body">
+        <div class="mem-name">Sunita Sharma</div>
+        <div class="mem-dates">October 8, 1939 — January 14, 2024 · Age 84</div>
+        <div class="mem-location">📍 Mumbai, India</div>
+        <div class="mem-tribute-preview">"Nani was the glue of three generations. She remembered everyone's birthday and no one ever left her house hungry."</div>
+        <div class="mem-footer">
+          <div class="mem-stat"><strong>19</strong> tributes &nbsp;·&nbsp; <strong>44</strong> photos</div>
+          <div class="mem-visit-btn">Visit →</div>
+        </div>
+      </div>
+    </a>
+
+    <a href="kifo-memorial.html" class="mem-card">
+      <div class="mem-cover" style="position:relative;">
+        <div class="mem-cover-bg" style="background:linear-gradient(135deg,#2C2420,#5C3820);position:absolute;inset:0;"></div>
+        <div class="mem-candle-count">🕯 29 candles</div>
+      </div>
+      <div class="mem-avatar" style="background:linear-gradient(135deg,#BDC4B2,#7A8C6E);display:flex;align-items:center;justify-content:center;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="4" stroke="white" stroke-width="1.5"/><path d="M3 21c0-4.97 4.03-9 9-9s9 4.03 9 9" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+      <div class="mem-body">
+        <div class="mem-name">Thomas Osei Mensah</div>
+        <div class="mem-dates">February 22, 1958 — December 5, 2023 · Age 65</div>
+        <div class="mem-location">📍 Accra, Ghana</div>
+        <div class="mem-tribute-preview">"He built the first school in our village with his own hands. Every child in Brong-Ahafo knew his name."</div>
+        <div class="mem-footer">
+          <div class="mem-stat"><strong>41</strong> tributes &nbsp;·&nbsp; <strong>98</strong> photos</div>
+          <div class="mem-visit-btn">Visit →</div>
+        </div>
+      </div>
+    </a>
+
+    <a href="kifo-memorial.html" class="mem-card">
+      <div class="mem-cover" style="position:relative;">
+        <div class="mem-cover-bg" style="background:linear-gradient(135deg,#C4D4C0,#7A9E78);position:absolute;inset:0;"></div>
+        <div class="mem-candle-count">🕯 52 candles</div>
+      </div>
+      <div class="mem-avatar" style="background:linear-gradient(135deg,#C4D4C0,#8A9E88);display:flex;align-items:center;justify-content:center;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="4" stroke="white" stroke-width="1.5"/><path d="M3 21c0-4.97 4.03-9 9-9s9 4.03 9 9" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+      <div class="mem-body">
+        <div class="mem-name">Rosa Fernandez</div>
+        <div class="mem-dates">July 16, 1944 — November 28, 2023 · Age 79</div>
+        <div class="mem-location">📍 Barcelona, Spain</div>
+        <div class="mem-tribute-preview">"She danced flamenco until she was seventy. She said music and movement were how you told the world you were alive."</div>
+        <div class="mem-footer">
+          <div class="mem-stat"><strong>55</strong> tributes &nbsp;·&nbsp; <strong>167</strong> photos</div>
+          <div class="mem-visit-btn">Visit →</div>
+        </div>
+      </div>
+    </a>
+
+    <a href="kifo-memorial.html" class="mem-card">
+      <div class="mem-cover" style="position:relative;">
+        <div class="mem-cover-bg" style="background:linear-gradient(135deg,#C9994A,#8A5C20);position:absolute;inset:0;"></div>
+        <div class="mem-candle-count">🕯 11 candles</div>
+      </div>
+      <div class="mem-avatar" style="background:linear-gradient(135deg,#C9B48A,#A08050);display:flex;align-items:center;justify-content:center;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="4" stroke="white" stroke-width="1.5"/><path d="M3 21c0-4.97 4.03-9 9-9s9 4.03 9 9" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+      <div class="mem-body">
+        <div class="mem-name">Emeka Okonkwo</div>
+        <div class="mem-dates">March 5, 1951 — June 18, 2024 · Age 73</div>
+        <div class="mem-location">📍 Lagos, Nigeria</div>
+        <div class="mem-tribute-preview">"Papa could argue about football for six hours and still make you laugh every minute of it. The house is so quiet now."</div>
+        <div class="mem-footer">
+          <div class="mem-stat"><strong>33</strong> tributes &nbsp;·&nbsp; <strong>89</strong> photos</div>
+          <div class="mem-visit-btn">Visit →</div>
+        </div>
+      </div>
+    </a>
+
+    <a href="kifo-memorial.html" class="mem-card">
+      <div class="mem-cover" style="position:relative;">
+        <div class="mem-cover-bg" style="background:linear-gradient(135deg,#D4C0C0,#9E7878);position:absolute;inset:0;"></div>
+        <div class="mem-candle-count">🕯 67 candles</div>
+      </div>
+      <div class="mem-avatar" style="background:linear-gradient(135deg,#D4C0C0,#B09090);display:flex;align-items:center;justify-content:center;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="4" stroke="white" stroke-width="1.5"/><path d="M3 21c0-4.97 4.03-9 9-9s9 4.03 9 9" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+      <div class="mem-body">
+        <div class="mem-name">Nirmala Sharma</div>
+        <div class="mem-dates">January 1, 1939 — October 3, 2024 · Age 85</div>
+        <div class="mem-location">📍 Jaipur, India</div>
+        <div class="mem-tribute-preview">"She lived through Partition, raised eight children, and never once complained. Her strength was the foundation we all stand on."</div>
+        <div class="mem-footer">
+          <div class="mem-stat"><strong>78</strong> tributes &nbsp;·&nbsp; <strong>243</strong> photos</div>
+          <div class="mem-visit-btn">Visit →</div>
+        </div>
+      </div>
+    </a>
+
+  </div>
+
+  <div class="no-results" id="no-results">
+    <div class="no-results-icon">🌿</div>
+    <div class="no-results-title">No memorials found</div>
+    <div class="no-results-sub">Try a different name or location, or <a href="kifo-wizard.html" style="color:var(--sienna);">create a new memorial</a>.</div>
+  </div>
+
+  <div class="load-more">
+    <button class="load-more-btn" onclick="loadMore()">Load more memorials</button>
+  </div>
+
+</div>
+
+<!-- SEARCH OVERLAY -->
+<div class="search-overlay" id="search-overlay" onclick="closeSearchOverlay(event)">
+  <div class="search-modal" onclick="event.stopPropagation()">
+    <div class="search-modal-input">
+      <div class="smi-icon">🔍</div>
+      <input type="text" class="smi-field" id="overlay-search" placeholder="Search memorials..." oninput="liveSearch(this.value)" autofocus>
+      <span class="smi-close" onclick="closeSearchOverlay()">✕</span>
+    </div>
+    <div class="search-modal-results" id="search-results">
+      <div style="font-size:0.72rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--sand);padding:0.5rem 0 1rem;">Recent memorials</div>
+      <div class="smr-item" onclick="location.href='kifo-memorial.html'">
+        <div class="smr-avatar" style="background:linear-gradient(135deg,#8A9E7E,#4E6245);"></div>
+        <div><div class="smr-name">Margaret Rose Williams</div><div class="smr-meta">1942–2024 · Chicago, IL</div></div>
+        <div class="smr-candles">🕯 48</div>
+      </div>
+      <div class="smr-item">
+        <div class="smr-avatar" style="background:linear-gradient(135deg,#C4A882,#9E6B4A);"></div>
+        <div><div class="smr-name">Yusuf Kamara</div><div class="smr-meta">1965–2024 · Freetown, SL</div></div>
+        <div class="smr-candles">🕯 91</div>
+      </div>
+      <div class="smr-item">
+        <div class="smr-avatar" style="background:linear-gradient(135deg,#C4D4C0,#7A9E78);"></div>
+        <div><div class="smr-name">Rosa Fernandez</div><div class="smr-meta">1944–2023 · Barcelona, Spain</div></div>
+        <div class="smr-candles">🕯 52</div>
+      </div>
+      <div class="smr-item">
+        <div class="smr-avatar" style="background:linear-gradient(135deg,#D4C0C0,#9E7878);"></div>
+        <div><div class="smr-name">Nirmala Sharma</div><div class="smr-meta">1939–2024 · Jaipur, India</div></div>
+        <div class="smr-candles">🕯 67</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+function setFilter(el, val) {
+  document.querySelectorAll('.filter-pill').forEach(p => p.classList.remove('active'));
+  el.classList.add('active');
+}
+function setCat(el) {
+  document.querySelectorAll('.cat-tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+}
+function setView(v) {
+  const grid = document.getElementById('memorial-grid');
+  grid.classList.toggle('list-view', v === 'list');
+  document.getElementById('grid-btn').classList.toggle('active', v === 'grid');
+  document.getElementById('list-btn').classList.toggle('active', v === 'list');
+}
+function sortMemorials(val) { /* would re-sort cards */ }
+function loadMore() {
+  const btn = event.target;
+  btn.textContent = 'Loading...';
+  setTimeout(() => { btn.textContent = 'Load more memorials'; }, 1200);
+}
+function openSearchOverlay() {
+  document.getElementById('search-overlay').classList.add('open');
+  setTimeout(() => document.getElementById('overlay-search').focus(), 100);
+}
+function closeSearchOverlay(e) {
+  if (!e || e.target === document.getElementById('search-overlay')) {
+    document.getElementById('search-overlay').classList.remove('open');
+  }
+}
+function handleSearch(val) {
+  if (val.length > 1) openSearchOverlay();
+}
+function liveSearch(val) {
+  // Would filter results dynamically
+}
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') closeSearchOverlay();
+});
+</script>
+
+<!-- MOBILE DRAWER -->
+<div class="mobile-drawer-overlay" id="mobile-overlay" onclick="closeMobileNav()"></div>
+<div class="mobile-drawer" id="mobile-drawer">
+  <div class="drawer-header">
+    <a href="index.html" class="drawer-logo">Ki<span>f</span>o</a>
+    <button class="drawer-close" onclick="closeMobileNav()">✕</button>
+  </div>
+  <nav class="drawer-nav">
+    <div class="drawer-section">Memorials</div>
+    <a href="index.html" class="drawer-link"><span class="drawer-link-icon">🏠</span>Home</a>
+    <a href="kifo-gallery.html" class="drawer-link"><span class="drawer-link-icon">🔍</span>Browse memorials</a>
+    <a href="kifo-memorial.html" class="drawer-link"><span class="drawer-link-icon">🕯</span>Example memorial</a>
+    <a href="kifo-wizard.html" class="drawer-link"><span class="drawer-link-icon">✦</span>Create a memorial</a>
+    <div class="drawer-section">AI Tools</div>
+    <a href="kifo-ai-tribute.html" class="drawer-link"><span class="drawer-link-icon">✍️</span>AI Tribute Writer</a>
+    <a href="kifo-lifestory.html" class="drawer-link"><span class="drawer-link-icon">📖</span>AI Life Story</a>
+    <div class="drawer-section">Account</div>
+    <a href="kifo-dashboard.html" class="drawer-link"><span class="drawer-link-icon">📋</span>Dashboard</a>
+    <a href="kifo-events.html" class="drawer-link"><span class="drawer-link-icon">📅</span>Events</a>
+    <a href="kifo-settings.html" class="drawer-link"><span class="drawer-link-icon">⚙️</span>Settings</a>
+    <a href="/signin" class="drawer-link"><span class="drawer-link-icon">🔑</span>Sign in</a>
+  </nav>
+  <div class="drawer-footer">
+    <a href="kifo-wizard.html" class="drawer-cta">+ Create a memorial — free</a>
+  </div>
+</div>
+
+<script>
+function openMobileNav() {
+  document.getElementById('mobile-drawer').classList.add('open');
+  document.getElementById('mobile-overlay').classList.add('open');
+  const ham = document.getElementById('mobile-hamburger');
+  if (ham) ham.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeMobileNav() {
+  document.getElementById('mobile-drawer').classList.remove('open');
+  document.getElementById('mobile-overlay').classList.remove('open');
+  const ham = document.getElementById('mobile-hamburger');
+  if (ham) ham.classList.remove('open');
+  document.body.style.overflow = '';
+}
+document.addEventListener('keydown', function(e) { if (e.key === 'Escape') closeMobileNav(); });
+(function() {
+  var path = window.location.pathname.split('/').pop() || 'index.html';
+  document.querySelectorAll('.drawer-link').forEach(function(a) {
+    if (a.getAttribute('href') === path) a.classList.add('active');
+  });
+})();
+</script>
+</body>
+</html>

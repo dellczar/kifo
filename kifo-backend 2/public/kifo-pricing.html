@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Plans &amp; Pricing — Kifo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet">
+<style>
+:root{--cream:#F7F3EE;--parchment:#EDE5D8;--sand:#D9C9B0;--sienna:#9E6B4A;--terracotta:#C4714F;--rust:#A8432A;--sage:#7A8C6E;--moss:#4E6245;--dusk:#2C2420;--ash:#6B5F58;--gold:#C9994A;--warm-white:#FDFAF6;}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{background:var(--cream);color:var(--dusk);font-family:'DM Sans',sans-serif;font-weight:300;min-height:100vh;}
+.nav{display:flex;align-items:center;justify-content:space-between;padding:1rem 2.5rem;background:rgba(247,243,238,0.94);backdrop-filter:blur(14px);border-bottom:1px solid var(--sand);position:sticky;top:0;z-index:50;}
+.nav-logo{font-family:'Cormorant Garamond',serif;font-size:1.6rem;font-weight:500;letter-spacing:0.08em;color:var(--dusk);text-decoration:none;}
+.nav-logo span{color:var(--terracotta);}
+.nav-right{display:flex;gap:0.75rem;align-items:center;}
+.nav-link{font-size:0.72rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--ash);text-decoration:none;transition:color 0.2s;}
+.nav-link:hover{color:var(--sienna);}
+.nav-btn{background:var(--dusk);color:var(--cream);padding:0.5rem 1.1rem;border-radius:2px;font-size:0.72rem;letter-spacing:0.12em;text-transform:uppercase;text-decoration:none;transition:background 0.2s;}
+.nav-btn:hover{background:var(--terracotta);}
+.hero{text-align:center;padding:5rem 2rem 4rem;position:relative;overflow:hidden;}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 0%,rgba(196,113,79,0.08) 0%,transparent 65%);}
+.hero-eyebrow{font-size:0.65rem;letter-spacing:0.25em;text-transform:uppercase;color:var(--sienna);margin-bottom:1rem;display:flex;align-items:center;justify-content:center;gap:0.6rem;}
+.hero-eyebrow::before,.hero-eyebrow::after{content:'';width:1.5rem;height:1px;background:var(--sienna);}
+.hero-title{font-family:'Cormorant Garamond',serif;font-size:clamp(2.4rem,5vw,3.8rem);font-weight:300;color:var(--dusk);line-height:1.15;margin-bottom:0.75rem;}
+.hero-title em{font-style:italic;color:var(--terracotta);}
+.hero-sub{font-size:0.95rem;color:var(--ash);max-width:520px;margin:0 auto 2.5rem;line-height:1.75;}
+.billing-toggle{display:inline-flex;background:var(--parchment);border-radius:4px;padding:4px;gap:4px;margin-bottom:3rem;}
+.billing-opt{font-size:0.72rem;letter-spacing:0.1em;text-transform:uppercase;padding:0.5rem 1.25rem;border-radius:3px;cursor:pointer;transition:all 0.2s;color:var(--ash);border:none;background:transparent;font-family:'DM Sans',sans-serif;}
+.billing-opt.active{background:var(--dusk);color:var(--cream);}
+.billing-save-tag{font-size:0.58rem;background:var(--sage);color:white;padding:0.15rem 0.45rem;border-radius:10px;letter-spacing:0.08em;margin-left:0.3rem;vertical-align:middle;}
+.pricing-section{max-width:1100px;margin:0 auto;padding:0 2rem 5rem;}
+.pricing-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;align-items:start;}
+.plan-card{border-radius:4px;padding:2.5rem 2rem;position:relative;transition:box-shadow 0.25s,transform 0.25s;border:1.5px solid var(--sand);background:var(--warm-white);}
+.plan-card:hover{box-shadow:0 12px 40px rgba(44,36,32,0.1);transform:translateY(-3px);}
+.plan-card.featured{background:var(--dusk);border-color:var(--dusk);transform:translateY(-8px);}
+.plan-card.featured:hover{box-shadow:0 20px 60px rgba(44,36,32,0.25);transform:translateY(-12px);}
+.plan-badge{position:absolute;top:-13px;left:50%;transform:translateX(-50%);background:var(--terracotta);color:white;font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;padding:0.25rem 1rem;border-radius:2px;white-space:nowrap;}
+.plan-tier{font-size:0.65rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--sienna);margin-bottom:1.25rem;}
+.plan-card.featured .plan-tier{color:var(--gold);}
+.plan-price{font-family:'Cormorant Garamond',serif;font-size:3.2rem;font-weight:300;color:var(--dusk);line-height:1;margin-bottom:0.2rem;}
+.plan-card.featured .plan-price{color:var(--cream);}
+.plan-price sup{font-size:1.4rem;vertical-align:super;margin-right:2px;}
+.plan-price sub{font-size:1rem;opacity:0.5;}
+.plan-period{font-size:0.75rem;color:var(--ash);margin-bottom:0.4rem;}
+.plan-card.featured .plan-period{color:rgba(247,243,238,0.5);}
+.plan-annual-note{font-size:0.7rem;color:var(--sage);margin-bottom:1.5rem;min-height:1.1rem;}
+.plan-card.featured .plan-annual-note{color:var(--gold);}
+.plan-desc{font-size:0.85rem;color:var(--ash);line-height:1.65;margin-bottom:1.75rem;padding-bottom:1.75rem;border-bottom:1px solid var(--sand);}
+.plan-card.featured .plan-desc{color:rgba(247,243,238,0.55);border-color:rgba(247,243,238,0.1);}
+.plan-features{list-style:none;display:flex;flex-direction:column;gap:0.7rem;margin-bottom:2rem;}
+.plan-features li{font-size:0.82rem;color:var(--ash);display:flex;align-items:flex-start;gap:0.6rem;line-height:1.45;}
+.plan-card.featured .plan-features li{color:rgba(247,243,238,0.65);}
+.plan-check{flex-shrink:0;margin-top:0.05rem;font-size:0.75rem;color:var(--sage);}
+.plan-card.featured .plan-check{color:var(--gold);}
+.plan-x{flex-shrink:0;margin-top:0.05rem;font-size:0.75rem;color:var(--sand);}
+.plan-cta{display:block;width:100%;padding:0.95rem;border-radius:3px;font-family:'DM Sans',sans-serif;font-size:0.78rem;letter-spacing:0.12em;text-transform:uppercase;cursor:pointer;transition:all 0.2s;text-align:center;text-decoration:none;border:none;}
+.cta-ghost{border:1.5px solid var(--dusk) !important;background:transparent;color:var(--dusk);}
+.cta-ghost:hover{background:var(--dusk);color:var(--cream);}
+.cta-primary{background:var(--terracotta);color:white;}
+.cta-primary:hover{background:var(--rust);}
+.plan-guarantee{font-size:0.68rem;color:var(--sand);text-align:center;margin-top:0.75rem;}
+.plan-card.featured .plan-guarantee{color:rgba(247,243,238,0.3);}
+.compare-section{max-width:1000px;margin:0 auto;padding:0 2rem 6rem;}
+.compare-toggle{text-align:center;margin-bottom:2rem;}
+.compare-btn{font-size:0.72rem;letter-spacing:0.12em;text-transform:uppercase;background:none;border:none;color:var(--sienna);cursor:pointer;font-family:'DM Sans',sans-serif;display:inline-flex;align-items:center;gap:0.4rem;}
+.compare-btn:hover{color:var(--terracotta);}
+.compare-table-wrap{overflow:hidden;max-height:0;transition:max-height 0.5s ease;}
+.compare-table-wrap.open{max-height:2000px;}
+.compare-table{width:100%;border-collapse:collapse;}
+.compare-table th{font-size:0.65rem;letter-spacing:0.15em;text-transform:uppercase;padding:0.9rem 1rem;text-align:center;border-bottom:2px solid var(--parchment);}
+.compare-table th:first-child{text-align:left;}
+.compare-table th.featured-col{background:var(--dusk);color:var(--cream);border-radius:3px 3px 0 0;}
+.compare-table td{font-size:0.83rem;color:var(--ash);padding:0.85rem 1rem;border-bottom:1px solid var(--parchment);text-align:center;}
+.compare-table td:first-child{text-align:left;color:var(--dusk);}
+.compare-table td.featured-col{background:rgba(44,36,32,0.03);}
+.compare-section-row td{background:var(--parchment);font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--sienna);padding:0.6rem 1rem;}
+.compare-section-row td.featured-col{background:rgba(44,36,32,0.07);}
+.modal-overlay{position:fixed;inset:0;background:rgba(44,36,32,0.55);backdrop-filter:blur(6px);z-index:200;display:flex;align-items:center;justify-content:center;padding:2rem;opacity:0;pointer-events:none;transition:opacity 0.3s;}
+.modal-overlay.open{opacity:1;pointer-events:all;}
+.modal{background:var(--warm-white);border-radius:6px;width:100%;max-width:560px;max-height:90vh;overflow-y:auto;box-shadow:0 24px 80px rgba(44,36,32,0.25);transform:translateY(20px) scale(0.97);transition:transform 0.3s ease;position:relative;}
+.modal-overlay.open .modal{transform:translateY(0) scale(1);}
+.modal-close{position:absolute;top:1rem;right:1rem;width:32px;height:32px;border:none;background:none;cursor:pointer;font-size:1.2rem;color:var(--ash);border-radius:3px;transition:background 0.2s;z-index:10;}
+.modal-close:hover{background:var(--parchment);}
+.modal-header{padding:2rem 2rem 1.5rem;border-bottom:1px solid var(--parchment);}
+.modal-plan-badge{font-size:0.6rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--gold);margin-bottom:0.5rem;}
+.modal-title{font-family:'Cormorant Garamond',serif;font-size:1.6rem;font-weight:400;color:var(--dusk);margin-bottom:0.4rem;}
+.modal-price-row{display:flex;align-items:baseline;gap:0.4rem;}
+.modal-price{font-family:'Cormorant Garamond',serif;font-size:2rem;font-weight:300;color:var(--dusk);}
+.modal-period{font-size:0.78rem;color:var(--ash);}
+.modal-body{padding:2rem;}
+.modal-step{margin-bottom:1.75rem;}
+.modal-step-label{font-size:0.62rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--sienna);margin-bottom:0.75rem;display:flex;align-items:center;gap:0.5rem;}
+.modal-step-label::before{content:'';width:1rem;height:1px;background:var(--sienna);}
+.field{margin-bottom:1rem;}
+.field label{display:block;font-size:0.65rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--ash);margin-bottom:0.4rem;}
+.field input,.field select{width:100%;padding:0.8rem 1rem;border:1.5px solid var(--sand);border-radius:3px;background:var(--cream);color:var(--dusk);font-family:'DM Sans',sans-serif;font-size:0.88rem;font-weight:300;outline:none;transition:border-color 0.2s;}
+.field input:focus,.field select:focus{border-color:var(--sienna);background:var(--warm-white);}
+.field input::placeholder{color:var(--sand);}
+.field-row{display:grid;grid-template-columns:1fr 1fr;gap:0.75rem;}
+.card-input-wrap{position:relative;}
+.card-icons{position:absolute;right:0.75rem;top:50%;transform:translateY(-50%);font-size:1.1rem;}
+.card-input-wrap input{padding-right:3rem;}
+.stripe-notice{display:flex;align-items:center;gap:0.5rem;font-size:0.72rem;color:var(--sand);margin-bottom:1.5rem;padding:0.75rem;background:var(--parchment);border-radius:3px;}
+.stripe-badge{font-size:0.65rem;font-weight:500;background:var(--ash);color:white;padding:0.1rem 0.4rem;border-radius:2px;flex-shrink:0;}
+.order-summary{background:var(--parchment);border-radius:3px;padding:1.25rem;margin-bottom:1.5rem;}
+.os-row{display:flex;justify-content:space-between;font-size:0.82rem;color:var(--ash);margin-bottom:0.5rem;}
+.os-row:last-child{margin-bottom:0;padding-top:0.6rem;border-top:1px solid var(--sand);font-weight:500;color:var(--dusk);}
+.submit-btn{width:100%;padding:1rem;background:var(--terracotta);color:white;border:none;border-radius:3px;font-family:'DM Sans',sans-serif;font-size:0.82rem;letter-spacing:0.14em;text-transform:uppercase;cursor:pointer;transition:all 0.2s;display:flex;align-items:center;justify-content:center;gap:0.6rem;}
+.submit-btn:hover{background:var(--rust);}
+.submit-btn:disabled{background:var(--sienna);cursor:not-allowed;}
+.success-state{display:none;padding:3rem 2rem;text-align:center;}
+.success-state.visible{display:block;}
+.success-icon{font-size:3rem;margin-bottom:1.25rem;}
+.success-title{font-family:'Cormorant Garamond',serif;font-size:1.8rem;font-weight:400;color:var(--dusk);margin-bottom:0.5rem;}
+.success-sub{font-size:0.88rem;color:var(--ash);line-height:1.7;margin-bottom:2rem;max-width:340px;margin-left:auto;margin-right:auto;}
+.success-actions{display:flex;gap:0.75rem;justify-content:center;flex-wrap:wrap;}
+.success-btn{padding:0.75rem 1.5rem;border-radius:3px;font-size:0.75rem;letter-spacing:0.12em;text-transform:uppercase;font-family:'DM Sans',sans-serif;cursor:pointer;text-decoration:none;transition:all 0.2s;}
+.success-btn-primary{background:var(--terracotta);color:white;border:none;}
+.success-btn-primary:hover{background:var(--rust);}
+.success-btn-ghost{background:transparent;color:var(--dusk);border:1.5px solid var(--sand);}
+.success-btn-ghost:hover{border-color:var(--sienna);}
+.faq-section{max-width:700px;margin:0 auto;padding:0 2rem 6rem;}
+.faq-title{font-family:'Cormorant Garamond',serif;font-size:2rem;font-weight:300;color:var(--dusk);text-align:center;margin-bottom:2.5rem;}
+.faq-item{border-bottom:1px solid var(--parchment);}
+.faq-q{display:flex;align-items:center;justify-content:space-between;padding:1.25rem 0;cursor:pointer;font-size:0.9rem;font-weight:500;color:var(--dusk);}
+.faq-q:hover{color:var(--sienna);}
+.faq-arrow{font-size:0.75rem;color:var(--sand);transition:transform 0.3s;}
+.faq-item.open .faq-arrow{transform:rotate(180deg);}
+.faq-a{max-height:0;overflow:hidden;transition:max-height 0.35s ease;}
+.faq-item.open .faq-a{max-height:200px;}
+.faq-a-inner{font-size:0.85rem;color:var(--ash);line-height:1.75;padding-bottom:1.25rem;}
+.trust-bar{background:var(--dusk);padding:2.5rem 2rem;text-align:center;}
+.trust-row{display:flex;align-items:center;justify-content:center;gap:3rem;flex-wrap:wrap;}
+.trust-item{display:flex;align-items:center;gap:0.5rem;font-size:0.75rem;letter-spacing:0.1em;text-transform:uppercase;color:rgba(247,243,238,0.5);}
+.mobile-hamburger{display:none;flex-direction:column;justify-content:center;gap:5px;width:36px;height:36px;cursor:pointer;padding:4px;border-radius:3px;transition:background 0.2s;flex-shrink:0;border:none;background:transparent;}
+.mobile-hamburger span{display:block;height:1.5px;background:var(--dusk);border-radius:2px;transition:transform 0.3s ease,opacity 0.3s ease;transform-origin:center;}
+.mobile-hamburger.open span:nth-child(1){transform:translateY(6.5px) rotate(45deg);}
+.mobile-hamburger.open span:nth-child(2){opacity:0;}
+.mobile-hamburger.open span:nth-child(3){transform:translateY(-6.5px) rotate(-45deg);}
+.mobile-drawer-overlay{display:none;position:fixed;inset:0;background:rgba(44,36,32,0.45);z-index:998;backdrop-filter:blur(3px);opacity:0;transition:opacity 0.3s ease;}
+.mobile-drawer-overlay.open{opacity:1;}
+.mobile-drawer{position:fixed;top:0;right:0;bottom:0;width:280px;background:var(--warm-white);z-index:999;transform:translateX(100%);transition:transform 0.32s cubic-bezier(0.4,0,0.2,1);box-shadow:-8px 0 32px rgba(44,36,32,0.15);display:flex;flex-direction:column;overflow-y:auto;}
+.mobile-drawer.open{transform:translateX(0);}
+.drawer-header{display:flex;align-items:center;justify-content:space-between;padding:1.25rem 1.5rem;border-bottom:1px solid var(--parchment);}
+.drawer-logo{font-family:'Cormorant Garamond',serif;font-size:1.5rem;font-weight:500;letter-spacing:0.08em;color:var(--dusk);text-decoration:none;}
+.drawer-logo span{color:var(--terracotta);}
+.drawer-close{width:32px;height:32px;border:none;background:none;cursor:pointer;font-size:1.2rem;color:var(--ash);display:flex;align-items:center;justify-content:center;border-radius:3px;}
+.drawer-close:hover{background:var(--parchment);}
+.drawer-nav{flex:1;padding:1.25rem 0;}
+.drawer-section{font-size:0.58rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--sand);padding:0 1.5rem;margin:1rem 0 0.4rem;}
+.drawer-link{display:flex;align-items:center;gap:0.75rem;padding:0.8rem 1.5rem;font-size:0.88rem;color:var(--ash);text-decoration:none;transition:background 0.15s;border-left:2px solid transparent;}
+.drawer-link:hover,.drawer-link.active{background:var(--parchment);color:var(--dusk);}
+.drawer-link.active{color:var(--terracotta);border-left-color:var(--terracotta);}
+.drawer-link-icon{font-size:1rem;width:20px;text-align:center;flex-shrink:0;}
+.drawer-footer{padding:1.25rem 1.5rem;border-top:1px solid var(--parchment);}
+.drawer-cta{display:block;width:100%;padding:0.85rem;background:var(--terracotta);color:white;text-align:center;border-radius:3px;font-size:0.78rem;letter-spacing:0.12em;text-transform:uppercase;text-decoration:none;font-family:'DM Sans',sans-serif;}
+.drawer-cta:hover{background:var(--rust);}
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px);}to{opacity:1;transform:translateY(0);}}
+.plan-card{animation:fadeUp 0.4s ease backwards;}
+.plan-card:nth-child(1){animation-delay:0.05s;}
+.plan-card:nth-child(2){animation-delay:0.15s;}
+.plan-card:nth-child(3){animation-delay:0.25s;}
+@keyframes spin{from{transform:rotate(0deg);}to{transform:rotate(360deg);}}
+@media(max-width:900px){.pricing-grid{grid-template-columns:1fr;}.plan-card.featured{transform:none;}.plan-card.featured:hover{transform:translateY(-3px);}.field-row{grid-template-columns:1fr;}.mobile-hamburger{display:flex !important;}.nav-right .nav-link,.nav-right .nav-btn{display:none;}.mobile-drawer-overlay{display:block;}}
+@media(max-width:600px){.nav,.pricing-section,.compare-section,.faq-section{padding-left:1.25rem;padding-right:1.25rem;}.hero{padding:3rem 1.25rem;}.trust-row{gap:1.5rem;}}
+</style>
+</head>
+<body>
+<nav class="nav">
+  <a href="index.html" class="nav-logo">Ki<span>f</span>o</a>
+  <div class="nav-right">
+    <a href="kifo-memorial.html" class="nav-link">See example</a>
+    <a href="/signin" class="nav-link">Sign in</a>
+    <a href="kifo-wizard.html" class="nav-btn">Create memorial</a>
+    <button class="mobile-hamburger" id="mobile-hamburger" onclick="openMobileNav()" aria-label="Open menu"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+
+<div class="hero">
+  <div class="hero-eyebrow">Simple, honest pricing</div>
+  <h1 class="hero-title">Start free.<br><em>Upgrade</em> when you're ready.</h1>
+  <p class="hero-sub">Every memorial begins free and lasts forever. No ads. No surprises. Upgrade for unlimited media, music, and advanced features — with a full 30-day refund.</p>
+  <div class="billing-toggle">
+    <button class="billing-opt active" id="toggle-monthly" onclick="setBilling('monthly')">Monthly</button>
+    <button class="billing-opt" id="toggle-annual" onclick="setBilling('annual')">Annual <span class="billing-save-tag">Save 26%</span></button>
+  </div>
+</div>
+
+<div class="pricing-section">
+  <div class="pricing-grid">
+
+    <div class="plan-card">
+      <div class="plan-tier">Free</div>
+      <div class="plan-price"><sup>$</sup>0</div>
+      <div class="plan-period">Forever — no credit card needed</div>
+      <div class="plan-annual-note">&nbsp;</div>
+      <div class="plan-desc">Everything you need to create a meaningful tribute at no cost. Your memorial stays online permanently.</div>
+      <ul class="plan-features">
+        <li><span class="plan-check">✓</span>Beautiful memorial page</li>
+        <li><span class="plan-check">✓</span>Up to 10 photos</li>
+        <li><span class="plan-check">✓</span>Unlimited tributes &amp; candles</li>
+        <li><span class="plan-check">✓</span>Unlimited collaborators</li>
+        <li><span class="plan-check">✓</span>Privacy controls</li>
+        <li><span class="plan-check">✓</span>Custom memorial URL</li>
+        <li><span class="plan-check">✓</span>Permanent hosting</li>
+        <li><span class="plan-x">✗</span><span style="color:var(--sand)">Background music</span></li>
+        <li><span class="plan-x">✗</span><span style="color:var(--sand)">Unlimited photos &amp; video</span></li>
+        <li><span class="plan-x">✗</span><span style="color:var(--sand)">AI tribute writer</span></li>
+      </ul>
+      <a href="kifo-wizard.html" class="plan-cta cta-ghost">Create free memorial</a>
+      <div class="plan-guarantee">&nbsp;</div>
+    </div>
+
+    <div class="plan-card featured">
+      <div class="plan-badge">Most popular</div>
+      <div class="plan-tier">Premium</div>
+      <div class="plan-price" id="premium-price"><sup>$</sup>8<sub>.99</sub></div>
+      <div class="plan-period" id="premium-period">per month</div>
+      <div class="plan-annual-note" id="premium-note">&nbsp;</div>
+      <div class="plan-desc">Unlimited everything. For families who want to create something truly lasting and rich.</div>
+      <ul class="plan-features">
+        <li><span class="plan-check">✓</span>Everything in Free</li>
+        <li><span class="plan-check">✓</span>Unlimited photos &amp; videos</li>
+        <li><span class="plan-check">✓</span>Background music playlist</li>
+        <li><span class="plan-check">✓</span>Enhanced illustrated stories</li>
+        <li><span class="plan-check">✓</span>Event planning &amp; RSVPs</li>
+        <li><span class="plan-check">✓</span>Multiple administrators</li>
+        <li><span class="plan-check">✓</span>Advanced privacy settings</li>
+        <li><span class="plan-check">✓</span>QR code for services</li>
+        <li><span class="plan-check">✓</span>Anniversary email reminders</li>
+        <li><span class="plan-check">✓</span>AI Tribute Writer access</li>
+      </ul>
+      <button class="plan-cta cta-primary" onclick="openUpgrade('premium')">Start 30-day free trial</button>
+      <div class="plan-guarantee">30-day money-back guarantee</div>
+    </div>
+
+    <div class="plan-card">
+      <div class="plan-tier">Lifetime</div>
+      <div class="plan-price"><sup>$</sup>149<sub>.95</sub></div>
+      <div class="plan-period">One-time payment</div>
+      <div class="plan-annual-note" style="color:var(--sage);">No renewals. Ever.</div>
+      <div class="plan-desc">Pay once. The memorial stays online permanently with every premium feature included forever.</div>
+      <ul class="plan-features">
+        <li><span class="plan-check">✓</span>Everything in Premium</li>
+        <li><span class="plan-check">✓</span>Permanent hosting guarantee</li>
+        <li><span class="plan-check">✓</span>No future bills or renewals</li>
+        <li><span class="plan-check">✓</span>Priority customer support</li>
+        <li><span class="plan-check">✓</span>Early access to new features</li>
+        <li><span class="plan-check">✓</span>AI Life Story Generator</li>
+        <li><span class="plan-check">✓</span>Unlimited AI tributes</li>
+        <li><span class="plan-check">✓</span>Export &amp; download content</li>
+        <li><span class="plan-check">✓</span>Transferable to family</li>
+        <li><span class="plan-check">✓</span>Dedicated account manager</li>
+      </ul>
+      <button class="plan-cta cta-ghost" onclick="openUpgrade('lifetime')">Get lifetime access</button>
+      <div class="plan-guarantee">30-day money-back guarantee</div>
+    </div>
+
+  </div>
+</div>
+
+<div class="compare-section">
+  <div class="compare-toggle">
+    <button class="compare-btn" id="compare-btn" onclick="toggleCompare()">▾ See full feature comparison</button>
+  </div>
+  <div class="compare-table-wrap" id="compare-wrap">
+    <table class="compare-table">
+      <thead><tr><th style="width:40%">Feature</th><th>Free</th><th class="featured-col">Premium</th><th>Lifetime</th></tr></thead>
+      <tbody>
+        <tr class="compare-section-row"><td colspan="4">Memorial basics</td></tr>
+        <tr><td>Photos</td><td>Up to 10</td><td class="featured-col">Unlimited</td><td>Unlimited</td></tr>
+        <tr><td>Videos</td><td>✗</td><td class="featured-col">✓</td><td>✓</td></tr>
+        <tr><td>Tributes &amp; candles</td><td>Unlimited</td><td class="featured-col">Unlimited</td><td>Unlimited</td></tr>
+        <tr><td>Custom URL</td><td>✓</td><td class="featured-col">✓</td><td>✓</td></tr>
+        <tr><td>Permanent hosting</td><td>✓</td><td class="featured-col">✓</td><td>✓</td></tr>
+        <tr class="compare-section-row"><td colspan="4">Features</td></tr>
+        <tr><td>Themes</td><td>10</td><td class="featured-col">60+</td><td>60+</td></tr>
+        <tr><td>Background music</td><td>✗</td><td class="featured-col">✓</td><td>✓</td></tr>
+        <tr><td>Event planning &amp; RSVPs</td><td>✗</td><td class="featured-col">✓</td><td>✓</td></tr>
+        <tr><td>Anniversary reminders</td><td>✗</td><td class="featured-col">✓</td><td>✓</td></tr>
+        <tr class="compare-section-row"><td colspan="4">AI tools</td></tr>
+        <tr><td>AI Tribute Writer</td><td>✗</td><td class="featured-col">✓ 10/mo</td><td>✓ Unlimited</td></tr>
+        <tr><td>AI Life Story Generator</td><td>✗</td><td class="featured-col">✗</td><td>✓</td></tr>
+        <tr class="compare-section-row"><td colspan="4">Support</td></tr>
+        <tr><td>Support</td><td>Email</td><td class="featured-col">Priority email</td><td>Dedicated manager</td></tr>
+        <tr><td>Content export</td><td>✗</td><td class="featured-col">✗</td><td>✓</td></tr>
+        <tr><td>Transferable to family</td><td>✗</td><td class="featured-col">✗</td><td>✓</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="faq-section">
+  <h2 class="faq-title">Common questions</h2>
+  <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">What happens to the memorial if I cancel? <span class="faq-arrow">▾</span></div><div class="faq-a"><div class="faq-a-inner">Your memorial stays online permanently on every plan including Free. Cancelling Premium simply means you lose access to premium features. Your photos, tributes, and memories are never deleted.</div></div></div>
+  <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">Can I get a refund? <span class="faq-arrow">▾</span></div><div class="faq-a"><div class="faq-a-inner">Yes. Every paid plan comes with a full 30-day money-back guarantee — no questions asked. Email us within 30 days and we'll refund you immediately.</div></div></div>
+  <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">Is my payment information secure? <span class="faq-arrow">▾</span></div><div class="faq-a"><div class="faq-a-inner">All payments are processed by Stripe — the same infrastructure used by Amazon and Google. We never store your card number. Kifo only sees the last 4 digits and expiry date.</div></div></div>
+  <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">What does "Lifetime" actually mean? <span class="faq-arrow">▾</span></div><div class="faq-a"><div class="faq-a-inner">You pay once and all premium features remain active for as long as Kifo exists. The memorial can also be transferred to a family member at any time.</div></div></div>
+  <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">Do you show ads on memorials? <span class="faq-arrow">▾</span></div><div class="faq-a"><div class="faq-a-inner">Never. Kifo is completely ad-free on every plan. Memorial pages are sacred spaces — we will never place advertisements on them.</div></div></div>
+</div>
+
+<div class="trust-bar">
+  <div class="trust-row">
+    <div class="trust-item">🔒 Stripe-secured payments</div>
+    <div class="trust-item">🚫 No ads, ever</div>
+    <div class="trust-item">↩️ 30-day money-back guarantee</div>
+    <div class="trust-item">♾️ Memorial stays online forever</div>
+    <div class="trust-item">⭐ 5 stars on Trustpilot</div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="modal-overlay" onclick="handleOverlayClick(event)">
+  <div class="modal" id="modal">
+    <button class="modal-close" onclick="closeUpgrade()">✕</button>
+    <div id="payment-form-view">
+      <div class="modal-header">
+        <div class="modal-plan-badge" id="modal-plan-badge">✦ Premium Plan</div>
+        <div class="modal-title" id="modal-title">Start your 30-day free trial</div>
+        <div class="modal-price-row">
+          <div class="modal-price" id="modal-price">$8.99</div>
+          <div class="modal-period" id="modal-period">/ month after trial</div>
+        </div>
+      </div>
+      <div class="modal-body">
+        <div class="modal-step">
+          <div class="modal-step-label">Your account</div>
+          <div class="field"><label>Email address</label><input type="email" placeholder="you@example.com" id="checkout-email"></div>
+          <div class="field-row">
+            <div class="field"><label>First name</label><input type="text" placeholder="James"></div>
+            <div class="field"><label>Last name</label><input type="text" placeholder="Williams"></div>
+          </div>
+        </div>
+        <div class="modal-step">
+          <div class="modal-step-label">Payment details</div>
+          <div class="stripe-notice"><span class="stripe-badge">Stripe</span>Your payment is encrypted and processed securely. We never store card details.</div>
+          <div class="field"><label>Card number</label><div class="card-input-wrap"><input type="text" placeholder="1234 5678 9012 3456" id="card-number" maxlength="19" oninput="formatCard(this)"><div class="card-icons">💳</div></div></div>
+          <div class="field-row">
+            <div class="field"><label>Expiry date</label><input type="text" placeholder="MM / YY" maxlength="7" oninput="formatExpiry(this)"></div>
+            <div class="field"><label>Security code</label><input type="text" placeholder="CVV" maxlength="4"></div>
+          </div>
+          <div class="field"><label>Name on card</label><input type="text" placeholder="James Williams"></div>
+        </div>
+        <div class="order-summary">
+          <div class="os-row"><span id="os-plan">Premium Monthly</span><span id="os-price">$8.99/mo</span></div>
+          <div class="os-row" id="os-trial-row"><span>30-day free trial</span><span style="color:var(--sage);">−$8.99</span></div>
+          <div class="os-row"><span>Due today</span><span id="os-due">$0.00</span></div>
+        </div>
+        <button class="submit-btn" id="submit-btn" onclick="processPayment()">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" id="submit-icon"><path d="M7 1l1.5 4.5L13 7l-4.5 1.5L7 13 5.5 8.5 1 7l4.5-1.5L7 1z" fill="white" opacity="0.8"/></svg>
+          <span id="submit-text">Start free trial</span>
+        </button>
+        <div style="text-align:center;font-size:0.7rem;color:var(--sand);margin-top:0.75rem;" id="submit-note">Cancel anytime · No charge for 30 days</div>
+      </div>
+    </div>
+    <div class="success-state" id="success-state">
+      <div class="success-icon">🌿</div>
+      <div class="success-title">You're all set</div>
+      <div class="success-sub" id="success-sub">Your 30-day free trial has started. Enjoy unlimited photos, music, stories, and everything Premium has to offer.</div>
+      <div class="success-actions">
+        <a href="kifo-dashboard.html" class="success-btn success-btn-primary">Go to dashboard</a>
+        <a href="kifo-memorial.html" class="success-btn success-btn-ghost">View memorial</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="mobile-drawer-overlay" id="mobile-overlay" onclick="closeMobileNav()"></div>
+<div class="mobile-drawer" id="mobile-drawer">
+  <div class="drawer-header"><a href="index.html" class="drawer-logo">Ki<span>f</span>o</a><button class="drawer-close" onclick="closeMobileNav()">✕</button></div>
+  <nav class="drawer-nav">
+    <div class="drawer-section">Memorials</div>
+    <a href="index.html" class="drawer-link"><span class="drawer-link-icon">🏠</span>Home</a>
+    <a href="kifo-gallery.html" class="drawer-link"><span class="drawer-link-icon">🔍</span>Browse memorials</a>
+    <a href="kifo-wizard.html" class="drawer-link"><span class="drawer-link-icon">✦</span>Create a memorial</a>
+    <div class="drawer-section">AI Tools</div>
+    <a href="kifo-ai-tribute.html" class="drawer-link"><span class="drawer-link-icon">✍️</span>AI Tribute Writer</a>
+    <a href="kifo-lifestory.html" class="drawer-link"><span class="drawer-link-icon">📖</span>AI Life Story</a>
+    <div class="drawer-section">Account</div>
+    <a href="kifo-dashboard.html" class="drawer-link"><span class="drawer-link-icon">📋</span>Dashboard</a>
+    <a href="kifo-settings.html" class="drawer-link"><span class="drawer-link-icon">⚙️</span>Settings</a>
+  </nav>
+  <div class="drawer-footer"><a href="kifo-wizard.html" class="drawer-cta">+ Create a memorial — free</a></div>
+</div>
+
+<script>
+var billing='monthly',currentPlan='premium';
+function setBilling(m){billing=m;document.getElementById('toggle-monthly').classList.toggle('active',m==='monthly');document.getElementById('toggle-annual').classList.toggle('active',m==='annual');if(m==='annual'){document.getElementById('premium-price').innerHTML='<sup>$</sup>6<sub>.65</sub>';document.getElementById('premium-period').textContent='per month, billed annually';document.getElementById('premium-note').textContent='$79.95/year — save $27.93';document.getElementById('premium-note').style.color='var(--gold)';}else{document.getElementById('premium-price').innerHTML='<sup>$</sup>8<sub>.99</sub>';document.getElementById('premium-period').textContent='per month';document.getElementById('premium-note').innerHTML='&nbsp;';}}
+var compareOpen=false;
+function toggleCompare(){compareOpen=!compareOpen;document.getElementById('compare-wrap').classList.toggle('open',compareOpen);document.getElementById('compare-btn').textContent=compareOpen?'▴ Hide feature comparison':'▾ See full feature comparison';}
+function toggleFaq(el){var item=el.closest('.faq-item');var isOpen=item.classList.contains('open');document.querySelectorAll('.faq-item').forEach(function(i){i.classList.remove('open');});if(!isOpen)item.classList.add('open');}
+function openUpgrade(plan){currentPlan=plan;var isPremium=plan==='premium';var isAnnual=billing==='annual'&&isPremium;document.getElementById('modal-plan-badge').textContent=isPremium?'✦ Premium Plan':'✦ Lifetime Plan';document.getElementById('modal-title').textContent=isPremium?'Start your 30-day free trial':'Get lifetime access';if(isPremium){var price=isAnnual?'$79.95':'$8.99';var period=isAnnual?'/ year after trial':'/ month after trial';document.getElementById('modal-price').textContent=price;document.getElementById('modal-period').textContent=period;document.getElementById('os-plan').textContent=isAnnual?'Premium Annual':'Premium Monthly';document.getElementById('os-price').textContent=isAnnual?'$79.95/yr':'$8.99/mo';document.getElementById('os-due').textContent='$0.00';document.getElementById('os-trial-row').style.display='';document.getElementById('submit-text').textContent='Start free trial';document.getElementById('submit-note').textContent='Cancel anytime · No charge for 30 days';}else{document.getElementById('modal-price').textContent='$149.95';document.getElementById('modal-period').textContent='one-time payment';document.getElementById('os-plan').textContent='Lifetime Plan';document.getElementById('os-price').textContent='$149.95';document.getElementById('os-due').textContent='$149.95';document.getElementById('os-trial-row').style.display='none';document.getElementById('submit-text').textContent='Complete purchase';document.getElementById('submit-note').textContent='Secure checkout · 30-day money-back guarantee';}
+document.getElementById('payment-form-view').style.display='block';document.getElementById('success-state').classList.remove('visible');document.getElementById('modal-overlay').classList.add('open');document.body.style.overflow='hidden';}
+function closeUpgrade(){document.getElementById('modal-overlay').classList.remove('open');document.body.style.overflow='';}
+function handleOverlayClick(e){if(e.target===document.getElementById('modal-overlay'))closeUpgrade();}
+function processPayment(){var email=document.getElementById('checkout-email').value;var card=document.getElementById('card-number').value.replace(/\s/g,'');var emailEl=document.getElementById('checkout-email');var cardEl=document.getElementById('card-number');emailEl.style.borderColor='var(--sand)';cardEl.style.borderColor='var(--sand)';if(!email||!email.includes('@')){emailEl.style.borderColor='var(--rust)';emailEl.focus();return;}if(card.length<16){cardEl.style.borderColor='var(--rust)';cardEl.focus();return;}var btn=document.getElementById('submit-btn');btn.disabled=true;document.getElementById('submit-text').textContent='Processing…';setTimeout(function(){document.getElementById('payment-form-view').style.display='none';document.getElementById('success-sub').textContent=currentPlan==='lifetime'?'You now have lifetime access to all premium features — forever. No future charges, ever.':'Your 30-day free trial has started. Enjoy unlimited photos, music, stories, and everything Premium has to offer.';document.getElementById('success-state').classList.add('visible');},2000);}
+function formatCard(el){var v=el.value.replace(/\D/g,'').slice(0,16);el.value=v.replace(/(\d{4})(?=\d)/g,'$1 ');el.style.borderColor='var(--sand)';}
+function formatExpiry(el){var v=el.value.replace(/\D/g,'').slice(0,4);if(v.length>=2)v=v.slice(0,2)+' / '+v.slice(2);el.value=v;}
+function openMobileNav(){document.getElementById('mobile-drawer').classList.add('open');document.getElementById('mobile-overlay').classList.add('open');document.getElementById('mobile-hamburger').classList.add('open');document.body.style.overflow='hidden';}
+function closeMobileNav(){document.getElementById('mobile-drawer').classList.remove('open');document.getElementById('mobile-overlay').classList.remove('open');document.getElementById('mobile-hamburger').classList.remove('open');document.body.style.overflow='';}
+document.addEventListener('keydown',function(e){if(e.key==='Escape'){closeUpgrade();closeMobileNav();}});
+(function(){var path=window.location.pathname.split('/').pop()||'index.html';document.querySelectorAll('.drawer-link').forEach(function(a){if(a.getAttribute('href')===path)a.classList.add('active');});})();
+</script>
+</body>
+</html>

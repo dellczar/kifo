@@ -1,0 +1,857 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Tribute Writer — Kifo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet">
+<style>
+:root{--cream:#F7F3EE;--parchment:#EDE5D8;--sand:#D9C9B0;--sienna:#9E6B4A;--terracotta:#C4714F;--rust:#A8432A;--sage:#7A8C6E;--moss:#4E6245;--dusk:#2C2420;--ash:#6B5F58;--gold:#C9994A;--warm-white:#FDFAF6;}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{background:var(--cream);color:var(--dusk);font-family:'DM Sans',sans-serif;font-weight:300;min-height:100vh;}
+
+/* NAV */
+.nav{display:flex;align-items:center;justify-content:space-between;padding:1rem 2.5rem;background:var(--warm-white);border-bottom:1px solid var(--sand);position:sticky;top:0;z-index:50;}
+.nav-logo{font-family:'Cormorant Garamond',serif;font-size:1.6rem;font-weight:500;letter-spacing:0.08em;color:var(--dusk);text-decoration:none;}
+.nav-logo span{color:var(--terracotta);}
+.nav-center{display:flex;align-items:center;gap:0.6rem;font-size:0.72rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--ash);}
+.nav-badge{background:linear-gradient(135deg,var(--terracotta),var(--sienna));color:white;font-size:0.58rem;letter-spacing:0.12em;padding:0.18rem 0.55rem;border-radius:10px;text-transform:uppercase;}
+.nav-right{display:flex;gap:0.75rem;align-items:center;}
+.nav-link{font-size:0.72rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--ash);text-decoration:none;transition:color 0.2s;}
+.nav-link:hover{color:var(--sienna);}
+
+/* HERO */
+.hero{background:var(--dusk);padding:4rem 2.5rem 3rem;text-align:center;position:relative;overflow:hidden;}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 30% 50%,rgba(196,113,79,0.2) 0%,transparent 55%),radial-gradient(ellipse at 75% 30%,rgba(122,140,110,0.15) 0%,transparent 50%);}
+.hero-pattern{position:absolute;inset:0;opacity:0.04;background-image:radial-gradient(circle,rgba(255,255,255,0.9) 1px,transparent 1px);background-size:28px 28px;}
+.hero-eyebrow{font-size:0.65rem;letter-spacing:0.25em;text-transform:uppercase;color:var(--gold);margin-bottom:0.75rem;position:relative;z-index:2;display:flex;align-items:center;justify-content:center;gap:0.6rem;}
+.hero-eyebrow::before,.hero-eyebrow::after{content:'';width:1.5rem;height:1px;background:var(--gold);}
+.hero-title{font-family:'Cormorant Garamond',serif;font-size:clamp(2rem,5vw,3.2rem);font-weight:300;color:var(--cream);line-height:1.2;margin-bottom:0.6rem;position:relative;z-index:2;}
+.hero-title em{font-style:italic;color:var(--gold);}
+.hero-sub{font-size:0.9rem;color:rgba(247,243,238,0.5);position:relative;z-index:2;max-width:540px;margin:0 auto;line-height:1.7;}
+
+/* MAIN LAYOUT */
+.main{display:grid;grid-template-columns:1fr 1fr;gap:0;min-height:calc(100vh - 180px);}
+
+/* LEFT PANEL — INPUT */
+.panel-left{background:var(--warm-white);border-right:1px solid var(--sand);padding:2.5rem;overflow-y:auto;}
+.panel-right{background:var(--cream);padding:2.5rem;overflow-y:auto;display:flex;flex-direction:column;}
+
+/* SECTION HEADERS */
+.panel-label{font-size:0.62rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--sienna);margin-bottom:1.5rem;display:flex;align-items:center;gap:0.5rem;}
+.panel-label::before{content:'';width:1.2rem;height:1px;background:var(--sienna);}
+
+/* MEMORIAL SELECTOR */
+.memorial-selector{background:var(--parchment);border-radius:3px;padding:1rem 1.25rem;margin-bottom:2rem;display:flex;align-items:center;justify-content:space-between;cursor:pointer;border:1.5px solid var(--sand);transition:border-color 0.2s;}
+.memorial-selector:hover{border-color:var(--sienna);}
+.ms-info{display:flex;align-items:center;gap:0.75rem;}
+.ms-avatar{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#8A9E7E,#4E6245);flex-shrink:0;}
+.ms-name{font-size:0.88rem;font-weight:500;color:var(--dusk);}
+.ms-dates{font-size:0.72rem;color:var(--ash);}
+.ms-change{font-size:0.68rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--sienna);}
+
+/* FORM */
+.form-group{margin-bottom:1.5rem;}
+label{display:block;font-size:0.65rem;letter-spacing:0.16em;text-transform:uppercase;color:var(--ash);margin-bottom:0.45rem;}
+input[type=text],textarea,select{width:100%;padding:0.8rem 1rem;border:1.5px solid var(--sand);border-radius:3px;background:var(--cream);color:var(--dusk);font-family:'DM Sans',sans-serif;font-size:0.88rem;font-weight:300;outline:none;transition:border-color 0.2s,background 0.2s;}
+input:focus,textarea:focus,select:focus{border-color:var(--sienna);background:var(--warm-white);}
+input::placeholder,textarea::placeholder{color:var(--sand);}
+textarea{resize:vertical;line-height:1.65;}
+select{cursor:pointer;}
+
+/* TONE PILLS */
+.tone-grid{display:flex;flex-wrap:wrap;gap:0.5rem;margin-bottom:0;}
+.tone-pill{font-size:0.72rem;padding:0.4rem 0.9rem;border-radius:20px;border:1.5px solid var(--sand);color:var(--ash);cursor:pointer;transition:all 0.2s;background:transparent;font-family:'DM Sans',sans-serif;}
+.tone-pill:hover{border-color:var(--sienna);color:var(--sienna);}
+.tone-pill.selected{background:var(--dusk);border-color:var(--dusk);color:var(--cream);}
+
+/* LENGTH SLIDER */
+.length-options{display:grid;grid-template-columns:repeat(3,1fr);gap:0.5rem;}
+.length-opt{padding:0.6rem;border:1.5px solid var(--sand);border-radius:3px;text-align:center;cursor:pointer;transition:all 0.2s;}
+.length-opt:hover{border-color:var(--sienna);}
+.length-opt.selected{background:var(--dusk);border-color:var(--dusk);}
+.lo-label{font-size:0.72rem;font-weight:500;color:var(--dusk);display:block;}
+.length-opt.selected .lo-label{color:var(--cream);}
+.lo-desc{font-size:0.62rem;color:var(--ash);}
+.length-opt.selected .lo-desc{color:rgba(247,243,238,0.5);}
+
+/* DETAILS TAGS */
+.detail-tags{display:flex;flex-wrap:wrap;gap:0.4rem;padding:0.75rem;border:1.5px solid var(--sand);border-radius:3px;background:var(--cream);min-height:48px;cursor:text;transition:border-color 0.2s;}
+.detail-tags:focus-within{border-color:var(--sienna);}
+.detail-tag{background:var(--parchment);color:var(--dusk);font-size:0.75rem;padding:0.2rem 0.6rem;border-radius:12px;display:flex;align-items:center;gap:0.3rem;}
+.detail-tag-remove{cursor:pointer;color:var(--ash);font-size:0.85rem;line-height:1;transition:color 0.15s;}
+.detail-tag-remove:hover{color:var(--rust);}
+.detail-tag-input{border:none;outline:none;font-family:'DM Sans',sans-serif;font-size:0.82rem;background:transparent;min-width:120px;flex:1;color:var(--dusk);}
+.detail-tag-input::placeholder{color:var(--sand);}
+
+/* QUICK PROMPTS */
+.quick-prompts{display:flex;flex-wrap:wrap;gap:0.4rem;margin-top:0.6rem;}
+.qp{font-size:0.68rem;letter-spacing:0.08em;padding:0.25rem 0.65rem;border-radius:12px;border:1px solid var(--sand);color:var(--ash);cursor:pointer;transition:all 0.15s;background:transparent;}
+.qp:hover{border-color:var(--terracotta);color:var(--terracotta);background:rgba(196,113,79,0.05);}
+
+/* GENERATE BUTTON */
+.generate-btn{width:100%;padding:1rem;background:var(--terracotta);color:white;border:none;border-radius:3px;font-family:'DM Sans',sans-serif;font-size:0.82rem;letter-spacing:0.14em;text-transform:uppercase;cursor:pointer;transition:all 0.2s;display:flex;align-items:center;justify-content:center;gap:0.6rem;margin-top:2rem;}
+.generate-btn:hover:not(:disabled){background:var(--rust);transform:translateY(-1px);}
+.generate-btn:disabled{opacity:0.6;cursor:not-allowed;transform:none;}
+.generate-btn.loading{background:var(--sienna);}
+
+/* RIGHT PANEL — OUTPUT */
+.output-placeholder{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;color:var(--sand);padding:3rem;}
+.op-icon{font-size:3rem;margin-bottom:1rem;opacity:0.4;}
+.op-title{font-family:'Cormorant Garamond',serif;font-size:1.4rem;color:var(--ash);margin-bottom:0.5rem;}
+.op-sub{font-size:0.82rem;color:var(--sand);line-height:1.65;max-width:300px;}
+
+/* TRIBUTE OUTPUT */
+.tribute-output{display:none;flex:1;flex-direction:column;}
+.tribute-output.visible{display:flex;}
+
+.output-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.25rem;}
+.output-label{font-size:0.62rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--sienna);display:flex;align-items:center;gap:0.4rem;}
+.output-label::before{content:'✦';font-size:0.6rem;}
+.output-actions{display:flex;gap:0.5rem;}
+.out-btn{font-size:0.65rem;letter-spacing:0.1em;text-transform:uppercase;padding:0.35rem 0.8rem;border-radius:2px;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all 0.2s;border:1px solid var(--sand);background:transparent;color:var(--ash);}
+.out-btn:hover{border-color:var(--sienna);color:var(--sienna);}
+.out-btn.primary{background:var(--terracotta);border-color:var(--terracotta);color:white;}
+.out-btn.primary:hover{background:var(--rust);border-color:var(--rust);}
+
+.tribute-card{background:var(--warm-white);border-radius:4px;border:1px solid var(--parchment);padding:2rem;flex:1;position:relative;box-shadow:0 4px 20px rgba(44,36,32,0.06);}
+.tribute-text{font-family:'Cormorant Garamond',serif;font-size:1.1rem;line-height:1.85;color:var(--dusk);white-space:pre-wrap;}
+.tribute-text.streaming::after{content:'▊';animation:blink 0.8s steps(1) infinite;color:var(--terracotta);font-size:0.9em;}
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:0;}}
+
+.tribute-meta{display:flex;align-items:center;gap:1rem;margin-top:1.25rem;padding-top:1.25rem;border-top:1px solid var(--parchment);}
+.tribute-meta-avatar{width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,var(--sienna),var(--terracotta));display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-size:0.85rem;color:white;font-weight:500;}
+.tribute-meta-name{font-size:0.8rem;font-weight:500;color:var(--dusk);}
+.tribute-meta-note{font-size:0.7rem;color:var(--ash);}
+
+/* VARIATIONS */
+.variations-grid{display:grid;grid-template-columns:1fr 1fr;gap:0.75rem;margin-top:1rem;}
+.variation-card{background:var(--warm-white);border:1.5px solid var(--sand);border-radius:3px;padding:1rem;cursor:pointer;transition:all 0.2s;position:relative;}
+.variation-card:hover{border-color:var(--sienna);box-shadow:0 4px 16px rgba(44,36,32,0.08);}
+.variation-card.active{border-color:var(--terracotta);}
+.vc-label{font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold);margin-bottom:0.5rem;}
+.vc-preview{font-family:'Cormorant Garamond',serif;font-size:0.92rem;color:var(--ash);line-height:1.6;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;}
+.vc-select{position:absolute;top:0.6rem;right:0.6rem;width:18px;height:18px;border-radius:50%;border:1.5px solid var(--sand);background:transparent;display:flex;align-items:center;justify-content:center;font-size:0.65rem;color:transparent;transition:all 0.2s;}
+.variation-card.active .vc-select{background:var(--terracotta);border-color:var(--terracotta);color:white;}
+
+/* TIPS */
+.tips-section{margin-top:1.5rem;}
+.tips-title{font-size:0.65rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--sand);margin-bottom:0.75rem;}
+.tip{display:flex;gap:0.5rem;font-size:0.78rem;color:var(--ash);line-height:1.55;margin-bottom:0.5rem;}
+.tip::before{content:'💡';font-size:0.7rem;flex-shrink:0;margin-top:0.05rem;}
+
+/* LOADING STATE */
+.loading-shimmer{background:linear-gradient(90deg,var(--parchment) 25%,var(--sand) 50%,var(--parchment) 75%);background-size:200% 100%;animation:shimmer 1.5s infinite;border-radius:3px;height:1.2rem;margin-bottom:0.75rem;}
+@keyframes shimmer{0%{background-position:200% 0;}100%{background-position:-200% 0;}}
+
+/* SPARKLE ANIMATION */
+@keyframes sparkleIn{0%{opacity:0;transform:scale(0.8) translateY(10px);}100%{opacity:1;transform:scale(1) translateY(0);}}
+.tribute-output.visible .tribute-card{animation:sparkleIn 0.4s ease forwards;}
+
+/* COPY TOAST */
+.copy-toast{position:fixed;bottom:2rem;right:2rem;background:var(--moss);color:white;padding:0.7rem 1.1rem;border-radius:3px;font-size:0.78rem;display:flex;align-items:center;gap:0.4rem;box-shadow:0 4px 16px rgba(44,36,32,0.2);transform:translateY(60px);opacity:0;transition:all 0.25s ease;z-index:100;}
+.copy-toast.show{transform:translateY(0);opacity:1;}
+
+@media(max-width:900px){
+  .main{grid-template-columns:1fr;}
+  .panel-left{border-right:none;border-bottom:1px solid var(--sand);}
+  .variations-grid{grid-template-columns:1fr;}
+}
+
+/* ── MOBILE NAV ─────────────────────────────────────────────── */
+.mobile-hamburger {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  width: 36px;
+  height: 36px;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 3px;
+  transition: background 0.2s;
+  flex-shrink: 0;
+  border: none;
+  background: transparent;
+}
+.mobile-hamburger:hover { background: var(--parchment, #EDE5D8); }
+.mobile-hamburger span {
+  display: block;
+  height: 1.5px;
+  background: var(--dusk, #2C2420);
+  border-radius: 2px;
+  transition: transform 0.3s ease, opacity 0.3s ease, width 0.3s ease;
+  transform-origin: center;
+}
+.mobile-hamburger.open span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+.mobile-hamburger.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+.mobile-hamburger.open span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
+
+/* DRAWER OVERLAY */
+.mobile-drawer-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(44,36,32,0.45);
+  z-index: 998;
+  backdrop-filter: blur(3px);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+.mobile-drawer-overlay.open { opacity: 1; }
+
+/* DRAWER */
+.mobile-drawer {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 280px;
+  background: var(--warm-white, #FDFAF6);
+  z-index: 999;
+  transform: translateX(100%);
+  transition: transform 0.32s cubic-bezier(0.4,0,0.2,1);
+  box-shadow: -8px 0 32px rgba(44,36,32,0.15);
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+}
+.mobile-drawer.open { transform: translateX(0); }
+
+.drawer-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.25rem 1.5rem;
+  border-bottom: 1px solid var(--parchment, #EDE5D8);
+}
+.drawer-logo {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.5rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  color: var(--dusk, #2C2420);
+  text-decoration: none;
+}
+.drawer-logo span { color: var(--terracotta, #C4714F); }
+.drawer-close {
+  width: 32px;
+  height: 32px;
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-size: 1.2rem;
+  color: var(--ash, #6B5F58);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 3px;
+  transition: background 0.2s;
+}
+.drawer-close:hover { background: var(--parchment, #EDE5D8); }
+
+.drawer-nav {
+  flex: 1;
+  padding: 1.25rem 0;
+}
+.drawer-section {
+  font-size: 0.58rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--sand, #D9C9B0);
+  padding: 0 1.5rem;
+  margin: 1rem 0 0.4rem;
+}
+.drawer-link {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.8rem 1.5rem;
+  font-size: 0.88rem;
+  color: var(--ash, #6B5F58);
+  text-decoration: none;
+  transition: background 0.15s, color 0.15s;
+  border-left: 2px solid transparent;
+}
+.drawer-link:hover {
+  background: var(--parchment, #EDE5D8);
+  color: var(--dusk, #2C2420);
+}
+.drawer-link.active {
+  color: var(--terracotta, #C4714F);
+  border-left-color: var(--terracotta, #C4714F);
+  background: rgba(196,113,79,0.06);
+}
+.drawer-link-icon { font-size: 1rem; width: 20px; text-align: center; flex-shrink: 0; }
+
+.drawer-footer {
+  padding: 1.25rem 1.5rem;
+  border-top: 1px solid var(--parchment, #EDE5D8);
+}
+.drawer-cta {
+  display: block;
+  width: 100%;
+  padding: 0.85rem;
+  background: var(--terracotta, #C4714F);
+  color: white;
+  text-align: center;
+  border-radius: 3px;
+  font-size: 0.78rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  text-decoration: none;
+  font-family: 'DM Sans', sans-serif;
+  transition: background 0.2s;
+}
+.drawer-cta:hover { background: var(--rust, #A8432A); }
+
+@media (max-width: 768px) {
+  .mobile-hamburger { display: flex !important; }
+  .mobile-drawer-overlay { display: block; }
+}
+
+
+@media (max-width: 768px) {
+  .nav-links { display: none !important; }
+  .nav-actions .btn-ghost, .nav-actions .btn-primary,
+  .nav-right .nav-link { display: none !important; }
+  .nav-right .nav-btn, .nav-actions > a:not(.mobile-hamburger) { display: none !important; }
+}
+
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <a href="index.html" class="nav-logo">Ki<span>f</span>o</a>
+  <div class="nav-center">
+    ✦ AI Tribute Writer
+    <span class="nav-badge">Beta</span>
+  </div>
+  <div class="nav-right">
+        <a href="kifo-memorial.html" class="nav-link">View memorial →</a>
+    <a href="kifo-dashboard.html" class="nav-link">Dashboard</a>
+  </div>
+  <button class="mobile-hamburger" id="mobile-hamburger" onclick="openMobileNav()" aria-label="Open menu"><span></span><span></span><span></span></button>
+</nav>
+
+<div class="hero">
+  <div class="hero-pattern"></div>
+  <div class="hero-eyebrow">Powered by Claude AI</div>
+  <h1 class="hero-title">Write a tribute that <em>truly honors</em> them</h1>
+  <p class="hero-sub">Share a few memories and details. Kifo's AI will craft a heartfelt, personalized tribute in your voice — ready to post or edit.</p>
+</div>
+
+<div class="main">
+
+  <!-- LEFT: INPUT -->
+  <div class="panel-left">
+    <div class="panel-label">About this memorial</div>
+
+    <div class="memorial-selector">
+      <div class="ms-info">
+        <div class="ms-avatar"></div>
+        <div>
+          <div class="ms-name">Margaret Rose Williams</div>
+          <div class="ms-dates">June 3, 1942 – November 12, 2024</div>
+        </div>
+      </div>
+      <div class="ms-change">Change →</div>
+    </div>
+
+    <div class="panel-label">Your relationship</div>
+    <div class="form-group">
+      <label>Your name</label>
+      <input type="text" id="author-name" placeholder="e.g. Sarah Mitchell" value="">
+    </div>
+    <div class="form-group">
+      <label>Your relationship to them</label>
+      <select id="relationship">
+        <option value="">Select relationship…</option>
+        <option value="daughter">Daughter</option>
+        <option value="son">Son</option>
+        <option value="spouse">Spouse / Partner</option>
+        <option value="parent">Parent</option>
+        <option value="sibling">Sibling</option>
+        <option value="grandchild">Grandchild</option>
+        <option value="grandparent">Grandparent</option>
+        <option value="friend">Friend</option>
+        <option value="colleague">Colleague</option>
+        <option value="neighbour">Neighbour</option>
+        <option value="other">Other</option>
+      </select>
+    </div>
+
+    <div class="panel-label" style="margin-top:0.5rem;">What would you like to share?</div>
+    <div class="form-group">
+      <label>Memories, qualities, or stories <span style="color:var(--sand);font-size:0.6rem;text-transform:none;letter-spacing:0;">(the more detail, the better)</span></label>
+      <textarea id="memories" rows="5" placeholder="e.g. She always had a garden full of sunflowers and would bring bouquets to everyone on the street. She laughed loudly and never turned anyone away from her table. She taught me to bake bread and told me it was a form of love…"></textarea>
+    </div>
+
+    <div class="form-group">
+      <label>Key details to include</label>
+      <div class="detail-tags" id="detail-tags" onclick="document.getElementById('tag-input').focus()">
+        <input type="text" class="detail-tag-input" id="tag-input" placeholder="Type a detail and press Enter…" onkeydown="handleTagInput(event)">
+      </div>
+      <div class="quick-prompts">
+        <span class="qp" onclick="addTag('Her laugh')">Her laugh</span>
+        <span class="qp" onclick="addTag('Her garden')">Her garden</span>
+        <span class="qp" onclick="addTag('Cooking & baking')">Cooking & baking</span>
+        <span class="qp" onclick="addTag('Family first')">Family first</span>
+        <span class="qp" onclick="addTag('Kindness')">Kindness</span>
+        <span class="qp" onclick="addTag('Her faith')">Her faith</span>
+        <span class="qp" onclick="addTag('Her humor')">Her humor</span>
+        <span class="qp" onclick="addTag('Her strength')">Her strength</span>
+      </div>
+    </div>
+
+    <div class="panel-label" style="margin-top:0.5rem;">Tone & style</div>
+    <div class="form-group">
+      <label>Choose a tone</label>
+      <div class="tone-grid" id="tone-grid">
+        <button class="tone-pill selected" onclick="selectTone(this,'warm')">🌿 Warm & personal</button>
+        <button class="tone-pill" onclick="selectTone(this,'poetic')">🕊 Poetic & reflective</button>
+        <button class="tone-pill" onclick="selectTone(this,'celebratory')">🌟 Celebratory</button>
+        <button class="tone-pill" onclick="selectTone(this,'spiritual')">🙏 Spiritual</button>
+        <button class="tone-pill" onclick="selectTone(this,'formal')">📜 Formal & dignified</button>
+        <button class="tone-pill" onclick="selectTone(this,'humorous')">😊 Light & humorous</button>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>Length</label>
+      <div class="length-options">
+        <div class="length-opt" onclick="selectLength(this,'short')">
+          <span class="lo-label">Short</span>
+          <span class="lo-desc">~2–3 sentences</span>
+        </div>
+        <div class="length-opt selected" onclick="selectLength(this,'medium')">
+          <span class="lo-label">Medium</span>
+          <span class="lo-desc">~1 paragraph</span>
+        </div>
+        <div class="length-opt" onclick="selectLength(this,'long')">
+          <span class="lo-label">Long</span>
+          <span class="lo-desc">~2–3 paragraphs</span>
+        </div>
+      </div>
+    </div>
+
+    <button class="generate-btn" id="generate-btn" onclick="generateTribute()">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 1v14M1 8h14M3.5 3.5l9 9M12.5 3.5l-9 9" stroke="white" stroke-width="1.4" stroke-linecap="round" opacity="0.7"/></svg>
+      Generate tribute
+    </button>
+  </div>
+
+  <!-- RIGHT: OUTPUT -->
+  <div class="panel-right">
+
+    <!-- Placeholder state -->
+    <div class="output-placeholder" id="placeholder">
+      <div class="op-icon">🕯</div>
+      <div class="op-title">Your tribute will appear here</div>
+      <div class="op-sub">Fill in the details on the left and click "Generate tribute" — Kifo's AI will craft something meaningful in seconds.</div>
+      <div class="tips-section" style="margin-top:2rem;text-align:left;width:100%;max-width:360px;">
+        <div class="tips-title">Tips for a better tribute</div>
+        <div class="tip">Share a specific memory — a meal, a laugh, a place you went together</div>
+        <div class="tip">Mention what made them unique: a phrase they always said, something they loved</div>
+        <div class="tip">The AI writes in first person — as if you're speaking directly from the heart</div>
+        <div class="tip">You can always edit the result before posting</div>
+      </div>
+    </div>
+
+    <!-- Output state -->
+    <div class="tribute-output" id="tribute-output">
+      <div class="output-header">
+        <div class="output-label">Generated tribute</div>
+        <div class="output-actions">
+          <button class="out-btn" onclick="copyTribute()">📋 Copy</button>
+          <button class="out-btn" onclick="generateTribute()">↻ Regenerate</button>
+          <button class="out-btn primary" onclick="postTribute()">Post to memorial →</button>
+        </div>
+      </div>
+
+      <div class="tribute-card">
+        <div class="tribute-text" id="tribute-text"></div>
+        <div class="tribute-meta" id="tribute-meta" style="display:none;">
+          <div class="tribute-meta-avatar" id="meta-avatar">J</div>
+          <div>
+            <div class="tribute-meta-name" id="meta-name">Your name</div>
+            <div class="tribute-meta-note">AI-assisted tribute · Edit before posting</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Variations -->
+      <div id="variations-section" style="display:none;">
+        <div class="panel-label" style="margin-top:1.5rem;">Alternative versions</div>
+        <div class="variations-grid" id="variations-grid"></div>
+      </div>
+
+      <!-- Actions -->
+      <div style="margin-top:1.25rem;display:flex;gap:0.75rem;flex-wrap:wrap;" id="action-row" style="display:none;">
+        <button class="out-btn" onclick="makeShorter()">Make shorter</button>
+        <button class="out-btn" onclick="makeLonger()">Make longer</button>
+        <button class="out-btn" onclick="makeMorePoetic()">More poetic</button>
+        <button class="out-btn" onclick="addDetail()">Add more detail</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div class="copy-toast" id="copy-toast">✓ Tribute copied to clipboard</div>
+
+<script>
+// ─── STATE ───────────────────────────────────────────────────
+let selectedTone = 'warm';
+let selectedLength = 'medium';
+let tags = [];
+let currentTribute = '';
+let isGenerating = false;
+
+// ─── TAG SYSTEM ───────────────────────────────────────────────
+function addTag(text) {
+  if (tags.includes(text) || !text.trim()) return;
+  tags.push(text.trim());
+  renderTags();
+}
+function removeTag(text) {
+  tags = tags.filter(t => t !== text);
+  renderTags();
+}
+function renderTags() {
+  const container = document.getElementById('detail-tags');
+  const input = document.getElementById('tag-input');
+  container.innerHTML = '';
+  tags.forEach(tag => {
+    const el = document.createElement('div');
+    el.className = 'detail-tag';
+    el.innerHTML = `${tag}<span class="detail-tag-remove" onclick="removeTag('${tag}')">×</span>`;
+    container.appendChild(el);
+  });
+  container.appendChild(input);
+  input.focus();
+}
+function handleTagInput(e) {
+  if (e.key === 'Enter' || e.key === ',') {
+    e.preventDefault();
+    const val = e.target.value.trim().replace(/,$/, '');
+    if (val) { addTag(val); e.target.value = ''; }
+  } else if (e.key === 'Backspace' && !e.target.value && tags.length) {
+    removeTag(tags[tags.length - 1]);
+  }
+}
+
+// ─── TONE & LENGTH ────────────────────────────────────────────
+function selectTone(el, tone) {
+  document.querySelectorAll('.tone-pill').forEach(p => p.classList.remove('selected'));
+  el.classList.add('selected');
+  selectedTone = tone;
+}
+function selectLength(el, len) {
+  document.querySelectorAll('.length-opt').forEach(o => o.classList.remove('selected'));
+  el.classList.add('selected');
+  selectedLength = len;
+}
+
+// ─── BUILD PROMPT ─────────────────────────────────────────────
+function buildPrompt() {
+  const name = 'Margaret Rose Williams';
+  const born = 'June 3, 1942';
+  const died = 'November 12, 2024';
+  const author = document.getElementById('author-name').value.trim() || 'a loved one';
+  const relationship = document.getElementById('relationship').value || 'loved one';
+  const memories = document.getElementById('memories').value.trim();
+  const details = tags.join(', ');
+
+  const toneInstructions = {
+    warm: 'Write in a warm, personal, and heartfelt tone. Use first-person voice, as if speaking directly from the heart. Feel natural and intimate.',
+    poetic: 'Write in a poetic, reflective, and lyrical tone. Use evocative imagery and language. It should feel like a poem in prose form.',
+    celebratory: 'Write in a celebratory tone that honors their life and legacy. Focus on joy, gratitude, and beautiful memories rather than loss.',
+    spiritual: 'Write in a spiritual tone that acknowledges faith, peace, and the eternal nature of the soul. Use language that brings comfort through spirituality.',
+    formal: 'Write in a formal, dignified, and respectful tone. Professional but deeply personal. Suitable for a formal memorial program.',
+    humorous: 'Write with warmth and light humor that celebrates their personality. Capture their spirit with affection and a touch of lightness.'
+  };
+
+  const lengthInstructions = {
+    short: 'Write 2-3 sentences only. Be concise but meaningful.',
+    medium: 'Write one substantive paragraph (4-6 sentences).',
+    long: 'Write 2-3 rich paragraphs that fully honor their memory.'
+  };
+
+  return `You are helping write a heartfelt tribute for an online memorial. This tribute will be posted by ${author}, who was the ${relationship} of ${name} (born ${born}, passed ${died}).
+
+${toneInstructions[selectedTone]}
+${lengthInstructions[selectedLength]}
+
+${memories ? `The person writing has shared these memories and thoughts:\n"${memories}"` : ''}
+${details ? `Key qualities or themes to weave in: ${details}` : ''}
+
+IMPORTANT RULES:
+- Write ONLY the tribute text itself — no introduction, no "Here is a tribute:", no quotation marks around it
+- Write in first person as ${author} (e.g., "Margaret always..." or "I remember when...")
+- Make it feel genuine, specific, and human — not generic
+- Do not use clichés like "gone too soon" or "watching over us"
+- The tribute should feel like it came from someone who truly loved this person
+
+Write the tribute now:`;
+}
+
+// ─── GENERATE ─────────────────────────────────────────────────
+async function generateTribute() {
+  if (isGenerating) return;
+
+  const memories = document.getElementById('memories').value.trim();
+  if (!memories && tags.length === 0) {
+    document.getElementById('memories').focus();
+    document.getElementById('memories').style.borderColor = 'var(--terracotta)';
+    setTimeout(() => document.getElementById('memories').style.borderColor = '', 2000);
+    return;
+  }
+
+  isGenerating = true;
+  const btn = document.getElementById('generate-btn');
+  btn.disabled = true;
+  btn.classList.add('loading');
+  btn.innerHTML = `<svg width="16" height="16" viewBox="0 0 16 16" fill="none" style="animation:spin 1s linear infinite"><circle cx="8" cy="8" r="6" stroke="white" stroke-width="1.5" stroke-dasharray="30" stroke-dashoffset="10" stroke-linecap="round"/></svg> Generating…`;
+
+  // Show output panel with streaming state
+  document.getElementById('placeholder').style.display = 'none';
+  document.getElementById('tribute-output').classList.add('visible');
+  document.getElementById('tribute-text').textContent = '';
+  document.getElementById('tribute-text').classList.add('streaming');
+  document.getElementById('tribute-meta').style.display = 'none';
+  document.getElementById('variations-section').style.display = 'none';
+  document.getElementById('action-row').style.display = 'none';
+
+  // Shimmer effect while waiting
+  document.getElementById('tribute-text').innerHTML = '<div class="loading-shimmer" style="width:90%"></div><div class="loading-shimmer" style="width:75%"></div><div class="loading-shimmer" style="width:85%"></div><div class="loading-shimmer" style="width:60%"></div>';
+
+  try {
+    const response = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 1000,
+        stream: false,
+        messages: [{ role: 'user', content: buildPrompt() }]
+      })
+    });
+
+    const data = await response.json();
+    const tributeText = data.content?.[0]?.text?.trim() || 'Unable to generate tribute. Please try again.';
+    currentTribute = tributeText;
+
+    // Stream text character by character for effect
+    document.getElementById('tribute-text').textContent = '';
+    document.getElementById('tribute-text').classList.add('streaming');
+    await streamText(tributeText);
+    document.getElementById('tribute-text').classList.remove('streaming');
+
+    // Show meta and actions
+    const authorName = document.getElementById('author-name').value.trim();
+    if (authorName) {
+      document.getElementById('meta-avatar').textContent = authorName[0].toUpperCase();
+      document.getElementById('meta-name').textContent = authorName;
+      document.getElementById('tribute-meta').style.display = 'flex';
+    }
+    document.getElementById('action-row').style.display = 'flex';
+
+    // Generate variations
+    await generateVariations(tributeText);
+
+  } catch (err) {
+    document.getElementById('tribute-text').textContent = '✦ Unable to connect to AI service. Please check your connection and try again.';
+    document.getElementById('tribute-text').classList.remove('streaming');
+    console.error('API error:', err);
+  }
+
+  isGenerating = false;
+  btn.disabled = false;
+  btn.classList.remove('loading');
+  btn.innerHTML = `<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 1v14M1 8h14M3.5 3.5l9 9M12.5 3.5l-9 9" stroke="white" stroke-width="1.4" stroke-linecap="round" opacity="0.7"/></svg> Regenerate tribute`;
+}
+
+// ─── STREAM TEXT ──────────────────────────────────────────────
+async function streamText(text) {
+  const el = document.getElementById('tribute-text');
+  el.textContent = '';
+  let i = 0;
+  const speed = Math.max(8, 2000 / text.length); // Adaptive speed
+  return new Promise(resolve => {
+    const interval = setInterval(() => {
+      if (i >= text.length) {
+        clearInterval(interval);
+        resolve();
+        return;
+      }
+      // Add chunks of characters for natural feel
+      const chunk = text.slice(i, i + 3);
+      el.textContent += chunk;
+      i += 3;
+      el.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+    }, speed);
+  });
+}
+
+// ─── VARIATIONS ───────────────────────────────────────────────
+async function generateVariations(mainText) {
+  try {
+    const variationTones = [
+      { tone: 'poetic', label: '🕊 More poetic' },
+      { tone: 'celebratory', label: '🌟 More celebratory' }
+    ];
+
+    const grid = document.getElementById('variations-grid');
+    grid.innerHTML = '';
+    document.getElementById('variations-section').style.display = 'block';
+
+    // Generate 2 variations in parallel
+    const promises = variationTones.map(async (vt, i) => {
+      const card = document.createElement('div');
+      card.className = 'variation-card';
+      card.innerHTML = `<div class="vc-label">${vt.label}</div><div class="vc-preview loading-shimmer" style="height:4rem;"></div><div class="vc-select">✓</div>`;
+      grid.appendChild(card);
+
+      // Build a shorter variation prompt
+      const prompt = `${buildPrompt()}\n\nNow write an alternative version with a more ${vt.tone} tone. Keep it to 2-3 sentences. Write ONLY the tribute text, nothing else.`;
+
+      const res = await fetch('https://api.anthropic.com/v1/messages', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          model: 'claude-sonnet-4-20250514',
+          max_tokens: 300,
+          messages: [{ role: 'user', content: prompt }]
+        })
+      });
+      const d = await res.json();
+      const text = d.content?.[0]?.text?.trim() || '';
+
+      card.querySelector('.vc-preview').className = 'vc-preview';
+      card.querySelector('.vc-preview').textContent = text;
+      card.onclick = () => selectVariation(card, text);
+    });
+
+    await Promise.allSettled(promises);
+  } catch (e) {
+    console.error('Variation error:', e);
+  }
+}
+
+function selectVariation(card, text) {
+  document.querySelectorAll('.variation-card').forEach(c => c.classList.remove('active'));
+  card.classList.add('active');
+  currentTribute = text;
+  streamText(text);
+}
+
+// ─── ACTIONS ──────────────────────────────────────────────────
+async function refineWith(instruction) {
+  if (isGenerating) return;
+  isGenerating = true;
+  document.getElementById('tribute-text').classList.add('streaming');
+
+  try {
+    const prompt = `Here is a tribute I wrote:\n\n"${currentTribute}"\n\n${instruction}. Write ONLY the revised tribute text, nothing else.`;
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 800,
+        messages: [{ role: 'user', content: prompt }]
+      })
+    });
+    const data = await res.json();
+    const text = data.content?.[0]?.text?.trim();
+    if (text) {
+      currentTribute = text;
+      document.getElementById('tribute-text').textContent = '';
+      await streamText(text);
+    }
+  } catch(e) { console.error(e); }
+
+  document.getElementById('tribute-text').classList.remove('streaming');
+  isGenerating = false;
+}
+
+function makeShorter() { refineWith('Make this tribute shorter — 2-3 sentences only. Keep the most meaningful parts.'); }
+function makeLonger() { refineWith('Expand this tribute into 2-3 rich paragraphs. Add more warmth and specific detail.'); }
+function makeMorePoetic() { refineWith('Rewrite this tribute in a more poetic, lyrical style. Use beautiful imagery while keeping it personal.'); }
+function addDetail() { refineWith('Enrich this tribute with more specific, vivid detail. Make it feel even more personal and unique.'); }
+
+// ─── UTILITIES ────────────────────────────────────────────────
+function copyTribute() {
+  navigator.clipboard.writeText(currentTribute).catch(() => {});
+  const toast = document.getElementById('copy-toast');
+  toast.classList.add('show');
+  setTimeout(() => toast.classList.remove('show'), 2500);
+}
+
+function postTribute() {
+  // In production: post to memorial via API
+  alert('In the full app, this would post directly to the memorial page. For now, copy the tribute and paste it on the memorial page.');
+}
+
+// Add spin animation for loading button
+const style = document.createElement('style');
+style.textContent = '@keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }';
+document.head.appendChild(style);
+</script>
+
+<!-- MOBILE DRAWER -->
+<div class="mobile-drawer-overlay" id="mobile-overlay" onclick="closeMobileNav()"></div>
+<div class="mobile-drawer" id="mobile-drawer">
+  <div class="drawer-header">
+    <a href="index.html" class="drawer-logo">Ki<span>f</span>o</a>
+    <button class="drawer-close" onclick="closeMobileNav()">✕</button>
+  </div>
+  <nav class="drawer-nav">
+    <div class="drawer-section">Memorials</div>
+    <a href="index.html" class="drawer-link"><span class="drawer-link-icon">🏠</span>Home</a>
+    <a href="kifo-gallery.html" class="drawer-link"><span class="drawer-link-icon">🔍</span>Browse memorials</a>
+    <a href="kifo-memorial.html" class="drawer-link"><span class="drawer-link-icon">🕯</span>Example memorial</a>
+    <a href="kifo-wizard.html" class="drawer-link"><span class="drawer-link-icon">✦</span>Create a memorial</a>
+    <div class="drawer-section">AI Tools</div>
+    <a href="kifo-ai-tribute.html" class="drawer-link"><span class="drawer-link-icon">✍️</span>AI Tribute Writer</a>
+    <a href="kifo-lifestory.html" class="drawer-link"><span class="drawer-link-icon">📖</span>AI Life Story</a>
+    <div class="drawer-section">Account</div>
+    <a href="kifo-dashboard.html" class="drawer-link"><span class="drawer-link-icon">📋</span>Dashboard</a>
+    <a href="kifo-events.html" class="drawer-link"><span class="drawer-link-icon">📅</span>Events</a>
+    <a href="kifo-settings.html" class="drawer-link"><span class="drawer-link-icon">⚙️</span>Settings</a>
+    <a href="/signin" class="drawer-link"><span class="drawer-link-icon">🔑</span>Sign in</a>
+  </nav>
+  <div class="drawer-footer">
+    <a href="kifo-wizard.html" class="drawer-cta">+ Create a memorial — free</a>
+  </div>
+</div>
+
+<script>
+function openMobileNav() {
+  document.getElementById('mobile-drawer').classList.add('open');
+  document.getElementById('mobile-overlay').classList.add('open');
+  const ham = document.getElementById('mobile-hamburger');
+  if (ham) ham.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeMobileNav() {
+  document.getElementById('mobile-drawer').classList.remove('open');
+  document.getElementById('mobile-overlay').classList.remove('open');
+  const ham = document.getElementById('mobile-hamburger');
+  if (ham) ham.classList.remove('open');
+  document.body.style.overflow = '';
+}
+document.addEventListener('keydown', function(e) { if (e.key === 'Escape') closeMobileNav(); });
+(function() {
+  var path = window.location.pathname.split('/').pop() || 'index.html';
+  document.querySelectorAll('.drawer-link').forEach(function(a) {
+    if (a.getAttribute('href') === path) a.classList.add('active');
+  });
+})();
+</script>
+</body>
+</html>
