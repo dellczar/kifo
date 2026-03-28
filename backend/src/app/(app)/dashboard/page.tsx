@@ -13,7 +13,8 @@ export default async function DashboardPage() {
     .eq("owner_id", user.id).order("created_at", { ascending: false })
 
   const p = profile as any
-  const name = p?.full_name?.split(" ")[0] || "there"
+  const rawName = p?.full_name || user.user_metadata?.full_name || user.user_metadata?.name || ""
+  const name = rawName.split(" ")[0] || user.email?.split("@")[0] || "there"
   const hour = new Date().getHours()
   const greeting = hour < 12 ? "Good morning" : hour < 17 ? "Good afternoon" : "Good evening"
   const totalVisitors = (memorials || []).reduce((a: number, m: any) => a + (m.visitor_count || 0), 0)
@@ -23,7 +24,10 @@ export default async function DashboardPage() {
   return (
     <div style={{maxWidth:1100,margin:"0 auto",padding:"2rem 1.5rem",fontFamily:"system-ui,sans-serif"}}>
       <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:"2rem",flexWrap:"wrap",gap:"1rem"}}>
-        <h1 style={{fontSize:"1.75rem",fontWeight:700,color:"#2A1F16",fontFamily:"Georgia,serif"}}>{greeting}, {name} 🌿</h1>
+        <div>
+          <h1 style={{fontSize:"1.75rem",fontWeight:700,color:"#2A1F16",fontFamily:"Georgia,serif"}}>{greeting}, {name} 🌿</h1>
+          <p style={{fontSize:"0.82rem",color:"#9E8C7A",marginTop:"0.25rem"}}>{user.email}</p>
+        </div>
         <Link href="/wizard" style={{background:"#C4714F",color:"white",padding:"0.6rem 1.25rem",borderRadius:30,textDecoration:"none",fontWeight:700,fontSize:"0.88rem"}}>+ New memorial</Link>
       </div>
       <div style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:"1rem",marginBottom:"2.5rem"}}>
