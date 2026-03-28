@@ -1041,7 +1041,7 @@ footer{background:var(--ink);color:white;padding:5rem 5rem 3rem;}
         </div>
       </div>
     </li>
-    <li><span class="nav-sign-in" style="display:flex;align-items:center;gap:0.35rem;cursor:default;font-weight:600;">✓ Signed in as <a href="/dashboard" id="nav-username" style="color:var(--terracotta);font-weight:700;text-decoration:none;"></a></span></li>
+    <li><span class="nav-sign-in" style="display:flex;align-items:center;gap:0.35rem;cursor:default;font-weight:600;">Hello, <a href="/dashboard" id="nav-username" style="color:var(--terracotta);font-weight:700;text-decoration:none;"></a></span></li>
     <li><a href="kifo-wizard.html" class="btn-nav">Create a Memorial</a></li>
   </ul>
   <button class="mobile-hamburger" id="mobile-hamburger" onclick="openMobileNav()" aria-label="Open menu">
@@ -2076,7 +2076,7 @@ window.addEventListener('scroll', function() {
     var navEl = document.getElementById('nav-username');
     if (navEl) navEl.textContent = firstName;
     var drawerEl = document.getElementById('drawer-username');
-    if (drawerEl) drawerEl.textContent = 'Signed in as ' + firstName;
+    if (drawerEl) drawerEl.textContent = 'Hello, ' + firstName;
   } catch(e){}
 })();
 </script>
